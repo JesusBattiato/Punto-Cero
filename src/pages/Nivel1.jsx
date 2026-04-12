@@ -113,7 +113,7 @@ export default function Nivel1() {
       color: '#f8fafc',
       display: 'flex', justifyContent: 'center', padding: '1.5rem', marginBottom: '5rem'
     }}>
-      <div style={{
+      <div className="responsive-grid" style={{
         background: 'rgba(30, 41, 59, 0.7)', backdropFilter: 'blur(16px)',
         border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '24px',
         padding: '2.5rem', maxWidth: '900px', width: '100%',
