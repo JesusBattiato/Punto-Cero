@@ -70,7 +70,7 @@ export default function Nivel2() {
           {/* Seccion 1 */}
           <div style={{ fontSize: '1.2rem', color: '#3b82f6', margin: '2rem 0 1.5rem 0', paddingBottom: '0.5rem', borderBottom: '1px solid rgba(59,130,246,0.2)' }}>Sobre Vos</div>
           
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.8rem' }}>
+          <div className="responsive-grid-small" style={{ marginBottom: '1.8rem' }}>
             <div>
               <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, marginBottom: '0.5rem' }}>1. Nombre y Apellido</label>
               <input type="text" name="nombre" required placeholder="Ej: Juan Pérez" onChange={handleChange} style={inputStyles} />
@@ -81,7 +81,7 @@ export default function Nivel2() {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.8rem' }}>
+          <div className="responsive-grid-small" style={{ marginBottom: '1.8rem' }}>
             <div>
               <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, marginBottom: '0.5rem' }}>3. Ubicación (Ciudad / País)</label>
               <input type="text" name="ubicacion" required placeholder="Ej: Buenos Aires, Argentina" onChange={handleChange} style={inputStyles} />
@@ -151,7 +151,7 @@ export default function Nivel2() {
           {/* Seccion 3 */}
           <div style={{ fontSize: '1.2rem', color: '#3b82f6', margin: '2rem 0 1.5rem 0', paddingBottom: '0.5rem', borderBottom: '1px solid rgba(59,130,246,0.2)' }}>Fricciones y Finanzas</div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.8rem' }}>
+          <div className="responsive-grid-small" style={{ marginBottom: '1.8rem' }}>
             <div>
               <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, marginBottom: '0.5rem' }}>11. Presupuesto Actual</label>
               <select name="presupuestoInicial" required onChange={handleChange} style={inputStyles}>

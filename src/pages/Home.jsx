@@ -9,7 +9,7 @@ export default function Home() {
         Acompañamos a emprendedores a ordenar sus números, superar el miedo a vender y construir sistemas que funcionen. No estás solo, construimos junto a vos.
       </p>
       
-      <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+      <div className="action-buttons" style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
         <Link to="/diagnostico-gratis" className="btn-outline">
           Calculadora financiera
         </Link>
@@ -18,7 +18,7 @@ export default function Home() {
         </Link>
       </div>
 
-      <div style={{ marginTop: '5rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', textAlign: 'left' }}>
+      <div className="responsive-grid" style={{ marginTop: '5rem', textAlign: 'left' }}>
         <div className="card">
           <h3 style={{ color: 'var(--accent)', marginBottom: '1rem' }}>Sinceridad Numérica</h3>
           <p>

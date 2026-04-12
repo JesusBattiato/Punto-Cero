@@ -1,16 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;700;800&display=swap');
 
 :root {
-  --bg-color: #020617; /* Very dark slate, almost black */
-  --card-bg: rgba(15, 23, 42, 0.7); /* slate-900 transparent */
+  --bg-color: #020617;
+  --card-bg: rgba(15, 23, 42, 0.7);
   --border-color: rgba(255, 255, 255, 0.08);
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
-  --accent: #3b82f6; /* Trust blue */
+  --accent: #3b82f6;
   --accent-hover: #2563eb;
-  --danger: #ef4444; /* Fear/Bleed red */
-  --success: #10b981; /* Goal green */
-  --warning: #f59e0b; /* VIP gold */
+  --danger: #ef4444;
+  --success: #10b981;
+  --warning: #f59e0b;
   
   --font-sans: 'Inter', sans-serif;
   --font-display: 'Outfit', sans-serif;
@@ -25,7 +25,6 @@ body, html {
   min-height: 100vh;
 }
 
-/* Typography Utilities */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   margin: 0;
@@ -33,13 +32,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: 2.5rem;
+  font-size: clamp(2rem, 5vw, 3.5rem);
   font-weight: 800;
   letter-spacing: -0.02em;
 }
 
 h2 {
-  font-size: 1.8rem;
+  font-size: clamp(1.5rem, 4vw, 1.8rem);
   font-weight: 700;
 }
 
@@ -58,14 +57,12 @@ a:hover {
   color: var(--accent-hover);
 }
 
-/* Structure Utilities */
 .container {
   max-width: 1000px;
   margin: 0 auto;
   padding: 0 1.5rem;
 }
 
-/* Button UI */
 .btn-primary {
   display: inline-block;
   background: var(--accent);
@@ -89,13 +86,6 @@ a:hover {
   transform: scale(0.98);
 }
 
-.btn-danger {
-  background: var(--danger);
-}
-.btn-danger:hover {
-  background: #dc2626;
-}
-
 .btn-outline {
   display: inline-block;
   background: transparent;
@@ -113,9 +103,9 @@ a:hover {
   background: rgba(255, 255, 255, 0.05);
 }
 
-/* Input Fields */
 input[type="text"], 
 input[type="number"], 
+input[type="email"], 
 textarea, 
 select {
   width: 100%;
@@ -136,7 +126,6 @@ input:focus, textarea:focus, select:focus {
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
-/* Cards */
 .card {
   background: var(--card-bg);
   backdrop-filter: blur(12px);
@@ -147,7 +136,6 @@ input:focus, textarea:focus, select:focus {
   box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
 }
 
-/* Superhabitos Style Topbar */
 .topbar {
   display: flex;
   justify-content: space-between;
@@ -155,6 +143,8 @@ input:focus, textarea:focus, select:focus {
   padding: 1.5rem 0;
   border-bottom: 1px solid var(--border-color);
   margin-bottom: 3rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .brand {
@@ -168,10 +158,10 @@ input:focus, textarea:focus, select:focus {
   color: var(--accent);
 }
 
-/* Navigation Links */
 .nav-links {
   display: flex;
   gap: 1.5rem;
+  flex-wrap: wrap;
 }
 .nav-links a {
   color: var(--text-secondary);
@@ -180,4 +170,33 @@ input:focus, textarea:focus, select:focus {
 }
 .nav-links a:hover {
   color: #fff;
+}
+
+/* Grids Responivos Automáticos */
+.responsive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.responsive-grid-small {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+/* Fixes for mobile specifically */
+@media(max-width: 600px) {
+  .responsive-grid-small {
+    grid-template-columns: 1fr;
+  }
+  .btn-primary, .btn-outline {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  .action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
 }

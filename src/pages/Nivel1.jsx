@@ -117,8 +117,7 @@ export default function Nivel1() {
         background: 'rgba(30, 41, 59, 0.7)', backdropFilter: 'blur(16px)',
         border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '24px',
         padding: '2.5rem', maxWidth: '900px', width: '100%',
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
-        display: 'grid', gridTemplateColumns: 'minmax(200px, 1fr) minmax(200px, 1fr)', gap: '2.5rem'
+        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
       }}>
         
         <div style={{ gridColumn: '1 / -1', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '1rem', marginBottom: '1rem' }}>
