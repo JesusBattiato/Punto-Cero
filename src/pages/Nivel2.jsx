@@ -33,7 +33,7 @@ export default function Nivel2() {
     if (supabase) {
       const { error } = await supabase
         .from('nivel2_diagnostico')
-        .insert([{ form_data: formData, price_quoted: "Gratis Temporal" }]);
+        .insert([{ form_data: formData, price_quoted: 0 }]);
       if (error) console.error("Error saving VIP lead:", error);
     }
     
