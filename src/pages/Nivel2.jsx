@@ -34,7 +34,12 @@ export default function Nivel2() {
       const { error } = await supabase
         .from('nivel2_diagnostico')
         .insert([{ form_data: formData, price_quoted: 0 }]);
-      if (error) console.error("Error saving VIP lead:", error);
+      if (error) {
+        console.error("Error saving VIP lead:", error);
+        alert("Error de base de datos: " + error.message);
+      }
+    } else {
+      alert("La aplicación no se pudo conectar a la base de datos. Verifica si las llaves de Supabase se cargaron y si reiniciaste el servidor.");
     }
     
     setIsSubmitting(false);

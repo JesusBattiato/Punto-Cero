@@ -101,7 +101,12 @@ export default function Nivel1() {
     setIsSubmitting(true);
     if (supabase) {
       const { error } = await supabase.from('nivel1_maquina').insert([{ email, raw_data: inputs, results }]);
-      if (error) console.error(error);
+      if (error) {
+         console.error(error);
+         alert("Error insertando datos: " + error.message);
+      }
+    } else {
+      alert("Falla crítica: Servidor no conectado. Si modificaste .env.local, tienes que reiniciar para que lo tome.");
     }
     setIsSubmitting(false);
     setSubmitted(true);
