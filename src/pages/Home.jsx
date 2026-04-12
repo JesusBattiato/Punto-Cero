@@ -5,17 +5,16 @@ export default function Home() {
   return (
     <div className="container" style={{ padding: '4rem 1.5rem', textAlign: 'center' }}>
       <h1 style={{ fontSize: '3.5rem', marginBottom: '1.5rem' }}>El Sistema Operativo de tu Agencia</h1>
-      <p style={{ fontSize: '1.2rem', maxWidth: '700px', margin: '0 auto 3rem auto' }}>
-        Punto Cero audita la rentabilidad real de negocios mediante inteligencia matemática.
-        Descubre si tu modelo escala, o si eres esclavo de un pasatiempo caro.
+      <p style={{ fontSize: '1.2rem', maxWidth: '700px', margin: '0 auto 3rem auto', lineHeight: '1.8' }}>
+        Acompañamos a emprendedores a ordenar sus números, superar el miedo a vender y construir sistemas que funcionen. No estás solo, construimos junto a vos.
       </p>
       
       <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
         <Link to="/diagnostico-gratis" className="btn-outline">
-          Calculadora Rápida (Gratis)
+          Calculadora financiera
         </Link>
         <Link to="/auditoria-vip" className="btn-primary">
-          Auditoría de 15 Puntos (Premium)
+          Generar Plan de Trabajo
         </Link>
       </div>
 
@@ -23,14 +22,13 @@ export default function Home() {
         <div className="card">
           <h3 style={{ color: 'var(--accent)', marginBottom: '1rem' }}>Sinceridad Numérica</h3>
           <p>
-            No somos "coaches mindset". Somos ingenieros de negocios. 
-            Te mostramos en verde o en rojo qué tan cerca estás del colapso físico.
+            Entendemos lo difícil que es manejar un negocio a ciegas. Te ayudamos a ver tus números con claridad para que tomes decisiones desde la tranquilidad, no desde el estrés.
           </p>
         </div>
         <div className="card">
           <h3 style={{ color: 'var(--accent)', marginBottom: '1rem' }}>Plan de Acción</h3>
           <p>
-            Al finalizar la auditoría, nuestro sistema genera una hoja de ruta estricta de 15 páginas adaptada exclusivamente a los cuellos de botella reales de tu proyecto.
+            Al analizar tu situación, creamos una hoja de ruta adaptada exclusivamente a los cuellos de botella reales de tu proyecto. Pasos claros y accionables para avanzar seguro.
           </p>
         </div>
       </div>

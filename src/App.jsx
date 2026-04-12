@@ -11,8 +11,8 @@ function App() {
         <header className="topbar">
           <Link to="/" className="brand">Punto <span>Cero</span></Link>
           <nav className="nav-links">
-            <Link to="/diagnostico-gratis">Máquina de la Verdad</Link>
-            <Link to="/auditoria-vip">Auditoría Premium</Link>
+            <Link to="/diagnostico-gratis">Calculadora financiera</Link>
+            <Link to="/auditoria-vip">Generar Plan de Trabajo</Link>
           </nav>
         </header>
       </div>
