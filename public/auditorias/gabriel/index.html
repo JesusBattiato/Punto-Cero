@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>GABRIEL - Hoja de Ruta Operativa</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;700;800&display=swap');
+        
+        :root {
+            --primary: #0f172a;
+            --accent: #ea580c; /* Naranja/Óxido para energía y acción */
+            --accent-soft: #ffedd5;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --success: #22c55e;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f1f5f9;
+            color: var(--text-dark);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .page {
+            background: white;
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto 30px auto;
+            padding: 30mm 25mm;
+            box-sizing: border-box;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            position: relative;
+            page-break-after: always;
+            font-size: 11pt;
+            line-height: 1.8;
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .page { margin: 0; box-shadow: none; page-break-after: always; }
+        }
+
+        h1, h2, h3 { font-family: 'Outfit', sans-serif; color: var(--primary); margin-top: 0; }
+        
+        .cover-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+        }
+
+        .logo-text {
+            font-weight: 800;
+            font-size: 3.5rem;
+            letter-spacing: -2px;
+            color: var(--primary);
+            margin-bottom: 0;
+        }
+        .logo-text span { color: var(--accent); }
+
+        .cover-page h2 { font-size: 1.4rem; font-weight: 400; color: var(--text-light); margin-top: 10px; }
+        
+        .stamp {
+            margin-top: 60mm;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-light);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 0;
+            width: 80%;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 15mm;
+            left: 25mm;
+            right: 25mm;
+            border-top: 1px solid var(--border);
+            padding-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .section-header {
+            border-bottom: 4px solid var(--accent);
+            display: inline-block;
+            padding-bottom: 5px;
+            margin-bottom: 40px;
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+
+        p { margin-bottom: 25px; text-align: justify; }
+        ul { margin-bottom: 25px; padding-left: 20px; }
+        li { margin-bottom: 15px; }
+        
+        .highlight-box {
+            background: var(--accent-soft);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+            border-left: 5px solid var(--accent);
+        }
+
+        .alert-box {
+            background: #fef2f2;
+            border-left: 5px solid #ef4444;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .script-box {
+            background: #1e293b;
+            color: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            margin: 20px 0;
+            border-left: 6px solid var(--accent);
+            position: relative;
+        }
+
+        .bold { font-weight: 700; color: var(--primary); }
+        .accent-text { color: var(--accent); font-weight: 600; }
+
+        .checklist { list-style: none; padding-left: 0; }
+        .checklist li {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 4px solid #cbd5e1;
+            display: flex;
+            align-items: flex-start;
+        }
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--accent);
+            border-radius: 4px;
+            margin-right: 15px;
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+        .week-title {
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PÁGINA 1: PORTADA -->
+    <div class="page cover-page">
+        <div class="logo-text">OUTFIT<span>DOOR</span></div>
+        <p style="text-align: center; color: var(--text-light); letter-spacing: 4px; font-weight: 500;">HOJA DE RUTA OPERATIVA</p>
+        <h2>Modelo de Negocio: Personal Shopper a Domicilio</h2>
+        
+        <div class="stamp">
+            DIRECTOR DEL PROYECTO: <span class="bold">Gabriel</span><br>
+            CO-PILOTO ESTRATÉGICO: <span class="bold">Jesús Battiato</span><br>
+            <span style="font-size: 0.7rem;">ABRIL 2026 | JUNÍN, MENDOZA</span>
+        </div>
+
+        <div class="footer" style="justify-content: center; border: none;">
+            PASO A PASO. RIESGO CERO. EFICIENCIA TÁCTICA.
+        </div>
+    </div>
+
+    <!-- PÁGINA 2: BIENVENIDA HUMANA -->
+    <div class="page">
+        <div class="section-header">Pausar y Aterrizar</div>
+        <p>Gabriel, bienvenido al entorno de Punto Cero. Revisamos tus respuestas al formulario. Fuiste de muy pocas palabras ("historial clínico: sí", "cuello de botella: otro"), lo que nuestro sistema a veces detecta como falta de claridad o desmotivación comercial.</p>
+        
+        <p>Está bien, sabemos que arrancar cuesta, sobre todo si la economía aprieta y ya has tenido tropiezos antes. Pero a partir de esta página, se acaban las excusas. Este reporte no es para motivarte con frases lindas, es <span class="bold">matemática táctica</span> para que dejes de perder tiempo y, sobre todo, plata.</p>
+
+        <div class="alert-box">
+            <h3 style="margin-top:0; color: #b91c1c;">La Verdad Incómoda</h3>
+            <p style="margin-bottom:0;">Querés facturar $1.200.000 ARS limpios al mes disponiendo de 16 horas libres semanales, con un presupuesto inicial bajo, y teniendo como principal competidor a "Mega Pola La Salada Mendoza". <strong>Competir contra ellos diciendo que tu diferencial es "la variedad y el precio" es un suicidio comercial.</strong> Ellos tienen millones para estoquear mercadería importada; vos tenés presupuesto bajo. Si intentás comprar 10 remeras sueltas para revenderlas más baratas que ellos, te vas a fundir. Tu negocio NO puede ser "vender de todo para todos".</p>
+        </div>
+
+        <h3>El giro táctico</h3>
+        <p>No vas a vender "ropa y accesorios". Vas a vender <span class="accent-text">Tiempo y Comodidad</span> a la gente que odia ir a pelearse con las multitudes en las ferias. Al estar empleado, tenés un ecosistema cautivo: tus compañeros de trabajo, vecinos y conocidos. No competís por precio con La Salada; cobrás un pequeño "premium" por tu servicio de filtro y entrega a domicilio.</p>
+
+        <div class="footer"><span>Pág. 2 / 5</span> <span>OUTFITDOOR - ESTRATEGIA</span></div>
+    </div>
+
+    <!-- PÁGINA 3: LA ESTRATEGIA EXPLICADA -->
+    <div class="page">
+        <div class="section-header">Las Reglas del Juego</div>
+        
+        <h3>1. Tu Nuevo Cliente Ideal</h3>
+        <p>Tu respuesta fue que le querés vender a personas "de 15 a 60 años". Es decir, le querés vender a una adolescente y a un jubilado. Falso. <strong>El que le vende a todos, no le vende a nadie.</strong></p>
+        
+        <p>Tu cliente principal se llama <span class="bold">"El Empleado Ocupado"</span>:<br>
+        Es una persona de 30 a 50 años que necesita reponer ropa de uso diario (remeras básicas, buzos, jeans, sábanas) pero después de trabajar no le dan las piernas para irse hasta la feria, buscar talles, transpirar y hacer fila. Quieren que alguien de confianza se lo deje en la mano.</p>
+
+        <h3>2. Resolución de tu Cuello de Botella</h3>
+        <p>Cerraste proyectos antes. Con presupuesto bajo, está rotundamente prohibido ir a comprar mercadería para "ver si se vende". Vamos a invertir el proceso por una regla de oro de Punto Cero:</p>
+        
+        <div class="highlight-box">
+            <h3 style="margin-top:0;">El Modelo de Riesgo Cero (Pre-Venta)</h3>
+            <p style="text-align: center; font-size: 1.1rem; font-weight: bold; margin-bottom:0;">Primero se vende, después se compra.</p>
+        </div>
+
+        <p>No tocarás tus ahorros para hacer de adivino. Armarás un catálogo digital, tomarás encargos con un 50% de seña por adelantado, y recién con el dinero de tus propios clientes irás al mayorista a retirar la ropa que ya tiene dueño.</p>
+
+        <div class="footer"><span>Pág. 3 / 5</span> <span>OUTFITDOOR - ESTRATEGIA</span></div>
+    </div>
+
+    <!-- PÁGINA 4: HOJA DE RUTA DETALLADA -->
+    <div class="page">
+        <div class="section-header">Hoja de Ruta (30 Días)</div>
+        <p>Aquí tienes exactamente qué hacer durante tus 16 horas semanales. Tacha cada recuadro cuando lo completes.</p>
+
+        <div class="week-title">Semana 1: El Catálogo Fantasma</div>
+        <ul class="checklist">
+            <li><div class="checkbox"></div> <span><strong>Tarea 1:</strong> Entrá al Facebook/Instagram de tus proveedores mayoristas. Robá/Descargá fotos de 5 artículos súper vendibles (ej: Pack de 3 remeras lisas, acolchados económicos).</span></li>
+            <li><div class="checkbox"></div> <span><strong>Tarea 2:</strong> Armá un PDF simple en tu celular. Poneles tu precio final (costo mayorista + tu ganancia por traérselo a casa).</span></li>
+            <li><div class="checkbox"></div> <span><strong>Tarea 3:</strong> Llevá el catálogo a tu trabajo y mandalo por WhatsApp: <em>"Gente, el sábado me voy al mayorista. Seleccioné esto. Si alguien necesita, me avisa hoy así le reservo y se lo traigo el lunes a la oficina/casa".</em></span></li>
+        </ul>
+
+        <div class="week-title">Semana 2: La Recaudación y la Mula</div>
+        <ul class="checklist">
+            <li><div class="checkbox"></div> <span><strong>Tarea 1:</strong> Pedí el 50% de seña por adelantado a los que te encargaron. Como te conocen del trabajo/barrio, te lo van a pagar.</span></li>
+            <li><div class="checkbox"></div> <span><strong>Tarea 2:</strong> Fin de semana: Con la plata de ellos, andá al proveedor y comprá EXACTAMENTE lo que ya está vendido. Cero riesgo. Tu plata inicial ni la tocaste.</span></li>
+            <li><div class="checkbox"></div> <span><strong>Tarea 3:</strong> Hacé las entregas. Cobrá el 50% restante y mirá cómo generaste ganancia neta.</span></li>
+        </ul>
+
+        <div class="week-title">Semana 3 y 4: Repetición y Escalado</div>
+        <ul class="checklist">
+            <li><div class="checkbox"></div> <span><strong>Misión:</strong> En todo el mes, repetir este ciclo 4 veces. Para fin de mes vas a ver facturación real en tu bolsillo.</span></li>
+            <li><div class="checkbox"></div> <span><strong>Ajuste:</strong> Los que te compraron, la próxima semana no van a querer ropa, van a querer sábanas. Rotá los "combos" de tu catálogo.</span></li>
+        </ul>
+
+        <div class="footer"><span>Pág. 4 / 5</span> <span>OUTFITDOOR - TÁCTICA</span></div>
+    </div>
+
+    <!-- PÁGINA 5: EL PUENTE DE ORO VIP -->
+    <div class="page">
+        <div class="section-header">El Puente de Oro</div>
+        <p>Gabriel, tu esfuerzo hoy está disperso. Tenés ganas, pero al no tener un sistema, tu energía se quema sola y te frustrás. Estas páginas están diseñadas para darte el norte. Pero operar todo esto "a mano" por WhatsApp con muchas personas, eventualmente te va a cansar.</p>
+
+        <div class="highlight-box" style="border-left-color: var(--primary); background: #f8fafc;">
+            <h3 style="margin-top:0;">Bienvenido a Punto Cero VIP</h3>
+            <p>En Punto Cero nos dedicamos a que las computadoras trabajen mientras la gente vive. Si lográs validar este plan y hacer tus primeras ventas reales esta misma semana usando el "Catálogo Fantasma", estás listo para dar el salto tecnológico.</p>
+            
+            <p><strong>Te ofrecemos crear tu propia "Tienda Minorista Digital".</strong><br>
+            Nosotros armamos una tienda súper pulida en internet donde tus clientes entren, toquen lo que quieren encargarte y se genere el pedido de forma automática. No tendrás que lidiar con desórdenes de chats. Además, al tener un capital bajo, podemos ir a "Modelo a Riesgo": Te lo construimos a cambio del 10% de lo que te ayudemos a escalar en ganancias extras por los primeros meses.</p>
+        </div>
+
+        <p>¿Te animás a dejar de remar solo e incorporar tecnología de verdad a tu vida?<br>
+        Hablalo con Jesus hoy mismo. Decile <span class="bold">"Aprobado"</span> y empezamos a configurar "OutfitDoor" en nuestros servidores.</p>
+        
+        <div style="margin-top: 80px; display: flex; justify-content: space-around;">
+            <div style="border-top: 2px solid var(--primary); width: 220px; text-align: center; padding-top: 10px;">
+                GABRIEL<br>Director
+            </div>
+            <div style="border-top: 2px solid var(--primary); width: 220px; text-align: center; padding-top: 10px;">
+                JESUS BATTIATO<br>Punto Cero Agency
+            </div>
+        </div>
+
+        <div class="footer"><span>Pág. 5 / 5</span> <span>OUTFITDOOR - FINAL</span></div>
+    </div>
+
+</body>
+</html>
