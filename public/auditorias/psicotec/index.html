@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>PSICOTEC - Hoja de Ruta de Acompañamiento</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;700;800&display=swap');
+        
+        :root {
+            --primary: #0f172a;
+            --accent: #3b82f6;
+            --accent-soft: #eff6ff;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --success: #22c55e;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f1f5f9;
+            color: var(--text-dark);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .page {
+            background: white;
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto 30px auto;
+            padding: 30mm 25mm;
+            box-sizing: border-box;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            position: relative;
+            page-break-after: always;
+            font-size: 11pt;
+            line-height: 1.8;
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .page { margin: 0; box-shadow: none; page-break-after: always; }
+        }
+
+        h1, h2, h3 { font-family: 'Outfit', sans-serif; color: var(--primary); margin-top: 0; }
+        
+        .cover-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+        }
+
+        .logo-text {
+            font-weight: 800;
+            font-size: 3.5rem;
+            letter-spacing: -2px;
+            color: var(--primary);
+            margin-bottom: 0;
+        }
+        .logo-text span { color: var(--accent); }
+
+        .cover-page h2 { font-size: 1.4rem; font-weight: 400; color: var(--text-light); margin-top: 10px; }
+        
+        .stamp {
+            margin-top: 60mm;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-light);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 0;
+            width: 80%;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 15mm;
+            left: 25mm;
+            right: 25mm;
+            border-top: 1px solid var(--border);
+            padding-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .section-header {
+            border-bottom: 4px solid var(--accent);
+            display: inline-block;
+            padding-bottom: 5px;
+            margin-bottom: 40px;
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+
+        p { margin-bottom: 25px; text-align: justify; }
+        ul { margin-bottom: 25px; padding-left: 20px; }
+        li { margin-bottom: 15px; }
+        
+        .highlight-box {
+            background: var(--accent-soft);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+            border-left: 5px solid var(--accent);
+        }
+
+        .script-box {
+            background: #1e293b;
+            color: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            margin: 20px 0;
+            border-left: 6px solid var(--accent);
+            position: relative;
+        }
+        .script-badge {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: var(--accent);
+            color: white;
+            padding: 2px 10px;
+            font-size: 0.7rem;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .bold { font-weight: 700; color: var(--primary); }
+        .accent-text { color: var(--accent); font-weight: 600; }
+
+        .checklist { list-style: none; padding-left: 0; }
+        .checklist li {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 4px solid #cbd5e1;
+            display: flex;
+            align-items: flex-start;
+        }
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--accent);
+            border-radius: 4px;
+            margin-right: 15px;
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+        .week-title {
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .instruction-step {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .step-number {
+            background: var(--accent);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- PÁGINA 1: PORTADA -->
+    <div class="page cover-page">
+        <div class="logo-text">PSICO<span>TEC</span></div>
+        <p style="text-align: center; color: var(--text-light); letter-spacing: 4px; font-weight: 500;">HOJA DE RUTA ESTRATÉGICA</p>
+        <h2>Consultoría y Transformación Laboral</h2>
+        
+        <div class="stamp">
+            DIRECTORA: <span class="bold">Yair Maza</span><br>
+            CO-PILOTO ESTRATÉGICO: <span class="bold">Jesús Battiato</span><br>
+            <span style="font-size: 0.7rem;">ABRIL 2026 | TARTAGAL, SALTA</span>
+        </div>
+
+        <div class="footer" style="justify-content: center; border: none;">
+            PASO A PASO. SIN PRISA, PERO SIN PAUSA.
+        </div>
+    </div>
+
+    <!-- PÁGINA 2: BIENVENIDA HUMANA -->
+    <div class="page">
+        <div class="section-header">Pausar para Respirar</div>
+        <p>Yair, este documento ha sido diseñado específicamente para que cuando te sientes a trabajar en Psicotec, no tengas que pensar en "qué sigue". Sabemos que tus 3 horas a la semana son sagradas y que a veces la mente está cansada después de un día con la familia.</p>
+        
+        <p>Por eso, hemos eliminado toda la jerga difícil. Aquí no hay términos raros de marketing. Hay un mapa de tareas simples, casi mecánicas, para que avances incluso cuando no tienes ganas.</p>
+
+        <div class="highlight-box">
+            <h3 style="margin-top:0;">¿Cómo usar este plan?</h3>
+            <p>No intentes hacer todo de golpe. El plan está dividido en <span class="bold">micro-tareas</span>. Si hoy solo tienes media hora, abre el plan, tacha un cuadradito y vete a descansar con la satisfacción del deber cumplido.</p>
+        </div>
+
+        <h3>Clarificando Conceptos del Día a Día</h3>
+        
+        <div class="instruction-step">
+            <div class="step-number">1</div>
+            <div>
+                <span class="bold">Publicar para Enseñar:</span> No es vender. Es contar algo que tú sabes por tu profesión y que el dueño de una empresa no sabe. Ejemplo: Confesar por qué un currículum con colores brillantes a veces es una mala idea. Esto hace que la gente diga: "Esta mujer sabe mucho, voy a llamarla".
+            </div>
+        </div>
+
+        <div class="instruction-step">
+            <div class="step-number">2</div>
+            <div>
+                <span class="bold">El Enlace Mágico a tu WhatsApp:</span> En tu perfil de Instagram (donde dice "Editar Perfil" > "Enlaces"), no pongas solo texto. Pondremos un enlace que al tocarlo abra tu chat. Se crea poniendo <span class="accent-text">wa.me/tu-numero-con-codigo-de-area</span>. Así, el cliente te escribe sin tener que agendarte.
+            </div>
+        </div>
+
+        <div class="footer"><span>Pág. 2 / 10</span> <span>PSICOTEC - ESTRATEGIA</span></div>
+    </div>
+
+    <!-- PÁGINA 3: LA ESTRATEGIA EXPLICADA -->
+    <div class="page">
+        <div class="section-header">1. Cómo Psicotec ganará dinero</div>
+        <p>Vamos a simplificar los dos motores de tu negocio para que los entiendas como un flujo natural:</p>
+        
+        <h3>A. El Motor de los Currículums (Tu Cantera)</h3>
+        <p>La gente te pagará por armar su CV profesional. Al hacerlo, tú te quedas con sus datos en una planilla. El valor no es solo el papel que entregas, sino que ahora tú eres la dueña de una <span class="bold">Bolsa de Trabajo Privada</span>. Cuando una empresa necesite a alguien, no tendrá que buscar en Facebook; te llamará a ti porque tú ya tienes a los mejores candidatos filtrados.</p>
+
+        <h3>B. El Motor de las Empresas (Tu Especialidad)</h3>
+        <p>A las empresas locales de Tartagal les venderás seguridad. Les dirás: "No contrates a ciegas. Yo los evalúo psicológicamente para que sepas si te van a traer problemas a los dos meses". Con la nueva ley, el período de prueba es de <span class="bold">6 a 12 meses</span> sin indemnización; tú les ahorras el dolor de cabeza de tener que despedir a alguien por haber elegido mal al principio.</p>
+
+        <div class="highlight-box">
+            <h3 style="margin-top:0;">Precios de Referencia Sugeridos</h3>
+            <ul>
+                <li><strong>Armado de CV + Ingreso a Bolsa:</strong> $15.000 ARS.</li>
+                <li><strong>Evaluación Psicotécnica (Empresas):</strong> $70.000 ARS por persona.</li>
+                <li><strong>Talleres Vivenciales:</strong> Lo que tú sientas justo para tu tiempo y pasión.</li>
+            </ul>
+        </div>
+
+        <div class="footer"><span>Pág. 3 / 10</span> <span>PSICOTEC - ESTRATEGIA</span></div>
+    </div>
+
+    <!-- PÁGINA 4: KIT DE MENSAJES (COPIAR Y PEGAR) -->
+    <div class="page">
+        <div class="section-header">2. Kit de Mensajes: Copiar y Pegar</div>
+        <p>No quiero que pierdas tiempo pensando qué decir. Aquí tienes los mensajes listos. Solo tienes que cambiar el nombre de la persona o la empresa.</p>
+
+        <div class="script-box">
+            <div class="script-badge">PARA EMPRESAS POR INSTAGRAM</div>
+            Hola [Nombre de la Empresa o Dueño], ¿cómo están? Soy Yair Maza, directora de Psicotec. Veo que siempre están buscando personal por aquí y me gustaría ayudarlos a que elijan siempre al perfil correcto. Yo armo la Bolsa de Trabajo de Tartagal y realizo las auditorías psicológicas para que sus empleados nuevos sean de total confianza. ¿Les sirve que les deje mi contacto a mano para su próxima búsqueda?
+        </div>
+
+        <div class="script-box">
+            <div class="script-badge">A ALGUIEN QUE PREGUNTA POR UN CV</div>
+            ¡Hola! Qué bueno que consultes. Te cuento: no solo te diseño un CV profesional que resalte lo mejor de ti, sino que te sumamos a mi base de datos activa. Constantemente las empresas locales me consultan perfiles, así que estar allí te da mucha más visibilidad. El servicio sale $15.000. Si te parece bien, te paso mis datos de pago y empezamos hoy mismo.
+        </div>
+
+        <div class="script-box">
+            <div class="script-badge">SEGUIMIENTO (DÍAS DESPUÉS)</div>
+            Hola [Nombre], ¿pudieron ver el contacto que les pasé? Me encantaría que coordinemos una videollamada corta de 10 minutos la semana que viene así les cuento cómo mi filtro psicológico puede ahorrarles mucho dinero en malas contrataciones. ¿Qué día les queda bien?
+        </div>
+
+        <div class="footer"><span>Pág. 4 / 10</span> <span>PSICOTEC - ESTRATEGIA</span></div>
+    </div>
+
+    <!-- PÁGINA 5: ANEXO A - SEMANA 1 -->
+    <div class="page">
+        <div class="section-header">Anexo A: Hoja de Ruta Detallada</div>
+        <p>Este es el corazón del plan. Cada semana tienes <span class="bold">6 tareas breves</span>. Puedes hacer una por día o agruparlas. </p>
+
+        <div class="week-title">Semana 1: Preparando el consultorio digital</div>
+        <ul class="checklist">
+            <li><div class="checkbox"></div> <span><strong>Tarea 1:</strong> Abrir un Excel o Google Sheets. Poner los títulos de las columnas: Nombre, Puesto que busca, Teléfono, y "Mi opinión clínica".</span></li>
+            <li><div class="checkbox"></div> <span><strong>Tarea 2:</strong> Entrar a Canva. Buscar "Curriculum Vitae Elegante". Elige SOLO UNO que te guste mucho. No busques más. Ese será tu modelo oficial.</span></li>
+            <li><div class="checkbox"></div> <span><strong>Tarea 3:</strong> Personaliza ese modelo en Canva con los colores que más te gusten. Déjalo listo como "molde".</span></li>
+            <li><div class="checkbox"></div> <span><strong>Tarea 4:</strong> En tu Instagram, cambia tu biografía. Pon: "Ayudo a empresas a elegir personal de confianza. Especialista en RRHH. Tartagal, Salta."</span></li>
+            <li><div class="checkbox"></div> <span><strong>Tarea 5:</strong> Crea tu enlace de WhatsApp (wa.me) y ponlo en la sección de "Enlaces" de tu perfil de Instagram. Pruébalo para ver si te abre el chat.</span></li>
+            <li><div class="checkbox"></div> <span><strong>Tarea 6:</strong> Escribe en un papel 3 cosas que hayas aprendido esta semana atendiendo gente. Esas serán tus ideas para enseñar.</span></li>
+        </ul>
+
+        <div class="footer"><span>Pág. 5 / 10</span> <span>PSICOTEC - TÁCTICA</span></div>
+    </div>
+
+    <!-- PÁGINA 6: ANEXO A - SEMANA 2 -->
+    <div class="page">
+        <div class="section-header">Anexo A: Semana 2</div>
+
+        <div class="week-title">Semana 2: Empezando a Mostrarte</div>
+        <ul class="checklist">
+            <li><div class="checkbox"></div> <span><strong>Tarea 1:</strong> Haz una lista de 10 empresas locales (clínicas, estaciones de servicio, distribuidoras) que tengan página de Instagram.</span></li>
+            <li><div class="checkbox"></div> <span><strong>Tarea 2:</strong> Envía el "Mensaje para Empresas" (pág 4) a las primeras 5 empresas de tu lista. Solo copia y pega.</span></li>
+            <li><div class="checkbox"></div> <span><strong>Tarea 3:</strong> Publica una foto tuya trabajando (o de tu escritorio) diciendo: "Relanzamos Psicotec. Ahora con Bolsa de Trabajo local activa".</span></li>
+            <li><div class="checkbox"></div> <span><strong>Tarea 4:</strong> Haz tu primera publicación para enseñar. Cuenta en un texto por qué un empleador no debe contratar basándose solo en "si le cayó bien".</span></li>
+            <li><div class="checkbox"></div> <span><strong>Tarea 5:</strong> Si alguien te preguntó por un CV, usa el mensaje de respuesta de la página 4. Si no, busca a un amigo/a y hazle el CV gratis para probar tu planilla.</span></li>
+            <li><div class="checkbox"></div> <span><strong>Tarea 6:</strong> Sube una Historia (un videito corto de 15 segundos) saludando y diciendo que estás recibiendo modelos de CV para la consultora.</span></li>
+        </ul>
+
+        <div class="footer"><span>Pág. 6 / 10</span> <span>PSICOTEC - TÁCTICA</span></div>
+    </div>
+
+    <!-- PÁGINA 7: ANEXO A - SEMANA 3 -->
+    <div class="page">
+        <div class="section-header">Anexo A: Semana 3</div>
+
+        <div class="week-title">Semana 3: El Poder de la Constancia</div>
+        <ul class="checklist">
+            <li><div class="checkbox"></div> <span><strong>Tarea 1:</strong> Envía el "Mensaje para Empresas" a las otras 5 empresas que tenías anotadas en tu lista.</span></li>
+            <li><div class="checkbox"></div> <span><strong>Tarea 2:</strong> Revisa el Excel. Asegúrate de que las personas que te hablaron estén bien anotadas con sus teléfonos.</span></li>
+            <li><div class="checkbox"></div> <span><strong>Tarea 3:</strong> Publicación para enseñar: Comparte un tip sobre cómo responder a la pregunta "¿Cuál es tu defecto?" en una entrevista.</span></li>
+            <li><div class="checkbox"></div> <span><strong>Tarea 4:</strong> Elige la fecha para tu próximo taller vivencial. Solo la fecha. Bloquéala en el calendario familiar.</span></li>
+            <li><div class="checkbox"></div> <span><strong>Tarea 5:</strong> Envía el "Mensaje de Seguimiento" (pág 4) a las empresas de la semana 2 que no te respondieron o que te dijeron que "después veían".</span></li>
+            <li><div class="checkbox"></div> <span><strong>Tarea 6:</strong> Sube una Historia mostrando (borroso, por privacidad) tu Excel con nombres. Di: "La bolsa de candidatos sigue creciendo".</span></li>
+        </ul>
+
+        <div class="footer"><span>Pág. 7 / 10</span> <span>PSICOTEC - TÁCTICA</span></div>
+    </div>
+
+    <!-- PÁGINA 8: ANEXO A - SEMANA 4 -->
+    <div class="page">
+        <div class="section-header">Anexo A: Semana 4</div>
+
+        <div class="week-title">Semana 4: Valor y Pasión</div>
+        <ul class="checklist">
+            <li><div class="checkbox"></div> <span><strong>Tarea 1:</strong> Piensa un nombre lindo para tu taller vivencial. Por ejemplo: "Re-encuentro Profesional para Mujeres". Anótalo.</span></li>
+            <li><div class="checkbox"></div> <span><strong>Tarea 2:</strong> Haz un diseño simple en Canva anunciando el taller. Pon el precio que tú quieras, que te haga sentir cómoda.</span></li>
+            <li><div class="checkbox"></div> <span><strong>Tarea 3:</strong> Publica el anuncio del taller en Instagram y WhatsApp. Avísale a las personas que siempre te preguntan por tus talleres.</span></li>
+            <li><div class="checkbox"></div> <span><strong>Tarea 4:</strong> Haz una publicación para enseñar: ¿Por qué es importante el clima laboral en los negocios de Tartagal? Da un ejemplo local.</span></li>
+            <li><div class="checkbox"></div> <span><strong>Tarea 5:</strong> Revisa cuántos currículums vendiste este mes. Si vendiste 5, ya son $75.000 extras que antes no tenías. ¡Felicítate!</span></li>
+            <li><div class="checkbox"></div> <span><strong>Tarea 6:</strong> Envía 3 mensajes finales a nuevas empresas que veas. Mantén la rueda girando.</span></li>
+        </ul>
+
+        <div class="highlight-box">
+            <p style="margin:0;"><strong>Logro de este mes:</strong> Has dejado de tener un "hobby" para tener una infraestructura de negocio real. Tienes una planilla de candidatos, una imagen profesional y 15-20 empresas que ya saben quién es Yair Maza.</p>
+        </div>
+
+        <div class="footer"><span>Pág. 8 / 10</span> <span>PSICOTEC - TÁCTICA</span></div>
+    </div>
+
+    <!-- PÁGINA 9: ANEXO B - TU EQUIPO VIP -->
+    <div class="page">
+        <div class="section-header">Anexo B: Tu Equipo en Punto Cero</div>
+        <p>Yair, todo lo que viste recién lo puedes hacer sola, y está perfecto para empezar. Pero nuestra misión real en Punto Cero VIP es que dejes de gastar tiempo en el Excel y la computadora para que solo te dediques a lo que amas.</p>
+
+        <h3>¿Qué te ofrecemos en el acceso VIP?</h3>
+        <ul>
+            <li><span class="bold">Acompañamiento Mano a Mano:</span> Jesús estará contigo para resolver dudas, ajustar la estrategia y que nunca te sientas "trabada" en lo técnico.</li>
+            <li><span class="bold">Sistema Automático de Currículums:</span> Nosotros crearemos una página web donde los candidatos cargan sus datos y el sistema los guarda solos en tu base. Tú no escribes nada, solo cobras.</li>
+            <li><span class="bold">Copiloto en tus Publicaciones:</span> ¿No sabes qué imagen usar o qué escribir en Instagram? Jesús te ayudará a diseñar y redactar esos textos para que se vean profesionales.</li>
+            <li><span class="bold">Tu Asistente de IA:</span> Implementaremos un robot que redacte el primer borrador de los currículums basándose en tu opinión clínica. Tú solo revisas y das el toque final.</li>
+        </ul>
+
+        <div class="highlight-box">
+            <p style="text-align: center; margin:0;"><strong>Nuestra meta es que Psicotec trabaje para ti, no tú para Psicotec.</strong></p>
+        </div>
+
+        <div class="footer"><span>Pág. 9 / 10</span> <span>PSICOTEC - EQUIPO VIP</span></div>
+    </div>
+
+    <!-- PÁGINA 10: CIERRE FINAL -->
+    <div class="page">
+        <div class="section-header">El Inicio del Camino</div>
+        <p>Gracias por permitirnos acompañarte en este viaje, Yair. Psicotec es una consultora con un potencial inmenso, y tú tienes la capacidad clínica de sobra para liderarla. Solo necesitábamos este mapa para ordenar tu talento.</p>
+        
+        <p>No busques ser perfecta desde el primer día. Busca ser constante. Abre tu calendario en la Semana 1, tacha la Tarea 1 y habrás dado el paso más difícil hacia tu meta.</p>
+
+        <div style="margin-top: 100px; display: flex; justify-content: space-around;">
+            <div style="border-top: 2px solid var(--primary); width: 220px; text-align: center; padding-top: 10px;">
+                YAIR MAZA<br>Directora Psicotec
+            </div>
+            <div style="border-top: 2px solid var(--primary); width: 220px; text-align: center; padding-top: 10px;">
+                JESUS BATTIATO<br>Punto Cero Agency
+            </div>
+        </div>
+
+        <div class="footer"><span>Pág. 10 / 10</span> <span>PSICOTEC - FINAL</span></div>
+    </div>
+
+</body>
+</html>
