@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Punto Cero: El Sueldo Fantasma</title>
+<title>Punto Cero: Horizonte de Rentabilidad</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
 <style>
   html, body {
@@ -35,9 +35,7 @@
     position: relative;
   }
   
-  .slide:nth-child(even) {
-    background-color: #0f172a;
-  }
+  .slide:nth-child(even) { background-color: #0f172a; }
   
   h1 { font-size: 5rem; font-weight: 900; line-height: 1.1; margin-bottom: 1rem; letter-spacing: -2px;}
   h2 { font-size: 3rem; font-weight: 700; color: #3b82f6; margin-bottom: 2rem;}
@@ -55,6 +53,7 @@
     font-weight: 900;
     color: #3b82f6;
     letter-spacing: -0.5px;
+    z-index: 100;
   }
 
   .math-box {
@@ -66,12 +65,43 @@
     font-family: monospace;
     margin-top: 2rem;
   }
+
+  .theory-box {
+    background: rgba(59, 130, 246, 0.1);
+    border-left: 8px solid #3b82f6;
+    padding: 2.5rem;
+    border-radius: 0 16px 16px 0;
+    text-align: left;
+    max-width: 900px;
+    margin-top: 2rem;
+  }
+  .theory-box h3 { font-size: 2rem; margin: 0 0 1rem 0; color: #60a5fa;}
+  .theory-box p { font-size: 1.4rem; color: #cbd5e1; margin: 0;}
+
+  .iframe-container {
+    width: 90%;
+    height: 80vh;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.1);
+    background: #0f172a;
+    margin-top: 2rem;
+  }
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
   
   .down-arrow {
     position: absolute;
     bottom: 2rem;
     animation: bounce 2s infinite;
     opacity: 0.5;
+    font-weight: 600;
+    font-size: 1.2rem;
+    cursor: pointer;
   }
   
   @keyframes bounce {
@@ -86,56 +116,98 @@
   <!-- Slide 1: Portada -->
   <div class="slide">
     <div style="font-size: 2rem; color: #3b82f6; font-weight: 900; margin-bottom: 1rem;">PUNTO CERO</div>
-    <h1>EL SUELDO<br>FANTASMA</h1>
-    <p>La trampa matemática de los emprendedores valientes.</p>
-    <div class="down-arrow">↓ Scroll</div>
+    <h1 id="title-holder">¿CUÁNTO VALE<br>TU HORA?</h1>
+    <p>Matemática cruda para dejar de trabajar por monedas.</p>
+    <div class="down-arrow">↓ Scroll (Da click al espacio vacío y baja)</div>
   </div>
 
   <!-- Slide 2: Empatía -->
   <div class="slide">
     <div class="logo-small">PUNTO CERO</div>
-    <h2>Ustedes son el motor del país.</h2>
-    <p>Sabemos lo que cuesta estar acá. Pero también sabemos que trabajar 14 horas al día y <span class="highlight">sentir que la plata nunca alcanza</span> no es vida para nadie.</p>
+    <h2>Ustedes son el motor de este país.</h2>
+    <p>Sabemos el esfuerzo que hay detrás de cada producto. Pero también sabemos que trabajar 14 horas al día y <span class="highlight">sentir que la plata nunca alcanza</span> no es vida para nadie.</p>
   </div>
 
   <!-- Slide 3: El Gran Error -->
   <div class="slide">
     <div class="logo-small">PUNTO CERO</div>
-    <h2 class="alert-text">La Matemática Incompleta</h2>
-    <p>"Me costó $2.000. Lo vendí a $5.000."</p>
-    <p class="highlight" style="margin-top: 1rem;">Gané $3.000, ¿Verdad?</p>
+    <h2 class="alert-text">La Matemática Ciega</h2>
+    <p>"De luz, madera y pegamento gasté $2.000. Lo vendí a $5.000."</p>
+    <p class="highlight" style="margin-top: 1rem; font-size: 2.5rem;">"Gané $3.000 libres, ¿Verdad?"</p>
   </div>
 
-  <!-- Slide 4: El Valor del Tiempo -->
+  <!-- Slide 4: Teoría 1 - Costos Fijos -->
   <div class="slide">
     <div class="logo-small">PUNTO CERO</div>
-    <h2>¿Y tu tiempo?</h2>
+    <h2>¿Y la mochila que llevás puesta?</h2>
+    
+    <div class="theory-box">
+      <h3>El Costo Fijo (Tu Oxígeno)</h3>
+      <p>Es la plata que tenés que pagarle al mundo a fin de mes, <span class="highlight">incluso si pasaste 30 días seguidos acostado</span> sin vender nada. El alquiler, el monotributo, el internet de tu casa usado para el negocio.</p>
+    </div>
+    <p style="margin-top: 2rem;">Ese dinero no se paga solo. Lo tiene que pagar tu negocio todos los días antes de darte un peso a vos.</p>
+  </div>
+
+  <!-- Slide 5: Teoría 2 - Costos Variables -->
+  <div class="slide">
+    <div class="logo-small">PUNTO CERO</div>
+    <h2>¿Cuánto cuesta VENDER uno más?</h2>
+    
+    <div class="theory-box">
+      <h3>El Costo Marginal (Tu Sangre)</h3>
+      <p>Si tenés las herramientas prendidas, ¿cuánto te costaría fabricar **EXACTAMENTE UNA MESA MÁS** en este mismísimo segundo? La madera y el barniz de ESA unidad, más la luz consumida. Es tu costo de sangrado por unidad despachada.</p>
+    </div>
+  </div>
+
+  <!-- Slide 6: El Tiempo es Oro -->
+  <div class="slide">
+    <div class="logo-small">PUNTO CERO</div>
+    <h2>El Asesino de Emprendedores</h2>
+    <p>Volvamos al inicio: ganaste $3.000. Pero a eso, réstale el Costo Marginal y el Fijo proporcional... y además:</p>
     <div class="math-box">
-      $3.000 Ganancia<br>
-      ÷ 4 Horas de tu Vida<br>
-      <span class="alert-text">= $750 la hora.</span>
+      $3.000 Supuesta Ganancia<br>
+      ÷ 4 Horas (Comprando insumos, armando y chateando)<br>
+      <span class="alert-text">= Te pagaste $750 la hora.</span>
     </div>
-    <p style="margin-top: 2rem; font-size: 1.5rem;">Estás financiando tu negocio con tu salud.</p>
+    <p style="margin-top: 2rem; font-size: 1.5rem;">Literalmente ganarías más trabajando en un local de comida rápida.</p>
   </div>
 
-  <!-- Slide 5: Pizarra Interactiva -->
+  <!-- Slide 7: Teoría 3 - Punto de Equilibrio -->
   <div class="slide">
     <div class="logo-small">PUNTO CERO</div>
-    <h2>Hagamos la cuenta juntos</h2>
-    <p>¿Quién se anima a auditar su última venta?</p>
-    <div style="width: 80%; height: 300px; border: 2px dashed rgba(255,255,255,0.2); border-radius: 16px; margin-top: 2rem; display: flex; align-items:center; justify-content: center; color: rgba(255,255,255,0.3); font-size: 1.5rem;">
-      (Pizarra del Coach)
+    <h2 class="success-text">La Frontera de la Muerte</h2>
+    <p>¿Cuántos productos tenés que vender SÍ o SÍ para dejar de hundirte y empezar a ganar?</p>
+    
+    <div class="math-box" style="font-size: 2rem; border-color: #22c55e;">
+      PUNTO DE EQUILIBRIO =<br>
+      Costos Fijos ÷ (Precio de Venta - Costo Marginal)
+    </div>
+    <p style="margin-top: 1rem; font-size: 1.2rem;">*Sáquenle foto a esta fórmula. Es la diferencia entre comer o cerrar.*</p>
+  </div>
+
+  <!-- Slide 8: Iframe Interactivo -->
+  <div class="slide" style="padding: 2rem;">
+    <div class="logo-small">PUNTO CERO</div>
+    <h2 style="margin-bottom: 0;">Laboratorio en Vivo</h2>
+    <p style="font-size: 1.2rem; margin-top: 0.5rem;">Carguemos los datos de alguien del público.</p>
+    
+    <div class="iframe-container">
+      <iframe src="./maquina-de-la-verdad.html"></iframe>
     </div>
   </div>
 
-  <!-- Slide 6: La Solución -->
+  <!-- Slide 9: Cierre Upsell -->
   <div class="slide">
     <div class="logo-small">PUNTO CERO</div>
-    <h2 class="success-text">El Antídoto</h2>
-    <h1>La Máquina de la Verdad</h1>
-    <p>Una herramienta gratuita de Punto Cero para calcular tu sueldo real antes de pasarle un presupuesto al cliente.</p>
-    <div style="margin-top: 3rem; background: #3b82f6; color: white; padding: 1rem 3rem; border-radius: 99px; font-weight: 700; font-size: 1.5rem;">Escanear QR o Link Fijo</div>
+    <h2 class="success-text">No luchen a ciegas.</h2>
+    <p>Vayan a casa, usen estos números gratis. Conozcan su frontera.</p>
+    <p style="margin-top: 2rem;">Si el Excel los asusta o la mochila pesa mucho, acérquense. Pidan nuestro diagnóstico y nosotros trazamos la ruta de rescate mientras ustedes siguen operando.</p>
+    <div style="margin-top: 3rem; background: #3b82f6; color: white; padding: 1rem 3rem; border-radius: 99px; font-weight: 700; font-size: 1.5rem;">Es hora de operar en serio.</div>
   </div>
 
+<script>
+  // Cambiar el título dinámicamente si el autor lo desea
+  // document.getElementById('title-holder').innerHTML = "NUEVO TÍTULO<br>AQUÍ";
+</script>
 </body>
 </html>

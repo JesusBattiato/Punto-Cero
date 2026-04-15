@@ -1,355 +1,469 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Manual Clínico: Economía Emprendedora - Punto Cero</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --primary: #2563eb;
-    --dark: #0f172a;
-    --light: #f8fafc;
-    --text: #334155;
-    --red: #ef4444;
-  }
-  body {
-    font-family: 'Inter', sans-serif;
-    background-color: #cbd5e1;
-    color: var(--text);
-    line-height: 1.7;
-    margin: 0;
-    padding: 2rem;
-  }
-  .page {
-    background: white;
-    max-width: 850px;
-    margin: 0 auto 3rem auto;
-    padding: 5rem 4rem;
-    border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-    min-height: 900px; /* Da la sensación de página física */
-    box-sizing: border-box;
-    position: relative;
-    page-break-after: always;
-  }
-  .page-number {
-    position: absolute;
-    bottom: 2rem;
-    right: 4rem;
-    font-size: 0.9rem;
-    color: #94a3b8;
-    font-weight: 600;
-  }
-  .header-logo {
-    text-transform: uppercase;
-    color: var(--primary);
-    font-weight: 800;
-    letter-spacing: 2px;
-    font-size: 0.9rem;
-    margin-bottom: 2rem;
-    border-bottom: 2px solid #e2e8f0;
-    padding-bottom: 1rem;
-  }
-  h1 { font-size: 3rem; color: var(--dark); line-height: 1.1; margin-top: 0; }
-  h2 { font-size: 2rem; color: var(--primary); margin-top: 3rem; }
-  h3 { font-size: 1.3rem; color: var(--dark); margin-top: 2rem; }
-  p { font-size: 1.1rem; margin-bottom: 1.5rem; }
-  
-  .caja-empatica {
-    background: #f0fdf4;
-    border-left: 5px solid #22c55e;
-    padding: 2rem;
-    border-radius: 0 8px 8px 0;
-    margin: 2rem 0;
-    font-size: 1.1rem;
-    color: #166534;
-  }
-  .caja-alerta {
-    background: #fef2f2;
-    border-left: 5px solid var(--red);
-    padding: 2rem;
-    border-radius: 0 8px 8px 0;
-    margin: 2rem 0;
-    color: #991b1b;
-  }
-  .caja-practica {
-    background: #f8fafc;
-    border: 1px dashed #94a3b8;
-    padding: 2.5rem;
-    border-radius: 12px;
-    margin: 2rem 0;
-  }
-  .formula {
-    background: var(--dark);
-    color: white;
-    padding: 1.5rem;
-    border-radius: 8px;
-    font-family: monospace;
-    font-size: 1.3rem;
-    text-align: center;
-    margin: 2rem 0;
-  }
-  .firma {
-    margin-top: 4rem;
-    border-top: 1px solid #e2e8f0;
-    padding-top: 2rem;
-    font-style: italic;
-    color: #64748b;
-  }
-  .cta-banner {
-    background: var(--dark);
-    color: white;
-    padding: 4rem;
-    border-radius: 16px;
-    text-align: center;
-    margin-top: 2rem;
-  }
-  .cta-btn {
-    display: inline-block;
-    background: var(--primary);
-    color: white;
-    text-decoration: none;
-    padding: 1.2rem 2.5rem;
-    border-radius: 8px;
-    font-weight: 800;
-    font-size: 1.2rem;
-    margin-top: 2rem;
-    transition: 0.3s;
-  }
-  .cta-btn:hover { background: #1d4ed8; transform: translateY(-3px); }
-  @media(max-width: 768px) {
-    .page { padding: 3rem 2rem; min-height: auto; margin-bottom: 2rem; }
-    h1 { font-size: 2.2rem; }
-  }
-  @media print {
-    body { background: white; padding: 0; }
-    .page { box-shadow: none; margin: 0; max-width: 100%; border-radius: 0; }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manual Clínico: Economía Emprendedora - Punto Cero</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --dark: #0f172a;
+      --light: #f8fafc;
+      --text: #334155;
+      --red: #ef4444;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #cbd5e1;
+      color: var(--text);
+      line-height: 1.7;
+      margin: 0;
+      padding: 2rem;
+    }
+
+    .page {
+      background: white;
+      max-width: 850px;
+      margin: 0 auto 3rem auto;
+      padding: 5rem 4rem;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      min-height: 900px;
+      /* Da la sensación de página física */
+      box-sizing: border-box;
+      position: relative;
+      page-break-after: always;
+    }
+
+    .page-number {
+      position: absolute;
+      bottom: 2rem;
+      right: 4rem;
+      font-size: 0.9rem;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+
+    .header-logo {
+      text-transform: uppercase;
+      color: var(--primary);
+      font-weight: 800;
+      letter-spacing: 2px;
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: var(--dark);
+      line-height: 1.1;
+      margin-top: 0;
+    }
+
+    h2 {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-top: 3rem;
+    }
+
+    h3 {
+      font-size: 1.3rem;
+      color: var(--dark);
+      margin-top: 2rem;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .caja-empatica {
+      background: #f0fdf4;
+      border-left: 5px solid #22c55e;
+      padding: 2rem;
+      border-radius: 0 8px 8px 0;
+      margin: 2rem 0;
+      font-size: 1.1rem;
+      color: #166534;
+    }
+
+    .caja-alerta {
+      background: #fef2f2;
+      border-left: 5px solid var(--red);
+      padding: 2rem;
+      border-radius: 0 8px 8px 0;
+      margin: 2rem 0;
+      color: #991b1b;
+    }
+
+    .caja-practica {
+      background: #f8fafc;
+      border: 1px dashed #94a3b8;
+      padding: 2.5rem;
+      border-radius: 12px;
+      margin: 2rem 0;
+    }
+
+    .formula {
+      background: var(--dark);
+      color: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 1.3rem;
+      text-align: center;
+      margin: 2rem 0;
+    }
+
+    .firma {
+      margin-top: 4rem;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 2rem;
+      font-style: italic;
+      color: #64748b;
+    }
+
+    .cta-banner {
+      background: var(--dark);
+      color: white;
+      padding: 4rem;
+      border-radius: 16px;
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      padding: 1.2rem 2.5rem;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 1.2rem;
+      margin-top: 2rem;
+      transition: 0.3s;
+    }
+
+    .cta-btn:hover {
+      background: #1d4ed8;
+      transform: translateY(-3px);
+    }
+
+    @media(max-width: 768px) {
+      .page {
+        padding: 3rem 2rem;
+        min-height: auto;
+        margin-bottom: 2rem;
+      }
+
+      h1 {
+        font-size: 2.2rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
+
+      .page {
+        box-shadow: none;
+        margin: 0;
+        max-width: 100%;
+        border-radius: 0;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- PÁGINA 1 -->
-<section class="page">
-  <div class="header-logo">Sistemas Punto Cero</div>
-  <h1>Manual de Rescate: Tus Números No Mienten</h1>
-  <p style="font-size: 1.4rem; color: #64748b; font-weight: 300;">Una guía para proteger tu salud y el futuro de tu negocio.</p>
-  
-  <p>Hola. Bienvenido a este espacio seguro.</p>
-  <p>Sé exactamente por lo que estás pasando. Sé que hay noches donde tu cabeza no para, sacando cuentas mentales en la oscuridad, tratando de entender por qué, si trabajas desde que sale el sol hasta que se esconde, la cuenta bancaria sigue apretada a fin de mes.</p>
-  <p>Estás agotado y, muchas veces, la desesperación te hace creer que sos malo para esto. Te aseguro que no es así.</p>
+  <!-- PÁGINA 1 -->
+  <section class="page">
+    <div class="header-logo">Sistemas Punto Cero</div>
+    <h1>Manual de Rescate: Tus Números No Mienten</h1>
+    <p style="font-size: 1.4rem; color: #64748b; font-weight: 300;">Una guía para proteger tu salud y el futuro de tu
+      negocio.</p>
 
-  <div class="caja-empatica">
-    <strong>No estás solo en esto.</strong> Emprender sin apoyo es el deporte extremo más doloroso de todos. Has puesto todo tu talento operativo sobre la mesa, pero nadie te enseñó las reglas del dinero en las sombras.
-  </div>
+    <p>Hola. Bienvenido a este espacio seguro.</p>
+    <p>Sé exactamente por lo que estás pasando. Sé que hay noches donde tu cabeza no para, sacando cuentas mentales en
+      la oscuridad, tratando de entender por qué, si trabajas desde que sale el sol hasta que se esconde, la cuenta
+      bancaria sigue apretada a fin de mes.</p>
+    <p>Estás agotado y, muchas veces, la desesperación te hace creer que sos malo para esto. Te aseguro que no es así.
+    </p>
 
-  <p>Hoy no vengo a juzgar cómo haces tu oficio. Vengo a protegerte. Esta cartilla es un viaje juntos. A lo largo de las próximas páginas, te voy a llevar de la mano para que desarmemos, desde cero, el monstruo financiero que no te deja dormir.</p>
-  <p>Al final de este documento vas a entender exactamente cómo dominar tus precios, no por capricho, sino para ganar el oxígeno que te permita disfrutar a tu familia sin culpa.</p>
-  <div class="page-number">Página 1</div>
-</section>
+    <div class="caja-empatica">
+      <strong>No estás solo en esto.</strong> Emprender sin apoyo es el deporte extremo más doloroso de todos. Has
+      puesto todo tu talento operativo sobre la mesa, pero nadie te enseñó las reglas del dinero en las sombras.
+    </div>
 
-<!-- PÁGINA 2 -->
-<section class="page">
-  <div class="header-logo">Módulo 1: La Enfermedad Invisible</div>
-  <h2>Biopsia de tu Negocio: ¿Sos una ONG?</h2>
-  <p>Antes de meternos con planillas y calculadoras, necesito que hagamos un trato de honestidad brutal entre nosotros.</p>
-  <p>Nos obsesionamos con vender más. Creemos que el "volumen" cura todos los males. Pero, ¿qué pasa si cada producto que vendés te está hundiendo económicamente sin que te des cuenta?</p>
-  
-  <div class="caja-alerta">
-    <strong>El Peligro del Instinto:</strong> El 90% de los negocios quiebra por estrés antes que por falta de clientes. Esto ocurre porque subsidian a los compradores: venden barato asumiendo ellos mismos los costos invisibles.
-  </div>
+    <p>Hoy no vengo a juzgar cómo haces tu oficio. Vengo a protegerte. Esta cartilla es un viaje juntos. A lo largo de
+      las próximas páginas, te voy a llevar de la mano para que desarmemos, desde cero, el monstruo financiero que no te
+      deja dormir.</p>
+    <p>Al final de este documento vas a entender exactamente cómo dominar tus precios, no por capricho, sino para ganar
+      el oxígeno que te permita disfrutar a tu familia sin culpa.</p>
+    <div class="page-number">Página 1</div>
+  </section>
 
-  <p>Tu contador hace un excelente trabajo armando tus declaraciones para el Estado. Pero el contador mira hacia el pasado: ve tickets que ya emitiste. Vos necesitás mirar hacia el futuro: necesitás dominar <strong>la economía de tu trinchera</strong>.</p>
-  <p>Cuando dominés estos 4 conceptos médicos (Fijo, Marginal, Sueldo, Equilibrio), vas a sentir algo que quizás no sentís hace mucho: <strong>Paz.</strong> Vas a saber, antes de abrir el taller, cuánta plata vas a ganar hoy.</p>
-  <div class="page-number">Página 2</div>
-</section>
+  <!-- PÁGINA 2 -->
+  <section class="page">
+    <div class="header-logo">Módulo 1: La Enfermedad Invisible</div>
+    <h2>Biopsia de tu Negocio: ¿Sos una ONG?</h2>
+    <p>Antes de meternos con planillas y calculadoras, necesito que hagamos un trato de honestidad brutal entre
+      nosotros.</p>
+    <p>Nos obsesionamos con vender más. Creemos que el "volumen" cura todos los males. Pero, ¿qué pasa si cada producto
+      que vendés te está hundiendo económicamente sin que te des cuenta?</p>
 
-<!-- PÁGINA 3 -->
-<section class="page">
-  <div class="header-logo">Módulo 2: Tu Oxígeno</div>
-  <h2>Los Costos Fijos: Todo lo que te persigue</h2>
-  <p>Para aprender a respirar, primero tenemos que saber qué nos quita el aire. Hablemos de los famosos <strong>Costos Fijos</strong>.</p>
-  
-  <h3>¿Qué son en realidad?</h3>
-  <p>Un costo fijo es un dictador silencioso. Es el dinero que tenés que pagar a fin de mes aunque hayas estado 30 días seguidos acostado en tu cama viendo Netflix sin vender un solo producto.</p>
-  <p>Es "fijo" no porque el precio no cambie (sabemos que la inflación los mueve), sino porque son independientes de tus ventas.</p>
+    <div class="caja-alerta">
+      <strong>El Peligro del Instinto:</strong> El 90% de los negocios quiebra por estrés antes que por falta de
+      clientes. Esto ocurre porque subsidian a los compradores: venden barato asumiendo ellos mismos los costos
+      invisibles.
+    </div>
 
-  <div class="caja-practica">
-    <strong>Tus principales devoradores de oxígeno:</strong>
-    <ul>
-      <li>El alquiler de tu taller, local o espacio.</li>
-      <li>El impuesto monotributo, internet y el celular comercial.</li>
-      <li>Herramientas de software (la página web, el turno digital).</li>
-      <li>Los seguros que tengas sobre tu vida o tus instalaciones.</li>
-    </ul>
-  </div>
+    <p>Tu contador hace un excelente trabajo armando tus declaraciones para el Estado. Pero el contador mira hacia el
+      pasado: ve tickets que ya emitiste. Vos necesitás mirar hacia el futuro: necesitás dominar <strong>la economía de
+        tu trinchera</strong>.</p>
+    <p>Cuando dominés estos 4 conceptos médicos (Fijo, Marginal, Sueldo, Equilibrio), vas a sentir algo que quizás no
+      sentís hace mucho: <strong>Paz.</strong> Vas a saber, antes de abrir el taller, cuánta plata vas a ganar hoy.</p>
+    <div class="page-number">Página 2</div>
+  </section>
 
-  <p>Mirá los Costos Fijos como el "Derecho a Existir". Es la mochila que te ponés todos los meses el día 1, y tu primera obligación moral como dueño de tu propio negocio es juntar el dinero para pagar esta mochila.</p>
+  <!-- PÁGINA 3 -->
+  <section class="page">
+    <div class="header-logo">Módulo 2: Tu Oxígeno</div>
+    <h2>Los Costos Fijos: Todo lo que te persigue</h2>
+    <p>Para aprender a respirar, primero tenemos que saber qué nos quita el aire. Hablemos de los famosos <strong>Costos
+        Fijos</strong>.</p>
 
-  <div class="page-number">Página 3</div>
-</section>
+    <h3>¿Qué son en realidad?</h3>
+    <p>Un costo fijo es un dictador silencioso. Es el dinero que tenés que pagar a fin de mes aunque hayas estado 30
+      días seguidos acostado en tu cama viendo Netflix sin vender un solo producto.</p>
+    <p>Es "fijo" no porque el precio no cambie (sabemos que la inflación los mueve), sino porque son independientes de
+      tus ventas.</p>
 
-<!-- PÁGINA 4 -->
-<section class="page">
-  <div class="header-logo">Módulo 3: Tu Sangre</div>
-  <h2>Costo Variable y Marginal: El sacrificio por unidad</h2>
-  <p>A diferencia del alquiler, que te cobra vendas 0 o vendas 100, existen gastos que ocurren <em>únicamente</em> cuando cerrás una venta. Esa es la sangre de tu negocio material.</p>
+    <div class="caja-practica">
+      <strong>Tus principales devoradores de oxígeno:</strong>
+      <ul>
+        <li>El alquiler de tu taller, local o espacio.</li>
+        <li>El impuesto monotributo, internet y el celular comercial.</li>
+        <li>Herramientas de software (la página web, el turno digital).</li>
+        <li>Los seguros que tengas sobre tu vida o tus instalaciones.</li>
+      </ul>
+    </div>
 
-  <h3>Costo Variable</h3>
-  <p>Son los insumos directos. Si hacés tartas, es la harina y las manzanas. Si hacés carpintería, es la madera y el barniz. Si no vendés nada, no gastás esta plata.</p>
-  
-  <h3>El temido "Costo Marginal"</h3>
-  <p>Aquí es donde los economistas usan palabras difíciles para algo que vos sufrís todos los días. El <strong>Costo Marginal</strong> es la respuesta a una pregunta muy simple:</p>
-  <p><em>"Si ya tengo la máquina prendida y decido fabricar una unidad MÁS... ¿Cuánto me cuesta, en este exacto momento, producir ese elemento solitario?"</em></p>
+    <p>Mirá los Costos Fijos como el "Derecho a Existir". Es la mochila que te ponés todos los meses el día 1, y tu
+      primera obligación moral como dueño de tu propio negocio es juntar el dinero para pagar esta mochila.</p>
 
-  <div class="caja-empatica">
-    <strong>¿Por qué esto te importa?</strong><br>
-    Te importa porque cuando hacés ventas por cantidad (un cliente que te pide 50 tartas de golpe), tus costos y tiempos a veces se achican. Calcular el Costo Marginal te permite saber con precisión quirúrgica hasta dónde podés hacerle un descuento a un cliente grande sin terminar poniendo plata de tu bolsillo.
-  </div>
-  <div class="page-number">Página 4</div>
-</section>
+    <div class="page-number">Página 3</div>
+  </section>
 
-<!-- PÁGINA 5 -->
-<section class="page">
-  <div class="header-logo">Práctica Guiada</div>
-  <h2>Laboratorio Clínico 1: Encontrá a tus fantasmas</h2>
-  <p>No sigas leyendo. Sacá un cuaderno o una nota en tu celular. Yo te espero.</p>
-  <p>Vamos a hacer un mini laboratorio para frenar tu hemorragia financiera (si la hubiese).</p>
+  <!-- PÁGINA 4 -->
+  <section class="page">
+    <div class="header-logo">Módulo 3: Tu Sangre</div>
+    <h2>Costo Variable y Marginal: El sacrificio por unidad</h2>
+    <p>A diferencia del alquiler, que te cobra vendas 0 o vendas 100, existen gastos que ocurren <em>únicamente</em>
+      cuando cerrás una venta. Esa es la sangre de tu negocio material.</p>
 
-  <div class="caja-practica">
-    <h3 style="margin-top:0">Paso 1: Detectá los Costos Fijos</h3>
-    <p>Anotá tus 3 gastos obligatorios más pesados de este mes. Aunque trabajes desde el living de tu casa, ¿qué porción de luz e internet se está llevando el emprendimiento?</p>
-    <p><em>Ejemplo: $50.000 Monotributo + $20.000 Internet + $15.000 Herramientas.</em></p>
-  </div>
+    <h3>Costo Variable</h3>
+    <p>Son los insumos directos. Si hacés tartas, es la harina y las manzanas. Si hacés carpintería, es la madera y el
+      barniz. Si no vendés nada, no gastás esta plata.</p>
 
-  <div class="caja-practica">
-    <h3 style="margin-top:0">Paso 2: Anatomía de tu Producto Estrella</h3>
-    <p>Agarrá tu producto o servicio que más se vende. Anotá, sin engañarte, cada centavo que gastás en insumos para fabricar UNO solo (Costo Variable Marginal). Sí, la cinta de embalaje también se cuenta. Sí, el sticker del final también de cuenta.</p>
-  </div>
-  
-  <p>Tener estos dos números claros es como prender las luces largas de tu camioneta manejando de noche. La ruta comienza a tener sentido y los precipicios se esquivan más fácil.</p>
+    <h3>El temido "Costo Marginal"</h3>
+    <p>Aquí es donde los economistas usan palabras difíciles para algo que vos sufrís todos los días. El <strong>Costo
+        Marginal</strong> es la respuesta a una pregunta muy simple:</p>
+    <p><em>"Si ya tengo la máquina prendida y decido fabricar una unidad MÁS... ¿Cuánto me cuesta, en este exacto
+        momento, producir ese elemento solitario?"</em></p>
 
-  <div class="page-number">Página 5</div>
-</section>
+    <div class="caja-empatica">
+      <strong>¿Por qué esto te importa?</strong><br>
+      Te importa porque cuando hacés ventas por cantidad (un cliente que te pide 50 tartas de golpe), tus costos y
+      tiempos a veces se achican. Calcular el Costo Marginal te permite saber con precisión quirúrgica hasta dónde podés
+      hacerle un descuento a un cliente grande sin terminar poniendo plata de tu bolsillo.
+    </div>
+    <div class="page-number">Página 4</div>
+  </section>
 
-<!-- PÁGINA 6 -->
-<section class="page">
-  <div class="header-logo">Módulo 4: La Mentira de tu Rentabilidad</div>
-  <h2>El Asesino Silencioso: Tu Sueldo Fantasma</h2>
-  <p>Aquí es donde mi corazón se rompe al ver tantas lágrimas derramadas en la trastienda. Hablemos de <strong>vos</strong>.</p>
-  <p>Muchos emprendedores suman la madera, suman los clavos y si el producto les costó $1.000, lo venden a $2.000 y festejan porque "ganaron el doble". Creen que esos $1.000 restantes a favor es ganancia limpia.</p>
+  <!-- PÁGINA 5 -->
+  <section class="page">
+    <div class="header-logo">Práctica Guiada</div>
+    <h2>Laboratorio Clínico 1: Encontrá a tus fantasmas</h2>
+    <p>No sigas leyendo. Sacá un cuaderno o una nota en tu celular. Yo te espero.</p>
+    <p>Vamos a hacer un mini laboratorio para frenar tu hemorragia financiera (si la hubiese).</p>
 
-  <div class="caja-alerta">
-    <strong>Aquí yace tu cansancio:</strong> En ese cálculo olvidaste meter lo más caro de la receta. Alguien donó su tiempo en esta ecuación. Fuiste vos.
-  </div>
+    <div class="caja-practica">
+      <h3 style="margin-top:0">Paso 1: Detectá los Costos Fijos</h3>
+      <p>Anotá tus 3 gastos obligatorios más pesados de este mes. Aunque trabajes desde el living de tu casa, ¿qué
+        porción de luz e internet se está llevando el emprendimiento?</p>
+      <p><em>Ejemplo: $50.000 Monotributo + $20.000 Internet + $15.000 Herramientas.</em></p>
+    </div>
 
-  <p>No tuviste en cuenta la hora que viajaste en colectivo para ir al proveedor buscando buen precio. No tuviste en cuenta las dos horas sentado contestando y recibiendo seños por celular. No contaste la hora entera armando la caja.</p>
-  <p>Ese margen excedente en realidad <strong>es tu sueldo escondido</strong>. Y cuando hacés la cuenta de "plata ganada" dividida en "las incontables horas que le invertiste"... descubrís que tu negocio te está pagando 50 pesos la hora. Literalmente vivirías mejor trabajando para otro en una cadena de comidas rápidas.</p>
+    <div class="caja-practica">
+      <h3 style="margin-top:0">Paso 2: Anatomía de tu Producto Estrella</h3>
+      <p>Agarrá tu producto o servicio que más se vende. Anotá, sin engañarte, cada centavo que gastás en insumos para
+        fabricar UNO solo (Costo Variable Marginal). Sí, la cinta de embalaje también se cuenta. Sí, el sticker del
+        final también de cuenta.</p>
+    </div>
 
-  <div class="page-number">Página 6</div>
-</section>
+    <p>Tener estos dos números claros es como prender las luces largas de tu camioneta manejando de noche. La ruta
+      comienza a tener sentido y los precipicios se esquivan más fácil.</p>
 
-<!-- PÁGINA 7 -->
-<section class="page">
-  <div class="header-logo">Módulo 5: Rescate Personal</div>
-  <h2>Cómo calcular el costo de TU hora de vida</h2>
-  <p>A partir de hoy, no trabajás más por monedas. Se acabó la etapa de sentir que es "amor al arte". Lo tuyo es excelencia técnica y debe pagarse como corresponde.</p>
-  <p>¿Cómo se calcula el honorario de tu tiempo?</p>
+    <div class="page-number">Página 5</div>
+  </section>
 
-  <p>A través de estos 3 pasos de madurez gerencial:</p>
-  <ol>
-    <li><strong>Sueldo Deseado y Digno:</strong> Olvidate de tu negocio un segundo. Si fueras empleado de alguien más exigiendo un puesto similar... ¿Cuánto es el sueldo <em>limpio de bolsillo</em> que te permitiría vivir en paz un mes? (Ej: 1 millón de pesos).</li>
-    <li><strong>Tu Frontera Física:</strong> ¿Cuántas horas <em>reales</em> le vas a dedicar trabajando a full sin distracciones y sin descuidar a tu familia? (Ej: 150 horas al mes).</li>
-    <li><strong>La Matemática de la Libertad:</strong> </li>
-  </ol>
+  <!-- PÁGINA 6 -->
+  <section class="page">
+    <div class="header-logo">Módulo 4: La Mentira de tu Rentabilidad</div>
+    <h2>El Asesino Silencioso: Tu Sueldo Fantasma</h2>
+    <p>Aquí es donde mi corazón se rompe al ver tantas lágrimas derramadas en la trastienda. Hablemos de
+      <strong>vos</strong>.</p>
+    <p>Muchos emprendedores suman la madera, suman los clavos y si el producto les costó $1.000, lo venden a $2.000 y
+      festejan porque "ganaron el doble". Creen que esos $1.000 restantes a favor es ganancia limpia.</p>
 
-  <div class="formula">
-    Tu Hora = Sueldo Esperado ÷ Total de Horas
-  </div>
+    <div class="caja-alerta">
+      <strong>Aquí yace tu cansancio:</strong> En ese cálculo olvidaste meter lo más caro de la receta. Alguien donó su
+      tiempo en esta ecuación. Fuiste vos.
+    </div>
 
-  <div class="caja-empatica">
-    Si querés 1 millón y trabajás 150 horas... Tu hora no vale un peso menos de: <strong>$6.666 ARS</strong>.
-    A partir de mañana, cuando algo te tome hacer 2 horas, tu costo para ti mismo (Tu sueldo Fantasma blanqueado) es de $13.333. Eso se le SUMA a los costos fijos y a los materiales antes de dárselo al cliente.
-  </div>
+    <p>No tuviste en cuenta la hora que viajaste en colectivo para ir al proveedor buscando buen precio. No tuviste en
+      cuenta las dos horas sentado contestando y recibiendo seños por celular. No contaste la hora entera armando la
+      caja.</p>
+    <p>Ese margen excedente en realidad <strong>es tu sueldo escondido</strong>. Y cuando hacés la cuenta de "plata
+      ganada" dividida en "las incontables horas que le invertiste"... descubrís que tu negocio te está pagando 50 pesos
+      la hora. Literalmente vivirías mejor trabajando para otro en una cadena de comidas rápidas.</p>
 
-  <div class="page-number">Página 7</div>
-</section>
+    <div class="page-number">Página 6</div>
+  </section>
 
-<!-- PÁGINA 8 -->
-<section class="page">
-  <div class="header-logo">Módulo 6: El Horizonte Inquebrantable</div>
-  <h2>El Punto de Equilibrio (La frontera de la muerte)</h2>
-  <p>Ahora que por fin sos consciente de lo que vale la mochila de tu negocio (Costos Fijos) y lo que vale el sacrificio por artículo ensamblado (Materiales + Tu Tiempo por unidad), nos enfrentamos a la pregunta del millón.</p>
-  <p><strong>¿Tengo un negocio viable o la matemática me condenó antes de empezar?</strong></p>
+  <!-- PÁGINA 7 -->
+  <section class="page">
+    <div class="header-logo">Módulo 5: Rescate Personal</div>
+    <h2>Cómo calcular el costo de TU hora de vida</h2>
+    <p>A partir de hoy, no trabajás más por monedas. Se acabó la etapa de sentir que es "amor al arte". Lo tuyo es
+      excelencia técnica y debe pagarse como corresponde.</p>
+    <p>¿Cómo se calcula el honorario de tu tiempo?</p>
 
-  <h3>La definición del Punto de Equilibrio</h3>
-  <p>El punto de equilibrio es el número mágico. Es exactamente la cantidad de productos, servicios, tartas, horas de plomería o mesas carpinteras que TENÉS que vender para <em>salir hecho</em> (cubrir todos tus costos reales, incluido el sueldo digno que calculamos en la página 7).</p>
-  
-  <p>Si vendés por debajo del Punto de Equilibrio... perdés plata y te hundís lentamente.<br>
-     Si vendés el Punto de Equilibrio... lograste la paz mental, pero no te enriqueciste.<br>
-     Todo lo que vendas <strong>POR ENCIMA</strong> del Punto de Equilibrio... es ganancia exponencial de crecimiento (Ahí guardás para tus vacaciones).</p>
+    <p>A través de estos 3 pasos de madurez gerencial:</p>
+    <ol>
+      <li><strong>Sueldo Deseado y Digno:</strong> Olvidate de tu negocio un segundo. Si fueras empleado de alguien más
+        exigiendo un puesto similar... ¿Cuánto es el sueldo <em>limpio de bolsillo</em> que te permitiría vivir en paz
+        un mes? (Ej: 1 millón de pesos).</li>
+      <li><strong>Tu Frontera Física:</strong> ¿Cuántas horas <em>reales</em> le vas a dedicar trabajando a full sin
+        distracciones y sin descuidar a tu familia? (Ej: 150 horas al mes).</li>
+      <li><strong>La Matemática de la Libertad:</strong> </li>
+    </ol>
 
-  <div class="page-number">Página 8</div>
-</section>
+    <div class="formula">
+      Tu Hora = Sueldo Esperado ÷ Total de Horas
+    </div>
 
-<!-- PÁGINA 9 -->
-<section class="page">
-  <div class="header-logo">Práctica Guiada</div>
-  <h2>Laboratorio Clínico 2: La Fórmula de la Verdad</h2>
-  <p>Llegó el momento de que te enfrentes al espejo de forma definitiva. Yo estoy al lado tuyo ayudándote.</p>
+    <div class="caja-empatica">
+      Si querés 1 millón y trabajás 150 horas... Tu hora no vale un peso menos de: <strong>$6.666 ARS</strong>.
+      A partir de mañana, cuando algo te tome hacer 2 horas, tu costo para ti mismo (Tu sueldo Fantasma blanqueado) es
+      de $13.333. Eso se le SUMA a los costos fijos y a los materiales antes de dárselo al cliente.
+    </div>
 
-  <p>La fórmula que quiero que anotes en la puerta de tu heladera es esta:</p>
-  <div class="formula">
-    P.E = Costos Fijos Totales ÷ (Precio de Venta - Costo Unitario Variable)
-  </div>
+    <div class="page-number">Página 7</div>
+  </section>
 
-  <h3>Ejemplo Crudo:</h3>
-  <p>
-    Tus costos fijos (mochila) son: <strong>$200.000 / mes</strong><br>
-    Vos vendés veladores de diseño a: <strong>$40.000</strong> el velador.<br>
-    A vos fabricar UN velador (materiales + pago a ti mismo por la hora que te tomó = El Costo Unitario Variable) te cuesta: <strong>$15.000</strong>.
-  </p>
-  
-  <p>Primero hacé la resta de abajo: 40.000 - 15.000 = <strong>$25.000</strong> (Ese es tu margen limpio por velador).<br>
-  Luego dividí: $200.000 de costos fijos ÷ $25.000 = <strong>8</strong>.</p>
+  <!-- PÁGINA 8 -->
+  <section class="page">
+    <div class="header-logo">Módulo 6: El Horizonte Inquebrantable</div>
+    <h2>El Punto de Equilibrio (La frontera de la muerte)</h2>
+    <p>Ahora que por fin sos consciente de lo que vale la mochila de tu negocio (Costos Fijos) y lo que vale el
+      sacrificio por artículo ensamblado (Materiales + Tu Tiempo por unidad), nos enfrentamos a la pregunta del millón.
+    </p>
+    <p><strong>¿Tengo un negocio viable o la matemática me condenó antes de empezar?</strong></p>
 
-  <div class="caja-empatica">
-    <strong>TU PUNTO DE EQUILIBRIO ES "8".</strong><br>
-    Tenés que vender 8 veladores al mes obligatoriamente para existir, respirar en paz y haber cobrado tu sueldo de forma justa. El velador número 9 es tu verdadera ganancia comercial acumulativa. 
-  </div>
+    <h3>La definición del Punto de Equilibrio</h3>
+    <p>El punto de equilibrio es el número mágico. Es exactamente la cantidad de productos, servicios, tartas, horas de
+      plomería o mesas carpinteras que TENÉS que vender para <em>salir hecho</em> (cubrir todos tus costos reales,
+      incluido el sueldo digno que calculamos en la página 7).</p>
 
-  <p>¿Ves que la incertidumbre desaparece cuando aplicamos la lógica? Saber tu P.E es la diferencia entre ir a trabajar muerto de miedo o con una estrategia imbatible en tu mente.</p>
+    <p>Si vendés por debajo del Punto de Equilibrio... perdés plata y te hundís lentamente.<br>
+      Si vendés el Punto de Equilibrio... lograste la paz mental, pero no te enriqueciste.<br>
+      Todo lo que vendas <strong>POR ENCIMA</strong> del Punto de Equilibrio... es ganancia exponencial de crecimiento
+      (Ahí guardás para tus vacaciones).</p>
 
-  <div class="page-number">Página 9</div>
-</section>
+    <div class="page-number">Página 8</div>
+  </section>
 
-<!-- PÁGINA 10 -->
-<section class="page">
-  <div class="header-logo">Cierre Operacional</div>
-  <h2>El Baño de Realidad: ¿Estás listo?</h2>
-  <p>Felicidades por llegar hasta acá. Si tu cerebro está procesando información y tus alarmas se prendieron, significa que acabás de dar el paso más asombroso en la vida de un emprendedor: dejaste de vender guiado por la intuición, y ahora podés comandar tu nave escudado por los datos y el respeto por tu propia vida.</p>
-  
-  <p>Sé que leer toda esta verdad de golpe puede doler un poco si descubriste que hoy estás vendiendo muy por debajo de lo que necesitas. <strong>Pero duele para sanar.</strong></p>
+  <!-- PÁGINA 9 -->
+  <section class="page">
+    <div class="header-logo">Práctica Guiada</div>
+    <h2>Laboratorio Clínico 2: La Fórmula de la Verdad</h2>
+    <p>Llegó el momento de que te enfrentes al espejo de forma definitiva. Yo estoy al lado tuyo ayudándote.</p>
 
-  <p>Nosotros, en Punto Cero, creamos un ecosistema de rescate. No queremos que estés remando solo a oscuras tratando de descifrar hojas de Excel. Ya viste cómo operamos. Ya viste de qué va nuestra filosofía.</p>
+    <p>La fórmula que quiero que anotes en la puerta de tu heladera es esta:</p>
+    <div class="formula">
+      P.E = Costos Fijos Totales ÷ (Precio de Venta - Costo Unitario Variable)
+    </div>
 
-  <div class="cta-banner">
-    <h2 style="color: white; margin-top: 0;">Es Hora de Operar</h2>
-    <p style="font-size: 1.1rem; max-width: 650px; margin: 1.5rem auto; color: #cbd5e1;">Si luego de llenar estas calculadoras descubrís un rojo abrumador. Si sentís que, pase lo que pase, no te da el tiempo para arreglar tu caos logístico... dejame guiarte. Tenemos la aguja clínica para suturar tus márgenes y ponerte en las rutas del crecimiento sostenible en semanas.</p>
-    
-    <a href="/nivel2" class="cta-btn">Solicitar Diagnóstico Estructural y Plan VIP (Gratis)</a>
-    
-    <p style="font-size: 0.95rem; color: #94a3b8; margin-top: 1.5rem;">Completás 15 preguntas críticas y mi equipo técnico te diseña el Plan Maestro de Supervivencia para que nunca más trabajes por las migajas.</p>
-  </div>
+    <h3>Ejemplo Crudo:</h3>
+    <p>
+      Tus costos fijos (mochila) son: <strong>$200.000 / mes</strong><br>
+      Vos vendés veladores de diseño a: <strong>$40.000</strong> el velador.<br>
+      A vos fabricar UN velador (materiales + pago a ti mismo por la hora que te tomó = El Costo Unitario Variable) te
+      cuesta: <strong>$15.000</strong>.
+    </p>
 
-  <div class="firma">
-    Estamos en esto juntos,<br>
-    <strong>Sistemas en Línea - Estrategia Operativa Punto Cero</strong>
-  </div>
+    <p>Primero hacé la resta de abajo: 40.000 - 15.000 = <strong>$25.000</strong> (Ese es tu margen limpio por
+      velador).<br>
+      Luego dividí: $200.000 de costos fijos ÷ $25.000 = <strong>8</strong>.</p>
 
-  <div class="page-number">Página 10</div>
-</section>
+    <div class="caja-empatica">
+      <strong>TU PUNTO DE EQUILIBRIO ES "8".</strong><br>
+      Tenés que vender 8 veladores al mes obligatoriamente para existir, respirar en paz y haber cobrado tu sueldo de
+      forma justa. El velador número 9 es tu verdadera ganancia comercial acumulativa.
+    </div>
+
+    <p>¿Ves que la incertidumbre desaparece cuando aplicamos la lógica? Saber tu P.E es la diferencia entre ir a
+      trabajar muerto de miedo o con una estrategia imbatible en tu mente.</p>
+
+    <div class="page-number">Página 9</div>
+  </section>
+
+  <!-- PÁGINA 10 -->
+  <section class="page">
+    <div class="header-logo">Cierre Operacional</div>
+    <h2>El Baño de Realidad: ¿Estás listo?</h2>
+    <p>Felicidades por llegar hasta acá. Si tu cerebro está procesando información y tus alarmas se prendieron,
+      significa que acabás de dar el paso más asombroso en la vida de un emprendedor: dejaste de vender guiado por la
+      intuición, y ahora podés comandar tu nave escudado por los datos y el respeto por tu propia vida.</p>
+
+    <p>Sé que leer toda esta verdad de golpe puede doler un poco si descubriste que hoy estás vendiendo muy por debajo
+      de lo que necesitas. <strong>Pero duele para sanar.</strong></p>
+
+    <p>Nosotros, en Punto Cero, creamos un ecosistema de rescate. No queremos que estés remando solo a oscuras tratando
+      de descifrar hojas de Excel. Ya viste cómo operamos. Ya viste de qué va nuestra filosofía.</p>
+
+    <div class="cta-banner">
+      <h2 style="color: white; margin-top: 0;">Es Hora de Operar</h2>
+      <p style="font-size: 1.1rem; max-width: 650px; margin: 1.5rem auto; color: #cbd5e1;">Si luego de llenar estas
+        calculadoras descubrís un rojo abrumador. Si sentís que, pase lo que pase, no te da el tiempo para arreglar tu
+        caos logístico... dejame guiarte. Tenemos la aguja clínica para suturar tus márgenes y ponerte en las rutas del
+        crecimiento sostenible en semanas.</p>
+
+      <a href="/nivel2" class="cta-btn">Solicitar Diagnóstico Estructural y Plan VIP (Regalo)</a>
+
+      <p style="font-size: 0.95rem; color: #94a3b8; margin-top: 1.5rem;">Completás 15 preguntas críticas y mi equipo
+        técnico te diseña el Plan Maestro de Supervivencia para que nunca más trabajes por las migajas.</p>
+    </div>
+
+    <div class="firma">
+      Estamos en esto juntos,<br>
+      <strong>Sistemas en Línea - Estrategia Operativa Punto Cero</strong>
+    </div>
+
+    <div class="page-number">Página 10</div>
+  </section>
 
 </body>
+
 </html>
