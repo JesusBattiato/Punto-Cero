@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Punto Cero: El Sueldo Fantasma</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    font-family: 'Inter', sans-serif;
+    background-color: #020617;
+    color: #f8fafc;
+    overflow: hidden;
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
+    scrollbar-width: none; /* Firefox */
+  }
+  body::-webkit-scrollbar { display: none; } /* Chrome */
+  
+  .slide {
+    width: 100vw;
+    height: 100vh;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 4rem;
+    box-sizing: border-box;
+    position: relative;
+  }
+  
+  .slide:nth-child(even) {
+    background-color: #0f172a;
+  }
+  
+  h1 { font-size: 5rem; font-weight: 900; line-height: 1.1; margin-bottom: 1rem; letter-spacing: -2px;}
+  h2 { font-size: 3rem; font-weight: 700; color: #3b82f6; margin-bottom: 2rem;}
+  p { font-size: 1.8rem; font-weight: 300; color: #94a3b8; max-width: 900px; line-height: 1.5; margin: 0 auto;}
+  
+  .highlight { color: #f8fafc; font-weight: 700; }
+  .alert-text { color: #ef4444; font-weight: 700; }
+  .success-text { color: #22c55e; font-weight: 700; }
+  
+  .logo-small {
+    position: absolute;
+    top: 2rem;
+    left: 3rem;
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: #3b82f6;
+    letter-spacing: -0.5px;
+  }
+
+  .math-box {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 3rem;
+    border-radius: 24px;
+    font-size: 2.5rem;
+    font-family: monospace;
+    margin-top: 2rem;
+  }
+  
+  .down-arrow {
+    position: absolute;
+    bottom: 2rem;
+    animation: bounce 2s infinite;
+    opacity: 0.5;
+  }
+  
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+    40% {transform: translateY(-20px);}
+    60% {transform: translateY(-10px);}
+  }
+</style>
+</head>
+<body>
+
+  <!-- Slide 1: Portada -->
+  <div class="slide">
+    <div style="font-size: 2rem; color: #3b82f6; font-weight: 900; margin-bottom: 1rem;">PUNTO CERO</div>
+    <h1>EL SUELDO<br>FANTASMA</h1>
+    <p>La trampa matemática de los emprendedores valientes.</p>
+    <div class="down-arrow">↓ Scroll</div>
+  </div>
+
+  <!-- Slide 2: Empatía -->
+  <div class="slide">
+    <div class="logo-small">PUNTO CERO</div>
+    <h2>Ustedes son el motor del país.</h2>
+    <p>Sabemos lo que cuesta estar acá. Pero también sabemos que trabajar 14 horas al día y <span class="highlight">sentir que la plata nunca alcanza</span> no es vida para nadie.</p>
+  </div>
+
+  <!-- Slide 3: El Gran Error -->
+  <div class="slide">
+    <div class="logo-small">PUNTO CERO</div>
+    <h2 class="alert-text">La Matemática Incompleta</h2>
+    <p>"Me costó $2.000. Lo vendí a $5.000."</p>
+    <p class="highlight" style="margin-top: 1rem;">Gané $3.000, ¿Verdad?</p>
+  </div>
+
+  <!-- Slide 4: El Valor del Tiempo -->
+  <div class="slide">
+    <div class="logo-small">PUNTO CERO</div>
+    <h2>¿Y tu tiempo?</h2>
+    <div class="math-box">
+      $3.000 Ganancia<br>
+      ÷ 4 Horas de tu Vida<br>
+      <span class="alert-text">= $750 la hora.</span>
+    </div>
+    <p style="margin-top: 2rem; font-size: 1.5rem;">Estás financiando tu negocio con tu salud.</p>
+  </div>
+
+  <!-- Slide 5: Pizarra Interactiva -->
+  <div class="slide">
+    <div class="logo-small">PUNTO CERO</div>
+    <h2>Hagamos la cuenta juntos</h2>
+    <p>¿Quién se anima a auditar su última venta?</p>
+    <div style="width: 80%; height: 300px; border: 2px dashed rgba(255,255,255,0.2); border-radius: 16px; margin-top: 2rem; display: flex; align-items:center; justify-content: center; color: rgba(255,255,255,0.3); font-size: 1.5rem;">
+      (Pizarra del Coach)
+    </div>
+  </div>
+
+  <!-- Slide 6: La Solución -->
+  <div class="slide">
+    <div class="logo-small">PUNTO CERO</div>
+    <h2 class="success-text">El Antídoto</h2>
+    <h1>La Máquina de la Verdad</h1>
+    <p>Una herramienta gratuita de Punto Cero para calcular tu sueldo real antes de pasarle un presupuesto al cliente.</p>
+    <div style="margin-top: 3rem; background: #3b82f6; color: white; padding: 1rem 3rem; border-radius: 99px; font-weight: 700; font-size: 1.5rem;">Escanear QR o Link Fijo</div>
+  </div>
+
+</body>
+</html>
