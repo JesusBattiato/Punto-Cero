@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>BRIAN PUEBLA - Rescate Táctico Artesanal</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;700;800&display=swap');
+        
+        :root {
+            --primary: #0f172a; /* Oscuro serio */
+            --accent: #3b82f6; /* Azul eléctrico / tecnología */
+            --accent-soft: #eff6ff;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --success: #22c55e;
+            --danger: #ef4444;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f1f5f9;
+            color: var(--text-dark);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .page {
+            background: white;
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto 30px auto;
+            padding: 30mm 25mm;
+            box-sizing: border-box;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            position: relative;
+            page-break-after: always;
+            font-size: 11pt;
+            line-height: 1.8;
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .page { margin: 0; box-shadow: none; page-break-after: always; }
+        }
+
+        h1, h2, h3 { font-family: 'Outfit', sans-serif; color: var(--primary); margin-top: 0; }
+        
+        .cover-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+        }
+
+        .logo-text {
+            font-weight: 800;
+            font-size: 3.5rem;
+            letter-spacing: -2px;
+            color: var(--primary);
+            margin-bottom: 0;
+            text-transform: uppercase;
+        }
+        .logo-text span { color: var(--accent); }
+
+        .cover-page h2 { font-size: 1.4rem; font-weight: 400; color: var(--text-light); margin-top: 10px; }
+        
+        .stamp {
+            margin-top: 60mm;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-light);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 0;
+            width: 80%;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 15mm;
+            left: 25mm;
+            right: 25mm;
+            border-top: 1px solid var(--border);
+            padding-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .section-header {
+            border-bottom: 4px solid var(--accent);
+            display: inline-block;
+            padding-bottom: 5px;
+            margin-bottom: 40px;
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+
+        p { margin-bottom: 25px; text-align: justify; }
+        ul { margin-bottom: 25px; padding-left: 20px; }
+        li { margin-bottom: 15px; }
+        
+        .highlight-box {
+            background: var(--accent-soft);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+            border-left: 5px solid var(--accent);
+        }
+
+        .alert-box {
+            background: #fef2f2;
+            border-left: 5px solid var(--danger);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .bold { font-weight: 700; color: var(--primary); }
+
+        .checklist { list-style: none; padding-left: 0; }
+        .checklist li {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 4px solid #cbd5e1;
+            display: flex;
+            align-items: flex-start;
+        }
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--accent);
+            border-radius: 4px;
+            margin-right: 15px;
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+        .week-title {
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PÁGINA 1: PORTADA -->
+    <div class="page cover-page">
+        <div class="logo-text">PUNTO<span> CERO</span></div>
+        <p style="text-align: center; color: var(--text-light); letter-spacing: 4px; font-weight: 500;">DICTAMEN TÁCTICO DE NEGOCIOS</p>
+        <h2>Rescate Operativo: Brian Puebla</h2>
+        
+        <div class="stamp">
+            CLIENTE: <span class="bold">Brian Puebla (24)</span><br>
+            RUBRO: <span class="bold">Producción Artesanal</span><br>
+            ESTADO FINANCIERO: <span class="bold">Estancado / Alto Riesgo</span><br>
+            <span style="font-size: 0.7rem;">MENDOZA, ARGENTINA</span>
+        </div>
+
+        <div class="footer" style="justify-content: center; border: none;">
+            ESTRATEGIA EXCLUSIVA GENERADA POR SISTEMAS PUNTO CERO.
+        </div>
+    </div>
+
+    <!-- PÁGINA 2: EL DIAGNÓSTICO CRUDO -->
+    <div class="page">
+        <div class="section-header">El Diagnóstico Clínico</div>
+        
+        <div class="alert-box">
+            <h3 style="margin-top:0; color: var(--danger);">Si llueve, no comés.</h3>
+            <p style="margin-bottom:0;">Brian, estás dedicando el 100% de tu tiempo a un emprendimiento que depende económicamente de variables que no podés controlar: el cielo de Mendoza y las municipalidades de las ferias. Eso no es un negocio predecible, es un <strong>casino al aire libre</strong>. Tu desgaste físico es extremo y el retorno es imprevisible.</p>
+        </div>
+
+        <p>Al analizar tus métricas operativas (24 horas disponibles, capital en escala "mid", y una meta de $400.000 ARS limpios), nos topamos con tu primera trampa mental estratégica:</p>
+
+        <h3>La Trampa del "Diferencial de Calidad"</h3>
+        <p>En el formulario nos pusiste que tu diferencial contra la competencia es la <em>"calidad y la innovación"</em>. Socráticamente te demuestro que te estás mintiendo. <strong>Si tu calidad fuera tan innegablemente innovadora y superior al resto, tus clientes harían fila para encargarte trabajos</strong>, en las buenas o en las malas.</p>
+        
+        <p>Pero el hecho de que la base de tus ingresos dependa de vender fines de semana en espacios abiertos nos dice una sola cosa: hoy la gente te compra por <strong>impulso</strong>. Te compran porque paseando un domingo aburridos se topan con tu producto visualmente bonito. No existe aún una lealtad a la marca que te asegure un piso de facturación de Lunes a Viernes.</p>
+        <p>La meta de estos primeros 90 días no es seguir buscando hacer "productos de mejor calidad". La orden directa es <strong>romper tu dependencia absoluta de las ferias y el clima.</strong></p>
+
+        <div class="footer"><span>Pág. 2 / 4</span> <span>PUNTO CERO - ANÁLISIS DE RIESGO</span></div>
+    </div>
+
+    <!-- PÁGINA 3: LA TÁCTICA -->
+    <div class="page">
+        <div class="section-header">Plan de Fuga: Días 1 a 30</div>
+        
+        <p>Como mencionaste que tienes un presupuesto nivel intermedio ($50.000 a $300.000 ARS), vamos a frenar esta hemorragia invirtiendo en canales donde tu producto no se moje con la lluvia.</p>
+
+        <div class="week-title">Paso 1: Catálogo y Pauta "Trinchera"</div>
+        <ul class="checklist">
+            <li><div class="checkbox"></div> <span><strong>La Regla de los 3 Productos:</strong> La feria será solo un canal publicitario, no tu salvación. Sacá fotos brutales a solo tus 3 productos estrella de más rentabilidad. </span></li>
+            <li><div class="checkbox"></div> <span><strong>Infiltración Inicial:</strong> Usá solo $20.000 ARS de tu fondo para lanzar anuncios (Ads) hiper asimétricos apuntando solo a 10 km de tu zona. El botón va directo y únicamente a tu WhatsApp.</span></li>
+            <li><div class="checkbox"></div> <span><strong>Cierre y Logística L-V:</strong> Vendés por chat entre semana, facturás y cobrás señas de Lunes a Jueves. El Viernes producís en el taller. Y usás las ferias del sábado para que la gente <em>pase a buscar su pedido</em>. Tu facturación ya estará asegurada independientemente de si llueve el domingo.</span></li>
+        </ul>
+
+        <div class="week-title">Paso 2: Socios de Techo Cubierto (B2B)</div>
+        <ul class="checklist">
+            <li><div class="checkbox"></div> <span><strong>No les vendas, colgate:</strong> No persigas clientes individuales para escalar. Buscá a 3 negocios céntricos, despachos de bebidas o casas de decoración que <strong>ya paguen el costo altísimo de alquilar un salón físico.</strong> </span></li>
+            <li><div class="checkbox"></div> <span><strong>El Guion de Riesgo Cero:</strong> Vas físicamente y dices: <em>"Mis productos son de primer nivel. Te dejo 5 acá en consignación. Si los vendes, te quedas un 30% libre. No gastaste plata y mejoraste tu mostrador. Si no se venden en un mes, me los llevo yo y no corriste riesgos"</em>. Tu objetivo son 3 vidrieras que nunca cierren trabajando por vos 24/7.</span></li>
+        </ul>
+
+        <div class="footer"><span>Pág. 3 / 4</span> <span>PUNTO CERO - EJECUCIÓN INMEDIATA</span></div>
+    </div>
+
+    <!-- PÁGINA 4: TIEMPO Y FINANZAS -->
+    <div class="page">
+        <div class="section-header">Regulando el Caos: Días 30 a 60</div>
+
+        <p>La parte más dura de tu situación es que, al ser artesano, tu limitante es lo que tardás en hacer el producto. Estás atado de manos por la escala.</p>
+
+        <div class="highlight-box">
+            <h3 style="margin-top:0;">El Bloqueo Ejecutivo (De Artesano a Dueño)</h3>
+            <p>Se acabó gastar tus 24 horas solo cortando, lijando o armando materia prima. Desde mañana te dividís por la mitad matemáticamente.</p>
+            <ul>
+                <li><strong>12 horas de operario:</strong> Encerrado en el taller produciendo al máximo ritmo, sin celular y sin distracciones.</li>
+                <li><strong>12 horas de CEO B2B:</strong> Encerrado en tu casa, sin polvo. Usando esas 12 horas <strong>exclusivamente</strong> para mandar emails a 50 tiendas, llamar prospectos y contestarle ágilmente a los clientes que entran por las pautas que configuramos en el "Paso 1".</li>
+            </ul>
+        </div>
+
+        <h3>El Salario Fantasma de las Artesanías</h3>
+        <p>Es altísimamente probable que, como el 90% de los artesanos, estés sufriendo lo que en Punto Cero llamamos <strong>"Sueldo Fantasma"</strong>. Que veas que un mueble o producto deja ganancia, pero al dividirlo por el enorme tiempo manual que invertiste, el resultado te dé que estás cobrando la hora por menos del mínimo vital y móvil.</p>
+
+        <p>Antes de ponerle un precio al próximo producto nuevo, debes aplicarlo a través de la infraestructura matemática de <em>La Máquina de la Verdad</em> en Punto Cero. Si el margen, dividido por las horas dedicadas (las 12 horas de operario que hablamos), arroja rojo, <strong>se descarta ese producto urgente.</strong> Nadie crea libertad financiera subsidiando sus productos con su salud física. Hacé que tu Excel trabaje para vos, no al revés.</p>
+
+        <div style="margin-top: 80px; display: flex; justify-content: space-around;">
+            <div style="border-top: 2px solid var(--primary); width: 220px; text-align: center; padding-top: 10px;">
+                BRIAN PUEBLA<br>Dueño / Asesorado
+            </div>
+            <div style="border-top: 2px solid var(--primary); width: 220px; text-align: center; padding-top: 10px;">
+                JESUS BATTIATO<br>Punto Cero Agency
+            </div>
+        </div>
+
+        <div class="footer"><span>Pág. 4 / 4</span> <span>PUNTO CERO - ESTANDARIZACIÓN</span></div>
+    </div>
+
+</body>
+</html>
