@@ -54,6 +54,7 @@ export default function Nivel1() {
     const { p_venta, c_variable, g_fijos, h_libres, t_unidad } = inputs;
     const margen = p_venta - c_variable;
     const hd_mensual = h_libres * 4;
+    const sueldo_hora = t_unidad > 0 ? margen / t_unidad : 0;
 
     let statusType = '';
     let title = 'Procesando...';
@@ -87,7 +88,7 @@ export default function Nivel1() {
     }
 
     setResults({
-      margen, hd_mensual,
+      margen, hd_mensual, sueldo_hora,
       equilibrio: margen <= 0 ? 'Imposible' : Math.ceil(equilibrio) + " uni/mes",
       hn_mensual: margen <= 0 ? 'Imposible' : Math.ceil(hn_mensual) + " hs/mes",
       statusType, title, desc
@@ -222,16 +223,16 @@ export default function Nivel1() {
             
             <div style={{ width: '100%', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', fontSize: '0.85rem', textAlign: 'left', marginBottom: '2rem' }}>
               <div style={{ background: 'rgba(255,255,255,0.05)', padding: '0.85rem', borderRadius: '8px', borderLeft: `3px solid ${results.statusType === 'green' ? '#22c55e' : results.statusType === 'yellow' ? '#eab308' : results.statusType === 'red' ? '#ef4444' : 'transparent'}` }}>
+                <span style={{ color: '#94a3b8', display: 'block', marginBottom: '0.35rem' }}>Sueldo Real por Hora</span>
+                <span style={{ fontWeight: 600, fontSize: '1.2rem', color: '#60a5fa' }}>$ {results.sueldo_hora.toFixed(2)}/h</span>
+              </div>
+              <div style={{ background: 'rgba(255,255,255,0.05)', padding: '0.85rem', borderRadius: '8px', borderLeft: `3px solid ${results.statusType === 'green' ? '#22c55e' : results.statusType === 'yellow' ? '#eab308' : results.statusType === 'red' ? '#ef4444' : 'transparent'}` }}>
                 <span style={{ color: '#94a3b8', display: 'block', marginBottom: '0.35rem' }}>Margen de Ganancia Neto</span>
                 <span style={{ fontWeight: 600, fontSize: '1.2rem' }}>$ {results.margen.toFixed(2)}</span>
               </div>
               <div style={{ background: 'rgba(255,255,255,0.05)', padding: '0.85rem', borderRadius: '8px', borderLeft: `3px solid ${results.statusType === 'green' ? '#22c55e' : results.statusType === 'yellow' ? '#eab308' : results.statusType === 'red' ? '#ef4444' : 'transparent'}` }}>
                 <span style={{ color: '#94a3b8', display: 'block', marginBottom: '0.35rem' }}>Punto Equilibrio (Ventas/mes)</span>
                 <span style={{ fontWeight: 600, fontSize: '1.2rem' }}>{results.equilibrio}</span>
-              </div>
-              <div style={{ background: 'rgba(255,255,255,0.05)', padding: '0.85rem', borderRadius: '8px', borderLeft: `3px solid ${results.statusType === 'green' ? '#22c55e' : results.statusType === 'yellow' ? '#eab308' : results.statusType === 'red' ? '#ef4444' : 'transparent'}` }}>
-                <span style={{ color: '#94a3b8', display: 'block', marginBottom: '0.35rem' }}>Tiempo Requerido por mes</span>
-                <span style={{ fontWeight: 600, fontSize: '1.2rem' }}>{results.hn_mensual}</span>
               </div>
               <div style={{ background: 'rgba(255,255,255,0.05)', padding: '0.85rem', borderRadius: '8px', borderLeft: `3px solid ${results.statusType === 'green' ? '#22c55e' : results.statusType === 'yellow' ? '#eab308' : results.statusType === 'red' ? '#ef4444' : 'transparent'}` }}>
                 <span style={{ color: '#94a3b8', display: 'block', marginBottom: '0.35rem' }}>Tu Tiempo Físico Real/mes</span>
