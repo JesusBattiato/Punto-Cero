@@ -31,6 +31,23 @@ export default function Home() {
             Al analizar tu situación, creamos una hoja de ruta adaptada exclusivamente a los cuellos de botella reales de tu proyecto. Pasos claros y accionables para avanzar seguro.
           </p>
         </div>
+        <Link to="/capacitaciones" style={{ textDecoration: 'none' }}>
+          <div className="card" style={{ borderColor: 'rgba(124,58,237,0.35)', cursor: 'pointer', transition: 'border-color 0.2s, transform 0.2s' }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = '#7c3aed'; e.currentTarget.style.transform = 'translateY(-3px)' }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(124,58,237,0.35)'; e.currentTarget.style.transform = 'translateY(0)' }}
+          >
+            <div style={{ fontSize: '0.7rem', fontWeight: 800, letterSpacing: '2px', textTransform: 'uppercase', color: '#7c3aed', marginBottom: '0.75rem' }}>
+              Centro de Recursos
+            </div>
+            <h3 style={{ color: '#a78bfa', marginBottom: '1rem' }}>📚 Capacitaciones</h3>
+            <p>
+              Accedé a todas las cartillas, presentaciones y herramientas de los talleres activos. Material listo para proyectar o imprimir.
+            </p>
+            <div style={{ marginTop: '1.25rem', fontSize: '0.85rem', fontWeight: 700, color: '#7c3aed' }}>
+              Ver materiales →
+            </div>
+          </div>
+        </Link>
       </div>
     </div>
   )
