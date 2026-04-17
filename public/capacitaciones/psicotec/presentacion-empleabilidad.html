@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Psicotec · Taller de Empleabilidad — IES Ramón Carrillo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <style>
+    /* ── RESET BASE ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      font-family: 'Inter', sans-serif;
+      background-color: #0d0a1a;
+      color: #f8fafc;
+      overflow: hidden;
+      scroll-snap-type: y mandatory;
+      overflow-y: scroll;
+      scrollbar-width: none;
+    }
+    body::-webkit-scrollbar { display: none; }
+
+    /* ── SLIDE BASE ── */
+    .slide {
+      width: 100vw;
+      height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 3rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Fondos alternos */
+    .slide:nth-child(even)  { background-color: #120d24; }
+    .slide:nth-child(odd)   { background-color: #0d0a1a; }
+
+    /* ── TIPOGRAFÍA ── */
+    h1 {
+      font-size: clamp(2.4rem, 5.5vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      margin-bottom: 1rem;
+    }
+
+    h2 {
+      font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: #a78bfa;
+    }
+
+    p {
+      font-size: clamp(1rem, 1.8vw, 1.4rem);
+      font-weight: 300;
+      color: #94a3b8;
+      max-width: 900px;
+      line-height: 1.5;
+      margin: 0 auto;
+    }
+
+    /* ── COLORES DE ACENTO ── */
+    .c-purple  { color: #a78bfa; }
+    .c-cyan    { color: #22d3ee; }
+    .c-red     { color: #f87171; font-weight: 700; }
+    .c-green   { color: #34d399; font-weight: 700; }
+    .c-white   { color: #f8fafc; font-weight: 700; }
+    .c-amber   { color: #fbbf24; font-weight: 700; }
+
+    /* ── LOGO TOP-LEFT ── */
+    .logo {
+      position: absolute;
+      top: 2rem;
+      left: 3rem;
+      font-size: 1rem;
+      font-weight: 900;
+      color: #7c3aed;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    /* ── NÚMERO DE DIAPOSITIVA ── */
+    .slide-num {
+      position: absolute;
+      bottom: 2rem;
+      right: 3rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #4b3f72;
+      letter-spacing: 2px;
+     }
+
+    /* ── FLECHA DE SCROLL ── */
+    .down-arrow {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.95rem;
+      color: #6d28d9;
+      font-weight: 600;
+      animation: bounce 2s infinite;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+    }
+
+    @keyframes bounce {
+      0%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+      40%           { transform: translateX(-50%) translateY(-14px); }
+      60%           { transform: translateX(-50%) translateY(-7px); }
+    }
+
+    /* ── CAJA TEORÍA ── */
+    .theory-box {
+      background: rgba(124, 58, 237, 0.1);
+      border-left: 7px solid #7c3aed;
+      padding: 1.25rem 2rem;
+      border-radius: 0 16px 16px 0;
+      text-align: left;
+      max-width: 960px;
+      width: 100%;
+      margin-top: 1.25rem;
+    }
+    .theory-box h3 {
+      font-size: clamp(1rem, 2vw, 1.5rem);
+      font-weight: 700;
+      color: #c4b5fd;
+      margin-bottom: 0.5rem;
+    }
+    .theory-box p {
+      font-size: clamp(0.9rem, 1.5vw, 1.15rem);
+      color: #cbd5e1;
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    /* ── CAJA CYAN ── */
+    .cyan-box {
+      background: rgba(6, 182, 212, 0.08);
+      border-left: 7px solid #06b6d4;
+      padding: 1.25rem 2rem;
+      border-radius: 0 16px 16px 0;
+      text-align: left;
+      max-width: 960px;
+      width: 100%;
+      margin-top: 1.25rem;
+    }
+    .cyan-box h3 {
+      font-size: clamp(1rem, 2vw, 1.5rem);
+      font-weight: 700;
+      color: #67e8f9;
+      margin-bottom: 0.5rem;
+    }
+    .cyan-box p {
+      font-size: clamp(0.9rem, 1.5vw, 1.15rem);
+      color: #cbd5e1;
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    /* ── MATH BOX / FÓRMULA ── */
+    .math-box {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1.5px solid rgba(167, 139, 250, 0.35);
+      padding: 1.1rem 2rem;
+      border-radius: 16px;
+      font-size: clamp(0.9rem, 1.5vw, 1.15rem);
+      font-family: 'Inter', monospace;
+      font-weight: 600;
+      margin-top: 1.25rem;
+      color: #e2e8f0;
+      max-width: 900px;
+      width: 100%;
+      line-height: 1.9;
+    }
+
+    /* ── BADGE EJE ── */
+    .eje-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      color: white;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 0.4rem 1.25rem;
+      border-radius: 99px;
+      margin-bottom: 1rem;
+    }
+
+    .eje-badge.cyan {
+      background: linear-gradient(135deg, #0891b2, #0e7490);
+    }
+
+    .eje-badge.amber {
+      background: linear-gradient(135deg, #d97706, #b45309);
+    }
+
+    /* ── LISTA HORIZONTAL DE PILARES ── */
+    .pilares {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.25rem;
+      flex-wrap: nowrap;
+      justify-content: center;
+      max-width: 1000px;
+      width: 100%;
+    }
+
+    .pilar {
+      background: rgba(124, 58, 237, 0.12);
+      border: 1px solid rgba(124, 58, 237, 0.3);
+      border-radius: 16px;
+      padding: 1.25rem 1.5rem;
+      flex: 1;
+      min-width: 180px;
+      text-align: center;
+    }
+
+    .pilar .num {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #7c3aed;
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+
+    .pilar strong {
+      display: block;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #c4b5fd;
+      margin-bottom: 0.25rem;
+    }
+
+    .pilar span {
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+
+    /* ── STAR TABLE ── */
+    .star-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      max-width: 900px;
+      width: 100%;
+      text-align: left;
+    }
+
+    .star-card {
+      background: rgba(255,255,255,0.04);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .star-card .letra {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #fbbf24;
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+
+    .star-card strong {
+      display: block;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #f8fafc;
+      margin-bottom: 0.25rem;
+    }
+
+    .star-card p {
+      font-size: 0.9rem;
+      color: #94a3b8;
+      margin: 0;
+      max-width: none;
+      text-align: left;
+    }
+
+    /* ── DECORACIÓN DE FONDO ── */
+    .bg-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.12;
+      pointer-events: none;
+    }
+
+    /* ── BIG STAT ── */
+    .big-stat {
+      font-size: clamp(3.5rem, 8vw, 6.5rem);
+      font-weight: 900;
+      letter-spacing: -3px;
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+
+    /* ── CTA BUTTON ── */
+    .cta-btn {
+      display: inline-block;
+      margin-top: 3rem;
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      color: white;
+      padding: 1.2rem 3.5rem;
+      border-radius: 99px;
+      font-weight: 800;
+      font-size: 1.3rem;
+      text-decoration: none;
+      transition: transform 0.25s, box-shadow 0.25s;
+      box-shadow: 0 8px 32px rgba(124, 58, 237, 0.4);
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(124, 58, 237, 0.6);
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 1 · PORTADA
+  ═══════════════════════════════════════ -->
+  <div class="slide">
+    <!-- orb decorativo -->
+    <div class="bg-orb" style="width:600px;height:600px;background:#7c3aed;top:-200px;right:-150px;"></div>
+
+    <div style="font-size: 1rem; font-weight: 900; letter-spacing: 4px; color: #7c3aed; text-transform: uppercase; margin-bottom: 1.5rem;">PSICOTEC · IES Ramón Carrillo</div>
+
+    <h1>Estrategias de<br><span class="c-purple">Inserción Profesional</span></h1>
+    <p>Competencias Transversales en Salud · Taller Vivencial Intensivo</p>
+    <p style="margin-top: 1rem; font-size: 1rem; color: #4b3f72;">Lic. Noelia Yair Maza · Psicóloga Organizacional · M.P. 149</p>
+
+    <div class="down-arrow">↓ Scroll para avanzar</div>
+    <div class="slide-num">01 / 12</div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 2 · EL DESAFÍO
+  ═══════════════════════════════════════ -->
+  <div class="slide">
+    <div class="logo">PSICOTEC</div>
+    <div class="bg-orb" style="width:500px;height:500px;background:#4f46e5;bottom:-200px;left:-100px;"></div>
+
+    <h2>Saben todo sobre el cuerpo humano.</h2>
+    <p>Radiología, laboratorio, enfermería. Tres años de formación técnica en uno de los campos más exigentes del mundo.</p>
+    <p style="margin-top: 2rem;">Y sin embargo, cuando llega el momento de <span class="c-white">pararse frente a un reclutador</span> y decir <em>"esto es lo que valgo"</em>...</p>
+    <p style="margin-top: 1.5rem;" class="c-red">...la mayoría no sabe por dónde empezar.</p>
+
+    <div class="slide-num">02 / 12</div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 3 · LOS 3 EJES
+  ═══════════════════════════════════════ -->
+  <div class="slide">
+    <div class="logo">PSICOTEC</div>
+
+    <h2>Hoy vamos a trabajar en 3 frentes.</h2>
+    <p>Cada uno ataca una brecha concreta entre la formación técnica y la inserción laboral real.</p>
+
+    <div class="pilares">
+      <div class="pilar">
+        <div class="num">I</div>
+        <strong>Autoconocimiento</strong>
+        <span>Identificar y articular tu valor con claridad</span>
+      </div>
+      <div class="pilar">
+        <div class="num">II</div>
+        <strong>Marca Personal</strong>
+        <span>CV, perfil digital y propuesta de valor</span>
+      </div>
+      <div class="pilar">
+        <div class="num">III</div>
+        <strong>Oratoria</strong>
+        <span>Entrevistas, comunicación bajo presión</span>
+      </div>
+    </div>
+
+    <div class="slide-num">03 / 12</div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 4 · INICIO EJE I
+  ═══════════════════════════════════════ -->
+  <div class="slide">
+    <div class="logo">PSICOTEC</div>
+    <div class="bg-orb" style="width:400px;height:400px;background:#7c3aed;top:-100px;right:-100px;"></div>
+
+    <div class="eje-badge">Eje I · Autoconocimiento y Coaching</div>
+    <h1>Antes de vender<br>tu perfil,<br><span class="c-purple">conocelo.</span></h1>
+
+    <div class="slide-num">04 / 12</div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 5 · FORTALEZAS
+  ═══════════════════════════════════════ -->
+  <div class="slide">
+    <div class="logo">PSICOTEC</div>
+
+    <h2>Ya tenés más de lo que creés.</h2>
+    <p>El problema no es lo que sabés. El problema es que no podés <span class="c-white">verbalizarlo con convicción</span>.</p>
+
+    <div class="theory-box">
+      <h3>Tu inventario real como egresado del norte salteño</h3>
+      <p>
+        <span class="c-purple">→</span> Conocimiento técnico específico en un área clínica concreta.<br>
+        <span class="c-purple">→</span> Exposición a contextos de alta demanda operativa durante las prácticas.<br>
+        <span class="c-purple">→</span> Arraigo regional: conocés el contexto sociocultural que los centros de salud públicos valoran.<br>
+        <span class="c-purple">→</span> Adaptabilidad generacional al entorno digital.
+      </p>
+    </div>
+
+    <div class="slide-num">05 / 12</div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 6 · BURNOUT
+  ═══════════════════════════════════════ -->
+  <div class="slide">
+    <div class="logo">PSICOTEC</div>
+    <div class="bg-orb" style="width:450px;height:450px;background:#b91c1c;bottom:-100px;right:-100px;opacity:0.08;"></div>
+
+    <h2 class="c-red">El sistema de salud consume.<br>El tuyo también lo hará.</h2>
+    <p>El burnout no llega de golpe. Empieza silencioso durante el primer año de trabajo.</p>
+
+    <div class="theory-box">
+      <h3>Las 3 señales de alarma que ignoran los técnicos nuevos</h3>
+      <p>
+        <span class="c-red">①</span> <span class="c-white">Cinismo defensivo:</span> cuando el paciente empieza a ser "la cama 4" en lugar de una persona.<br>
+        <span class="c-red">②</span> <span class="c-white">Eficacia en caída:</span> sentís que nada de lo que hacés importa, sin causa aparente.<br>
+        <span class="c-red">③</span> <span class="c-white">Agotamiento que no cierra con el descanso:</span> dormís 8 horas y seguís vacío.
+      </p>
+    </div>
+
+    <p style="margin-top: 0.75rem; font-size: 0.95rem;">En el avión, primero te ponés <span class="c-white">vos</span> el oxígeno. Después ayudás.</p>
+
+    <div class="slide-num">06 / 12</div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 7 · INICIO EJE II
+  ═══════════════════════════════════════ -->
+  <div class="slide">
+    <div class="logo">PSICOTEC</div>
+    <div class="bg-orb" style="width:500px;height:500px;background:#0891b2;top:-150px;left:-150px;"></div>
+
+    <div class="eje-badge cyan">Eje II · Marca Personal</div>
+    <h1><span class="c-cyan">¿Qué dicen de vos</span><br>cuando no estás?</h1>
+
+    <div class="slide-num">07 / 12</div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 8 · CV TÉCNICO
+  ═══════════════════════════════════════ -->
+  <div class="slide">
+    <div class="logo">PSICOTEC</div>
+
+    <h2>Tu CV tiene <span class="c-red">6 segundos.</span></h2>
+    <p>Ese es el tiempo promedio de atención en la primera revisada. No es un examen oral; es la primera imagen que alguien se forma de vos.</p>
+
+    <div class="cyan-box">
+      <h3>La fórmula del Perfil Profesional que funciona</h3>
+      <p style="font-size: 1.1rem; font-family: monospace; color: #e2e8f0; line-height: 2;">
+        "Técnico/a en <span class="c-cyan">[especialidad]</span> egresado/a del IES Ramón Carrillo.<br>
+        Formación en <span class="c-cyan">[ámbito clínico de práctica]</span>.<br>
+        Orientado/a a <span class="c-cyan">[valor diferencial concreto]</span>."
+      </p>
+    </div>
+
+    <p style="margin-top: 1.5rem; font-size: 1.1rem; color: #64748b;">Eso son 30 palabras. Y ya sos memorable.</p>
+
+    <div class="slide-num">08 / 12</div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 9 · LINKEDIN
+  ═══════════════════════════════════════ -->
+  <div class="slide">
+    <div class="logo">PSICOTEC</div>
+    <div class="bg-orb" style="width:400px;height:400px;background:#0891b2;bottom:-100px;right:-50px;"></div>
+
+    <div class="big-stat" style="color: #06b6d4;">70<span style="font-size: 2rem;">%</span></div>
+    <h2 style="margin-top: 0; color: #22d3ee;">de los reclutadores te busca<br>antes de llamarte.</h2>
+    <p>Lo que encuentran (o <em>no</em> encuentran) ya es parte de tu primera impresión.</p>
+
+    <div class="math-box" style="text-align: left; font-size: 1.1rem; font-family: 'Inter', sans-serif; line-height: 2;">
+      <span class="c-cyan">✓</span> Foto: fondo neutro, ropa profesional o uniforme.<br>
+      <span class="c-cyan">✓</span> Titular: cargo + especialidad + institución. No solo el título.<br>
+      <span class="c-cyan">✓</span> Sobre mí: mismo texto del perfil de tu CV. Ya lo tenés.<br>
+      <span class="c-cyan">✓</span> Experiencia: cargá todas las rotaciones. Son experiencia real.<br>
+      <span class="c-cyan">✓</span> Conectate: docentes, compañeros, profesionales de práctica.
+    </div>
+
+    <div class="slide-num">09 / 12</div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 10 · INICIO EJE III
+  ═══════════════════════════════════════ -->
+  <div class="slide">
+    <div class="logo">PSICOTEC</div>
+    <div class="bg-orb" style="width:500px;height:500px;background:#d97706;top:-150px;right:-150px;opacity:0.1;"></div>
+
+    <div class="eje-badge amber">Eje III · Persuasión y Oratoria</div>
+    <h1>La voz también<br>es una herramienta<br><span class="c-amber">clínica.</span></h1>
+
+    <div class="slide-num">10 / 12</div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 11 · MÉTODO STAR
+  ═══════════════════════════════════════ -->
+  <div class="slide">
+    <div class="logo">PSICOTEC</div>
+
+    <h2>El Método <span class="c-amber">STAR</span>: cómo responder cualquier pregunta difícil.</h2>
+    <p>Cuando te digan "contame una situación donde...", usá esta estructura.</p>
+
+    <div class="star-grid">
+      <div class="star-card">
+        <div class="letra">S</div>
+        <strong>Situación</strong>
+        <p>Contexto breve. ¿Dónde y cuándo ocurrió?</p>
+      </div>
+      <div class="star-card">
+        <div class="letra">T</div>
+        <strong>Tarea</strong>
+        <p>¿Cuál era tu responsabilidad específica en ese momento?</p>
+      </div>
+      <div class="star-card">
+        <div class="letra">A</div>
+        <strong>Acción</strong>
+        <p>¿Qué hiciste exactamente <em>vos</em>? No el equipo. Vos.</p>
+      </div>
+      <div class="star-card">
+        <div class="letra">R</div>
+        <strong>Resultado</strong>
+        <p>¿Qué pasó como consecuencia directa de tu acción?</p>
+      </div>
+    </div>
+
+    <p style="margin-top: 1.5rem; font-size: 1rem; color: #6b7280;">Guardá esta foto. La próxima entrevista es diferente.</p>
+
+    <div class="slide-num">11 / 12</div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 12 · CIERRE
+  ═══════════════════════════════════════ -->
+  <div class="slide">
+    <div class="logo">PSICOTEC</div>
+    <div class="bg-orb" style="width:700px;height:700px;background:#7c3aed;bottom:-300px;left:50%;transform:translateX(-50%);opacity:0.15;"></div>
+
+    <h2 class="c-green">No salen a buscar trabajo.<br>Salen a que los elijan.</h2>
+    <p>Tienen el conocimiento técnico. Ahora tienen las herramientas para mostrarlo.</p>
+
+    <p style="margin-top: 2rem;">Ante dudas, correcciones o consultas sobre sus CVs individuales, pueden contactar directamente con la facilitadora.</p>
+
+    <div style="margin-top: 3rem; border: 1.5px solid rgba(124,58,237,0.3); padding: 2rem 3rem; border-radius: 20px; max-width: 600px; text-align: center;">
+      <div style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; color: #7c3aed; margin-bottom: 0.5rem;">PSICOTEC · Consultoría en Capital Humano</div>
+      <div style="font-size: 1.2rem; font-weight: 700; color: #f8fafc;">Lic. Noelia Yair Maza</div>
+      <div style="font-size: 0.95rem; color: #6b7280; margin-top: 0.25rem;">Psicóloga Organizacional · M.P. 149</div>
+    </div>
+
+    <div class="slide-num">12 / 12</div>
+  </div>
+
+
+<script>
+  // Navegación con teclado (flechas + espacio)
+  document.addEventListener('keydown', (e) => {
+    const slides = document.querySelectorAll('.slide');
+    const currentScroll = window.scrollY;
+    const vh = window.innerHeight;
+    const currentSlide = Math.round(currentScroll / vh);
+
+    if (e.key === 'ArrowDown' || e.key === ' ' || e.key === 'PageDown') {
+      e.preventDefault();
+      const next = Math.min(currentSlide + 1, slides.length - 1);
+      window.scrollTo({ top: next * vh, behavior: 'smooth' });
+    }
+    if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+      e.preventDefault();
+      const prev = Math.max(currentSlide - 1, 0);
+      window.scrollTo({ top: prev * vh, behavior: 'smooth' });
+    }
+  });
+
+  // Click en la flecha de la portada
+  const arrow = document.querySelector('.down-arrow');
+  if (arrow) {
+    arrow.addEventListener('click', () => {
+      window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+    });
+  }
+</script>
+
+</body>
+</html>

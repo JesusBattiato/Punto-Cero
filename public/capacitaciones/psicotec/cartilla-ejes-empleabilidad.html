@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cartilla de Empleabilidad — Psicotec | Ramón Carrillo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #7c3aed;
+      --primary-light: #ede9fe;
+      --dark: #1e1b4b;
+      --accent: #06b6d4;
+      --accent-light: #ecfeff;
+      --warm: #f59e0b;
+      --warm-light: #fffbeb;
+      --green: #10b981;
+      --green-light: #d1fae5;
+      --red: #ef4444;
+      --red-light: #fef2f2;
+      --text: #374151;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #ddd6fe;
+      color: var(--text);
+      line-height: 1.75;
+      padding: 2rem;
+    }
+
+    /* ── PÁGINA ── */
+    .page {
+      background: white;
+      max-width: 860px;
+      margin: 0 auto 3rem auto;
+      padding: 5rem 4.5rem;
+      border-radius: 16px;
+      box-shadow: 0 12px 48px rgba(124,58,237,0.12);
+      min-height: 920px;
+      position: relative;
+      page-break-after: always;
+    }
+
+    .page-number {
+      position: absolute;
+      bottom: 2rem;
+      right: 4rem;
+      font-size: 0.85rem;
+      color: #9ca3af;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    /* ── HEADER DE MARCA ── */
+    .brand-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .brand-name {
+      font-size: 0.85rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+
+    .brand-eje {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    /* ── TIPOGRAFÍA ── */
+    h1 {
+      font-size: 3rem;
+      color: var(--dark);
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+
+    h1 .eje-tag {
+      display: block;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--primary);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+
+    h2 {
+      font-size: 1.9rem;
+      color: var(--dark);
+      margin: 2.5rem 0 1rem 0;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      color: var(--primary);
+      margin: 2rem 0 0.75rem 0;
+    }
+
+    p {
+      font-size: 1.05rem;
+      margin-bottom: 1.25rem;
+      color: var(--text);
+    }
+
+    /* ── CAJAS DE CONTENIDO ── */
+    .caja-empatica {
+      background: var(--green-light);
+      border-left: 5px solid var(--green);
+      padding: 1.75rem 2rem;
+      border-radius: 0 10px 10px 0;
+      margin: 1.75rem 0;
+      font-size: 1.05rem;
+      color: #065f46;
+    }
+
+    .caja-alerta {
+      background: var(--red-light);
+      border-left: 5px solid var(--red);
+      padding: 1.75rem 2rem;
+      border-radius: 0 10px 10px 0;
+      margin: 1.75rem 0;
+      color: #991b1b;
+      font-size: 1.05rem;
+    }
+
+    .caja-practica {
+      background: #fafafa;
+      border: 1.5px dashed #d1d5db;
+      padding: 2rem 2.5rem;
+      border-radius: 12px;
+      margin: 1.75rem 0;
+    }
+
+    .caja-practica h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .caja-concepto {
+      background: var(--primary-light);
+      border: none;
+      padding: 1.75rem 2rem;
+      border-radius: 12px;
+      margin: 1.75rem 0;
+      font-size: 1.05rem;
+      color: #4c1d95;
+    }
+
+    .caja-accion {
+      background: var(--warm-light);
+      border-left: 5px solid var(--warm);
+      padding: 1.75rem 2rem;
+      border-radius: 0 10px 10px 0;
+      margin: 1.75rem 0;
+      color: #78350f;
+      font-size: 1.05rem;
+    }
+
+    .caja-tecnica {
+      background: var(--accent-light);
+      border-left: 5px solid var(--accent);
+      padding: 1.75rem 2rem;
+      border-radius: 0 10px 10px 0;
+      margin: 1.75rem 0;
+      color: #164e63;
+      font-size: 1.05rem;
+    }
+
+    /* ── FORTALEZAS GRID ── */
+    .fortalezas-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1.75rem 0;
+    }
+
+    .fortaleza-card {
+      background: var(--primary-light);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+    }
+
+    .fortaleza-card .emoji { font-size: 1.5rem; margin-bottom: 0.5rem; display: block; }
+    .fortaleza-card strong { display: block; color: var(--dark); font-size: 1rem; margin-bottom: 0.25rem; }
+    .fortaleza-card span { font-size: 0.9rem; color: #6d28d9; }
+
+    /* ── LÍNEA TIEMPO ── */
+    .timeline {
+      margin: 1.75rem 0;
+      border-left: 3px solid var(--primary);
+      padding-left: 2rem;
+    }
+
+    .timeline-item {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2.45rem;
+      top: 0.4rem;
+      width: 12px;
+      height: 12px;
+      background: var(--primary);
+      border-radius: 50%;
+    }
+
+    .timeline-item strong {
+      color: var(--dark);
+      font-size: 1rem;
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
+    .timeline-item p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    /* ── FÓRMULA ── */
+    .formula {
+      background: var(--dark);
+      color: white;
+      padding: 1.5rem 2rem;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      text-align: center;
+      margin: 1.75rem 0;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── TABLA ── */
+    .tabla-simple {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.75rem 0;
+      font-size: 0.95rem;
+    }
+
+    .tabla-simple th {
+      background: var(--dark);
+      color: white;
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-weight: 700;
+    }
+
+    .tabla-simple td {
+      padding: 0.7rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tabla-simple tr:nth-child(even) td {
+      background: #f9fafb;
+    }
+
+    /* ── LISTA MEJORADA ── */
+    .lista-checks {
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0;
+    }
+
+    .lista-checks li {
+      padding: 0.5rem 0 0.5rem 2rem;
+      position: relative;
+      font-size: 1.02rem;
+      border-bottom: 1px solid #f3f4f6;
+    }
+
+    .lista-checks li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--green);
+      font-weight: 800;
+      font-size: 1rem;
+    }
+
+    /* ── FIRMA ── */
+    .firma {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      font-style: italic;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    /* ── CTA BANNER ── */
+    .cta-banner {
+      background: linear-gradient(135deg, var(--dark) 0%, #312e81 100%);
+      color: white;
+      padding: 3.5rem;
+      border-radius: 16px;
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .cta-banner h2 {
+      color: white;
+      margin-top: 0;
+      font-size: 2rem;
+    }
+
+    .cta-banner p {
+      color: #c7d2fe;
+      max-width: 600px;
+      margin: 1rem auto;
+    }
+
+    .portada-subtitulo {
+      font-size: 1.3rem;
+      color: var(--muted);
+      font-weight: 300;
+      margin-bottom: 3rem;
+    }
+
+    .portada-ejes {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin: 3rem 0;
+    }
+
+    .portada-eje {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.25rem 1.75rem;
+      border-radius: 12px;
+      background: #f9fafb;
+      border: 1.5px solid var(--border);
+    }
+
+    .portada-eje .num {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary);
+      min-width: 48px;
+    }
+
+    .portada-eje .info strong {
+      display: block;
+      font-size: 1.05rem;
+      color: var(--dark);
+    }
+
+    .portada-eje .info span {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    /* ── ESCUDO/DIAGNÓSTICO ── */
+    .diagnostico-box {
+      background: linear-gradient(135deg, #f8fafc, #ede9fe);
+      border: 2px solid var(--primary);
+      padding: 2rem;
+      border-radius: 14px;
+      margin: 2rem 0;
+      text-align: center;
+    }
+
+    .diagnostico-box .icono { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .diagnostico-box h4 { color: var(--dark); font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .diagnostico-box p { color: var(--muted); font-size: 0.95rem; margin: 0; }
+
+    /* ── MEDIA ── */
+    @media(max-width: 768px) {
+      .page { padding: 3rem 2rem; min-height: auto; }
+      h1 { font-size: 2.2rem; }
+      .fortalezas-grid { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      body { background: white; padding: 0; }
+      .page { box-shadow: none; margin: 0; max-width: 100%; border-radius: 0; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ════════════════════════════════════════
+       PÁGINA 1 — PORTADA
+  ════════════════════════════════════════ -->
+  <section class="page">
+    <div class="brand-bar">
+      <div class="brand-name">Psicotec</div>
+      <div class="brand-eje">Lic. Yair Maza | M.P. 149</div>
+    </div>
+
+    <h1>
+      <span class="eje-tag">IES Ramón Carrillo · Sede Tartagal</span>
+      Cartilla de Desarrollo Profesional
+    </h1>
+    <p class="portada-subtitulo">Taller Vivencial: <em>"Estrategias de Inserción Profesional y Competencias Transversales en Salud"</em></p>
+
+    <p>Esta cartilla es tu compañera de trabajo durante el taller y tu hoja de ruta personal después de él. No es un folleto para archivar: es un instrumento para usarlo. Subrayalo, anotalo, rompelo si hace falta y rehacelo.</p>
+
+    <p>Acá vas a encontrar el desarrollo de los <strong>tres ejes temáticos</strong> que vamos a trabajar juntos, con teoría, ejercicios prácticos y herramientas concretas para que cuando salgas de acá, ya sepas qué vas a hacer diferente mañana.</p>
+
+    <div class="portada-ejes">
+      <div class="portada-eje">
+        <div class="num">I</div>
+        <div class="info">
+          <strong>Autoconocimiento y Coaching</strong>
+          <span>Reconocé tus fortalezas y puntos de mejora para posicionarte con claridad.</span>
+        </div>
+      </div>
+      <div class="portada-eje">
+        <div class="num">II</div>
+        <div class="info">
+          <strong>Marca Personal</strong>
+          <span>Construcción visual y narrativa de tu perfil profesional para el mercado de salud.</span>
+        </div>
+      </div>
+      <div class="portada-eje">
+        <div class="num">III</div>
+        <div class="info">
+          <strong>Persuasión y Oratoria</strong>
+          <span>Comunicación efectiva en entrevistas, equipos de salud y situaciones de presión.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="firma">
+      Toda intervención, ejercicio o herramienta contenida en esta cartilla es producción original de <strong>Psicotec — Consultoría en Capital Humano</strong>. Su reproducción requiere autorización expresa.<br>
+      <strong>Lic. Noelia Yair Maza · Psicóloga Organizacional · M.P. 149</strong>
+    </div>
+
+    <div class="page-number">Página 1</div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       PÁGINA 2 — EJE I: INTRODUCCIÓN
+  ════════════════════════════════════════ -->
+  <section class="page">
+    <div class="brand-bar">
+      <div class="brand-name">Psicotec</div>
+      <div class="brand-eje">Eje I · Autoconocimiento y Coaching</div>
+    </div>
+
+    <h1>
+      <span class="eje-tag">Eje I</span>
+      Antes de vender tu perfil,<br>tenés que conocerlo.
+    </h1>
+
+    <p>Hay algo que nadie te enseña en las tecnicaturas y que separa a los profesionales que consiguen trabajo rápido de los que mandan CVs al vacío durante meses: <strong>la claridad sobre quiénes son y qué pueden ofrecer.</strong></p>
+
+    <div class="caja-alerta">
+      <strong>El error más común:</strong> Llegar a una entrevista sin poder responder con convicción la pregunta más simple: <em>"Contame sobre vos."</em> No es falta de preparación técnica; es falta de autoconocimiento estructurado.
+    </div>
+
+    <p>El autoconocimiento no es introspección filosófica ni psicología profunda. En el contexto laboral, autoconocimiento es una herramienta <strong>táctica y práctica</strong>: saber exactamente qué fortalezas tenés, cuáles son tus áreas de mejora, y cómo eso se traduce en valor concreto para una institución de salud.</p>
+
+    <p>El coaching organizacional aplicado significa que vamos a trabajar desde lo que <em>ya sos</em>, no desde un ideal de lo que deberías ser. Construcción sobre lo real, no sobre lo imaginario.</p>
+
+    <div class="caja-empatica">
+      <strong>La regla de oro del Eje I:</strong> Nadie puede venderte mejor que vos mismo. Pero para venderte bien, primero tenés que comprarte. Y comprar algo que no conocés a fondo es apostar al azar.
+    </div>
+
+    <div class="page-number">Página 2</div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       PÁGINA 3 — EJE I: EL INVENTARIO
+  ════════════════════════════════════════ -->
+  <section class="page">
+    <div class="brand-bar">
+      <div class="brand-name">Psicotec</div>
+      <div class="brand-eje">Eje I · Autoconocimiento y Coaching</div>
+    </div>
+
+    <h2>El Inventario de Activos Profesionales</h2>
+
+    <p>Así como un negocio hace un inventario antes de saber qué puede vender, vos tenés que hacer un inventario de lo que traés construido.</p>
+
+    <h3>Fortalezas que ya tenés (y no valorás)</h3>
+
+    <div class="fortalezas-grid">
+      <div class="fortaleza-card">
+        <span class="emoji">🧠</span>
+        <strong>Conocimiento Técnico Específico</strong>
+        <span>Tres años de formación en un área clínica concreta: radiología, enfermería, laboratorio. Eso no lo tiene cualquiera.</span>
+      </div>
+      <div class="fortaleza-card">
+        <span class="emoji">🤝</span>
+        <strong>Exposición a Contextos Críticos</strong>
+        <span>Prácticas en ámbitos de salud reales. Sabés qué es trabajar bajo presión antes de que te paguen por hacerlo.</span>
+      </div>
+      <div class="fortaleza-card">
+        <span class="emoji">📍</span>
+        <strong>Arraigo Regional</strong>
+        <span>Conocés el contexto sociocultural del norte salteño. Para sistemas de salud públicos, eso es una ventaja geopolítica real.</span>
+      </div>
+      <div class="fortaleza-card">
+        <span class="emoji">🔄</span>
+        <strong>Adaptabilidad Generacional</strong>
+        <span>Sos parte de una generación que creció con tecnología. Las instituciones necesitan perfiles que no tengan miedo a los sistemas digitales.</span>
+      </div>
+    </div>
+
+    <h3>Los Puntos de Mejora: sin drama</h3>
+
+    <p>No se llaman "debilidades" porque esa palabra paraliza. Se llaman <strong>áreas de desarrollo activo</strong>, y su función en una entrevista es demostrar madurez y autoconsciencia, no exponer vulnerabilidades.</p>
+
+    <div class="caja-practica">
+      <h4>✍️ Ejercicio: Tu DAFO Personal (5 minutos)</h4>
+      <p>En el espacio de abajo, anotá <strong>2 fortalezas concretas</strong> que te diferencian y <strong>1 área de desarrollo</strong> que ya estés trabajando activamente.</p>
+      <br>
+      <p><strong>Mis 2 fortalezas:</strong></p>
+      <p style="border-bottom: 1px solid #d1d5db; padding-bottom: 0.5rem; min-height: 2rem; color: #9ca3af;"><em>(Escribí aquí)</em></p>
+      <p style="border-bottom: 1px solid #d1d5db; padding-bottom: 0.5rem; min-height: 2rem; margin-top: 1rem;"></p>
+      <p style="margin-top: 1.5rem;"><strong>Mi área de desarrollo activo:</strong></p>
+      <p style="border-bottom: 1px solid #d1d5db; padding-bottom: 0.5rem; min-height: 2rem; color: #9ca3af;"><em>(Escribí aquí)</em></p>
+    </div>
+
+    <div class="page-number">Página 3</div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       PÁGINA 4 — EJE I: RESILIENCIA Y BURNOUT
+  ════════════════════════════════════════ -->
+  <section class="page">
+    <div class="brand-bar">
+      <div class="brand-name">Psicotec</div>
+      <div class="brand-eje">Eje I · Autoconocimiento y Coaching</div>
+    </div>
+
+    <h2>Resiliencia Operativa y Prevención del Burnout</h2>
+
+    <p>Vas a trabajar en salud. Eso significa que desde el primer día vas a estar expuesto a situaciones de alta carga emocional: pacientes en crisis, equipos bajo presión, recursos escasos, turnos rotativos. El sistema de salud argentino, especialmente en el interior, demanda mucho y devuelve poco en términos de contención institucional.</p>
+
+    <div class="caja-alerta">
+      <strong>El síndrome de burnout no llega de golpe.</strong> Empieza como "un día difícil", se convierte en "una semana cargada" y, si no lo atendés, termina siendo agotamiento crónico que compromete tu salud y la seguridad de tus pacientes.
+    </div>
+
+    <h3>Las 3 señales de alarma tempranas</h3>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <strong>Señal 1: El Cinismo Defensivo</strong>
+        <p>Cuando empezás a ver a los pacientes como "el trabajo" y no como personas. Es el primer mecanismo de distancia emocional.</p>
+      </div>
+      <div class="timeline-item">
+        <strong>Señal 2: La Eficacia Percibida en Caída</strong>
+        <p>Sentís que nada de lo que hacés importa o que podría hacerlo cualquiera. La motivación cae sin causa aparente.</p>
+      </div>
+      <div class="timeline-item">
+        <strong>Señal 3: El Agotamiento Físico que no cierra con el descanso</strong>
+        <p>Dormís 8 horas y seguís agotado. Tu cuerpo está procesando carga emocional, no solo física.</p>
+      </div>
+    </div>
+
+    <h3>Estrategias de Contención Personal</h3>
+
+    <div class="caja-empatica">
+      <strong>La regla del vuelo:</strong> En los aviones, la instrucción de emergencia dice que primero te ponés vos el oxígeno, y después ayudás al de al lado. En salud aplica igual: si vos no estás bien regulado emocionalmente, tu capacidad de cuidar a otros se degrada.
+    </div>
+
+    <ul class="lista-checks">
+      <li>Establecer rituales de <strong>descompresión post-turno</strong> antes de llegar a casa (música, caminata, pausa activa).</li>
+      <li>Distinguir entre <strong>responsabilidad clínica</strong> y <strong>responsabilidad emocional total</strong>. Vos hacés bien tu trabajo; no podés controlar todos los resultados.</li>
+      <li>Construir una <strong>red de pares</strong>: compañeros con quienes procesar la carga sin llevarla sola.</li>
+      <li>Solicitar <strong>supervisión clínica o acompañamiento psicológico</strong> cuando la carga supera tu capacidad individual. No es debilidad; es profesionalismo.</li>
+    </ul>
+
+    <div class="page-number">Página 4</div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       PÁGINA 5 — EJE II: MARCA PERSONAL
+  ════════════════════════════════════════ -->
+  <section class="page">
+    <div class="brand-bar">
+      <div class="brand-name">Psicotec</div>
+      <div class="brand-eje">Eje II · Análisis Crítico · Marca Personal</div>
+    </div>
+
+    <h1>
+      <span class="eje-tag">Eje II</span>
+      Tu Marca Personal:<br>lo que dicen de vos cuando no estás.
+    </h1>
+
+    <p>La marca personal no es armar un perfil de LinkedIn con filtros bonitos. Es la <strong>percepción que otros construyen de vos en base a tus acciones, tu comunicación y tu presencia</strong>, tanto en el mundo físico como digital.</p>
+
+    <p>En el mercado laboral de la salud del norte argentino, esto es especialmente relevante: las instituciones son chicas, los círculos son ajustados y <strong>tu reputación te precede</strong>. Alguien ya sabe cómo te comportás en una práctica antes de que te llamen para una entrevista.</p>
+
+    <div class="caja-concepto">
+      <strong>Definición operativa de Marca Personal:</strong> El conjunto de habilidades, valores, experiencias y forma de comunicarte que te hace <em>reconocible, recordable y preferible</em> frente a otro candidato con el mismo título técnico que vos.
+    </div>
+
+    <h3>La Paradoja del Técnico Invisible</h3>
+
+    <p>El sistema educativo técnico-sanitario forma profesionales en el <em>hacer</em>, no en el <em>mostrarse haciendo</em>. El resultado es que hay egresados brillantes que no consiguen trabajo, y otros menos preparados técnicamente que se insertan rápido porque saben articular su valor.</p>
+
+    <div class="caja-alerta">
+      <strong>No alcanza con saber hacer bien tu trabajo.</strong> Tenés que saber comunicar que lo hacés bien, antes, durante y después de la contratación. El silencio profesional no transmite humildad: transmite falta de propuesta de valor.
+    </div>
+
+    <p>El objetivo de este eje no es que te "vendas" de forma artificial. Es que aprendas a mostrar con claridad y autenticidad lo que genuinamente sos y hacés.</p>
+
+    <div class="page-number">Página 5</div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       PÁGINA 6 — EJE II: EL CV TÉCNICO
+  ════════════════════════════════════════ -->
+  <section class="page">
+    <div class="brand-bar">
+      <div class="brand-name">Psicotec</div>
+      <div class="brand-eje">Eje II · Análisis Crítico · Marca Personal</div>
+    </div>
+
+    <h2>Diseño de Currículum Técnico-Sanitario</h2>
+
+    <p>El CV es el primer apretón de manos. Antes de que alguien te vea o escuche, ya se formó una impresión de vos, basada en ese documento. Tiene exactamente <strong>6 segundos</strong> de atención promedio en primera pasada.</p>
+
+    <h3>La Estructura que Funciona en el Sector Salud</h3>
+
+    <table class="tabla-simple">
+      <thead>
+        <tr>
+          <th>Sección</th>
+          <th>Qué va acá</th>
+          <th>Error común</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Encabezado</strong></td>
+          <td>Nombre, título de la tecnicatura, teléfono y email profesional. Ciudad.</td>
+          <td>Email poco profesional (ej: "princesa2003@...")</td>
+        </tr>
+        <tr>
+          <td><strong>Perfil Profesional</strong></td>
+          <td>3 líneas: quién sos, en qué área te especializás y qué valor aportás.</td>
+          <td>Copiarlo de la internet o escribir "soy responsable y puntual"</td>
+        </tr>
+        <tr>
+          <td><strong>Formación</strong></td>
+          <td>Nombre de la institución, tecnicatura, año de egreso o egreso esperado.</td>
+          <td>Solo anotar el título sin el año ni la institución completa</td>
+        </tr>
+        <tr>
+          <td><strong>Prácticas/Rotaciones</strong></td>
+          <td>Servicio, institución, fecha y 1 logro o función clave que cumpliste.</td>
+          <td>Poner solo el nombre del hospital sin detallar qué hiciste</td>
+        </tr>
+        <tr>
+          <td><strong>Soft Skills Clave</strong></td>
+          <td>Máximo 4. Solo los que podés demostrar con ejemplos reales.</td>
+          <td>Listar 12 habilidades genéricas que no aportá diferenciación</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>El Perfil Profesional: la línea que decide todo</h3>
+
+    <div class="formula">
+      "Técnico en [especialidad] con formación en [IES]. Experiencia en [ámbito clínico]. Orientado a [valor que aportás]."
+    </div>
+
+    <div class="caja-empatica">
+      <strong>Ejemplo concreto:</strong> <em>"Técnica en Enfermería egresada del IES Ramón Carrillo. Formación en pacientes de alta complejidad y emergencias en contexto rural. Orientada a la comunidad del norte salteño con énfasis en trato culturalmente sensible."</em><br><br>
+      En 30 palabras, esa candidata ya es memorable.
+    </div>
+
+    <div class="page-number">Página 6</div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       PÁGINA 7 — EJE II: PRESENCIA DIGITAL
+  ════════════════════════════════════════ -->
+  <section class="page">
+    <div class="brand-bar">
+      <div class="brand-name">Psicotec</div>
+      <div class="brand-eje">Eje II · Análisis Crítico · Marca Personal</div>
+    </div>
+
+    <h2>Tu Presencia Digital como Herramienta Profesional</h2>
+
+    <p>Antes de llamarte, el 70% de los reclutadores te busca en internet. Lo que encuentran (o no encuentran) es parte de tu primera impresión. En el sector salud local, este fenómeno es más silencioso pero igualmente real.</p>
+
+    <div class="caja-accion">
+      <strong>Acción inmediata antes de salir del taller:</strong> Googleá tu propio nombre y apellido. ¿Qué aparece? ¿Fotografías adecuadas? ¿Comentarios en redes? ¿Nada en absoluto? El resultado de esa búsqueda és tu reputación digital actual.
+    </div>
+
+    <h3>LinkedIn para el Técnico de Salud: sin miedo</h3>
+
+    <p>LinkedIn no es solo para ejecutivos o corporativos. Es el repositorio donde RRHH de hospitales y clínicas busca perfiles activos. Un perfil básico pero completo ya te diferencia del 80% de tus compañeros que no lo tienen.</p>
+
+    <ul class="lista-checks">
+      <li><strong>Foto de perfil:</strong> Fondo neutro, buena luz, ropa profesional o uniforme de trabajo.</li>
+      <li><strong>Titular:</strong> No pongas solo el título. Usá la fórmula: "Técnica en Radiología | Especialización en [área] | IES Ramón Carrillo - Tartagal"</li>
+      <li><strong>Sección "Sobre mí":</strong> Literalmente el mismo texto que tu perfil del CV. Ya lo tenés.</li>
+      <li><strong>Experiencia:</strong> Cargá todas las rotaciones y prácticas como si fuera experiencia laboral, porque lo es.</li>
+      <li><strong>Conectate:</strong> Con docentes, compañeros y profesionales que hayas conocido en prácticas. Tu red hoy vale más de lo que creés.</li>
+    </ul>
+
+    <div class="caja-practica">
+      <h4>✍️ Ejercicio: Construí tu Titular</h4>
+      <p>Completá el siguiente esquema para tu LinkedIn. Una vez escrito, no lo perdás.</p>
+      <br>
+      <p><strong>Técnico/a en</strong> _________________________________</p>
+      <p style="margin-top: 1rem;"><strong>|  Experiencia en</strong> _________________________________</p>
+      <p style="margin-top: 1rem;"><strong>|  IES Ramón Carrillo · Sede Tartagal</strong></p>
+    </div>
+
+    <div class="page-number">Página 7</div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       PÁGINA 8 — EJE III: ORATORIA
+  ════════════════════════════════════════ -->
+  <section class="page">
+    <div class="brand-bar">
+      <div class="brand-name">Psicotec</div>
+      <div class="brand-eje">Eje III · Persuasión y Oratoria</div>
+    </div>
+
+    <h1>
+      <span class="eje-tag">Eje III</span>
+      La voz también es<br>una herramienta clínica.
+    </h1>
+
+    <p>La oratoria, en el imaginario popular, es para políticos y conferencistas. En la realidad del trabajo en salud, <strong>la comunicación oral efectiva es una competencia de seguridad clínica</strong>.</p>
+
+    <p>Un técnico que no puede explicar con claridad un procedimiento a un paciente ansioso genera más riesgos que uno con menor conocimiento técnico pero mejor comunicación. Un profesional que no puede defender su criterio en una reunión de equipo queda invisible. Alguien que se desmorona en una entrevista bajo presión no llega a ser contratado para demostrar lo que sabe hacer.</p>
+
+    <div class="caja-tecnica">
+      <strong>Persuasión no es manipulación:</strong> La persuasión en salud es la capacidad de generar confianza, transmitir información de manera comprensible y guiar a otros hacia decisiones que les son beneficiosas. Es ética clínica comunicada con efectividad.
+    </div>
+
+    <h3>Los 3 contextos donde la oratoria define tu carrera</h3>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <strong>La Entrevista Laboral</strong>
+        <p>El momento donde tenés 30 minutos para construir credibilidad. Tu voz, tu postura y tu estructura de respuestas comunican más que tu CV.</p>
+      </div>
+      <div class="timeline-item">
+        <strong>La Comunicación con el Paciente</strong>
+        <p>Explicar un procedimiento a alguien con miedo, en términos simples y sin perder precisión clínica. Esto se aprende y se practica.</p>
+      </div>
+      <div class="timeline-item">
+        <strong>La Comunicación con el Equipo</strong>
+        <p>Reportar, pedir recursos, dar feedback, disentir con criterio en contextos de alta presión.</p>
+      </div>
+    </div>
+
+    <div class="page-number">Página 8</div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       PÁGINA 9 — EJE III: LA ENTREVISTA
+  ════════════════════════════════════════ -->
+  <section class="page">
+    <div class="brand-bar">
+      <div class="brand-name">Psicotec</div>
+      <div class="brand-eje">Eje III · Persuasión y Oratoria</div>
+    </div>
+
+    <h2>La Entrevista Laboral: Técnicas de Desempeño bajo Presión</h2>
+
+    <p>Una entrevista de trabajo en salud no es un examen oral de contenidos técnicos. Es una evaluación de <strong>cómo pensás, cómo te expresás y cómo te comportás bajo incertidumbre</strong>. El contenido técnico ya lo evaluaron en el currículum. Acá evalúan a la persona.</p>
+
+    <h3>El Método STAR para responder preguntas difíciles</h3>
+
+    <div class="caja-concepto">
+      Cada vez que te hagan una pregunta conductual ("Contame una situación donde..."), respondé usando esta estructura de 4 partes:
+      <br><br>
+      <strong>S — Situación:</strong> Contexto breve. ¿Dónde y cuándo?<br>
+      <strong>T — Tarea:</strong> ¿Cuál era tu responsabilidad específica?<br>
+      <strong>A — Acción:</strong> ¿Qué hiciste exactamente vos? (No el equipo, vos)<br>
+      <strong>R — Resultado:</strong> ¿Qué pasó como consecuencia de tu acción?
+    </div>
+
+    <h3>Preguntas frecuentes en salud y cómo abordarlas</h3>
+
+    <table class="tabla-simple">
+      <thead>
+        <tr>
+          <th>Pregunta</th>
+          <th>Qué evalúa</th>
+          <th>Clave para responder</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>"¿Por qué eligió esta carrera?"</td>
+          <td>Motivación y vocación</td>
+          <td>Sé específico. Un momento real, no una frase poética.</td>
+        </tr>
+        <tr>
+          <td>"¿Cómo maneja el trabajo bajo presión?"</td>
+          <td>Resiliencia operativa</td>
+          <td>Dá un ejemplo de práctica usando STAR.</td>
+        </tr>
+        <tr>
+          <td>"¿Cuál es su mayor debilidad?"</td>
+          <td>Autoconsciencia y madurez</td>
+          <td>Una real + qué estás haciendo para mejorarla.</td>
+        </tr>
+        <tr>
+          <td>"¿Dónde se ve en 5 años?"</td>
+          <td>Proyección y compromiso</td>
+          <td>Vinculá tu desarrollo a la institución, no solo a vos.</td>
+        </tr>
+        <tr>
+          <td>"¿Tenés alguna pregunta?"</td>
+          <td>Interés y preparación previa</td>
+          <td>SIEMPRE tenés una pregunta. Es obligatorio.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="caja-practica">
+      <h4>✍️ Ejercicio: Role-Playing (en parejas)</h4>
+      <p>Una persona hace de entrevistador y otra de candidato. Tiempo: 5 minutos. El entrevistador hace 3 preguntas de la tabla de arriba. El candidato responde usando el Método STAR. Al terminar, el entrevistador da feedback de 1 minuto.</p>
+      <p style="margin-top: 1rem;">Luego <strong>cambian roles</strong>.</p>
+    </div>
+
+    <div class="page-number">Página 9</div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       PÁGINA 10 — EJE III: VOZ Y CUERPO
+  ════════════════════════════════════════ -->
+  <section class="page">
+    <div class="brand-bar">
+      <div class="brand-name">Psicotec</div>
+      <div class="brand-eje">Eje III · Persuasión y Oratoria</div>
+    </div>
+
+    <h2>Cuerpo, Voz y Presencia: el 55% de lo que comunica</h2>
+
+    <p>El modelo de Mehrabian, uno de los más citados en comunicación organizacional, establece que en la percepción de un mensaje:</p>
+
+    <div class="formula">
+      55% = Lenguaje corporal · 38% = Tono de voz · 7% = Palabras
+    </div>
+
+    <p>Lo que esto significa en la práctica: podés tener preparadas las respuestas perfectas y aun así perder la entrevista si vas con los hombros caídos, voz baja y mirada esquiva. Y al revés: un técnico con presencia firme y tono seguro genera confianza aunque no sea el más brillante técnicamente.</p>
+
+    <h3>Check List de Presencia Profesional</h3>
+
+    <ul class="lista-checks">
+      <li><strong>Contacto visual:</strong> Mirá al entrevistador (no al piso ni al techo). Si son varios, rotá la mirada.</li>
+      <li><strong>Postura abierta:</strong> Espalda recta, manos visibles sobre la mesa, pies apoyados en el suelo.</li>
+      <li><strong>Velocidad de habla:</strong> Hablás rápido cuando estás nervioso. Conscientemente, reducí un 20% tu velocidad habitual.</li>
+      <li><strong>Pausas:</strong> Son señal de seguridad y reflexión, no de ignorancia. Antes de responder, respirá y organizá.</li>
+      <li><strong>El saludo:</strong> Firme, no aplastante. Contacto visual al momento del apretón.</li>
+      <li><strong>El cierre:</strong> Agradecer la oportunidad con nombre del interlocutor si lo sabés. Eso es memorable.</li>
+    </ul>
+
+    <div class="caja-empatica">
+      <strong>El nerviosismo no es tu enemigo:</strong> Es adrenalina. Los mismos mecanismos fisiológicos que te ponen nervioso en una entrevista son los que te hacen estar alerta en una emergencia clínica. Re-etiquetá la sensación: no es miedo, es activación.
+    </div>
+
+    <div class="page-number">Página 10</div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       PÁGINA 11 — CIERRE Y CTA
+  ════════════════════════════════════════ -->
+  <section class="page">
+    <div class="brand-bar">
+      <div class="brand-name">Psicotec</div>
+      <div class="brand-eje">Cierre Operacional</div>
+    </div>
+
+    <h2>Lo que llevás de acá: tu Plan de Acción Personal</h2>
+
+    <p>Completaste los tres ejes. Ahora no se trata de recordar todo lo que leíste, sino de decidir <strong>qué vas a hacer diferente en las próximas 72 horas</strong>. Lo que no se ejecuta en ese ventana de tiempo, raramente se ejecuta.</p>
+
+    <div class="caja-practica">
+      <h4>✍️ Mis 3 Acciones Prioritarias (esta semana)</h4>
+      <br>
+      <p><strong>Eje I — Acción concreta:</strong></p>
+      <p style="border-bottom: 1px solid #d1d5db; padding-bottom: 0.5rem; min-height: 2.5rem; color: #9ca3af;"><em>(Ej: "Completar mi DAFO personal con 3 fortalezas documentadas")</em></p>
+      <br>
+      <p><strong>Eje II — Acción concreta:</strong></p>
+      <p style="border-bottom: 1px solid #d1d5db; padding-bottom: 0.5rem; min-height: 2.5rem; color: #9ca3af;"><em>(Ej: "Reescribir el perfil de mi CV con la fórmula del taller")</em></p>
+      <br>
+      <p><strong>Eje III — Acción concreta:</strong></p>
+      <p style="border-bottom: 1px solid #d1d5db; padding-bottom: 0.5rem; min-height: 2.5rem; color: #9ca3af;"><em>(Ej: "Practicar STAR con un compañero simulando una entrevista")</em></p>
+    </div>
+
+    <div class="cta-banner">
+      <h2>¿Querés que te accompañemos más allá del taller?</h2>
+      <p>Psicotec ofrece asesoría individual en construcción de CV técnico, preparación intensiva para entrevistas y orientación vocacional-laboral para egresados del sector salud.</p>
+      <p style="margin-top: 1.5rem; color: #a5b4fc; font-size: 0.95rem;">Contacto: <strong>Lic. Noelia Yair Maza · M.P. 149</strong><br>Instagram / WhatsApp disponibles a través del IES Ramón Carrillo.</p>
+    </div>
+
+    <div class="firma">
+      Gracias por participar. Tu inserción profesional empieza hoy.<br>
+      <strong>Psicotec — Consultoría en Capital Humano</strong>
+    </div>
+
+    <div class="page-number">Página 11</div>
+  </section>
+
+</body>
+
+</html>
