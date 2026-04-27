@@ -22,6 +22,7 @@ const TecpetrolDashboard = () => {
   const [objectives, setObjectives] = useState([]);
   const [punchList, setPunchList] = useState([]);
   const [compressionData, setCompressionData] = useState([]);
+  const [subObjectives, setSubObjectives] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -57,12 +58,28 @@ const TecpetrolDashboard = () => {
       .from('tecpetrol_opex')
       .select('*')
       .order('mes', { ascending: false });
-    if (opexDataRaw) setOpexData(opexDataRaw);
+    // 5. Obtener Sub-objetivos
+    const { data: subData } = await supabase
+      .from('tecpetrol_sub_objetivos')
+      .select('*')
+      .order('titulo', { ascending: true });
+    if (subData) setSubObjectives(subData);
 
     setLoading(false);
   };
 
   const [opexData, setOpexData] = useState([]);
+
+  const updateSubItem = async (id, updates) => {
+    const { error } = await supabase
+      .from('tecpetrol_sub_objetivos')
+      .update(updates)
+      .eq('id', id);
+    
+    if (!error) {
+       setSubObjectives(prev => prev.map(s => s.id === id ? { ...s, ...updates } : s));
+    }
+  };
 
   const updateStatus = async (id, newStatus) => {
     const { error } = await supabase
@@ -162,15 +179,49 @@ const TecpetrolDashboard = () => {
                     <span className="nota-big">{selectedObjective.nota_proyectada} <small>/ 5</small></span>
                   </div>
                   <div className="detail-body">
-                    <p><strong>Criterio para el 5:</strong> {selectedObjective.numero === 6 || selectedObjective.numero === 7 ? 'Objetivo completado satisfactoriamente.' : 'Cumplimiento total de cronograma y ahorros proyectados.'}</p>
+                    <p><strong>Estado:</strong> {selectedObjective.estado}</p>
+                    
+                    {/* Renderizado de Sub-ítems / Checklist */}
                     <div className="action-items">
-                      <h4>Tareas Pendientes / Notas:</h4>
-                      <ul>
-                        {selectedObjective.numero === 6 ? <li>Queda pendiente el cierre del Punch List operacional.</li> : 
-                         selectedObjective.numero === 7 ? <li>Tie-in finalizado. Compresor en servicio.</li> :
-                         <li>Seguimiento diario de KPIs en dashboard.</li>}
+                      <h4>Checklist de Cumplimiento:</h4>
+                      <ul className="checklist">
+                        {subObjectives.filter(s => s.objetivo_numero === selectedObjective.numero).map(sub => (
+                          <li key={sub.id} className="checklist-item">
+                            <input 
+                              type="checkbox" 
+                              checked={sub.cumplido} 
+                              onChange={(e) => updateSubItem(sub.id, { cumplido: e.target.checked })}
+                            />
+                            <span className={sub.cumplido ? 'text-done' : ''}>{sub.titulo}</span>
+                            <div className="sub-actions">
+                               <input 
+                                 type="number" 
+                                 className="input-nota"
+                                 value={sub.nota} 
+                                 onChange={(e) => updateSubItem(sub.id, { nota: parseFloat(e.target.value) })}
+                                 min="0" max="5" step="0.1"
+                               />
+                               <small>pts</small>
+                            </div>
+                          </li>
+                        ))}
+                        {subObjectives.filter(s => s.objetivo_numero === selectedObjective.numero).length === 0 && (
+                          <p className="text-secondary italic">No hay ítems configurados para este objetivo o se gestiona externamente.</p>
+                        )}
                       </ul>
                     </div>
+
+                    {/* Caso especial Planta de Amina (CO2) */}
+                    {selectedObjective.numero === 6 && (
+                      <div className="special-section">
+                        <h4>Registro Diario CO2:</h4>
+                        <div className="flex-row">
+                           <input type="number" placeholder="% CO2" className="input-nota" />
+                           <input type="text" placeholder="Novedad/Desvío" className="input-text" />
+                           <button className="btn-primary">Guardar</button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -358,6 +409,19 @@ const TecpetrolDashboard = () => {
         .loader { display: flex; justify-content: center; padding: 4rem; color: #3b82f6; font-weight: 700; }
         .fade-in { animation: fadeIn 0.3s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Checklist Styles */
+        .checklist { list-style: none; padding: 0; margin-top: 1rem; }
+        .checklist-item { display: flex; align-items: center; gap: 1rem; padding: 0.75rem; background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; margin-bottom: 0.5rem; }
+        .checklist-item input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; }
+        .checklist-item span { flex: 1; font-size: 0.9rem; }
+        .text-done { text-decoration: line-through; color: #64748b; }
+        .sub-actions { display: flex; align-items: center; gap: 0.4rem; }
+        .input-nota { width: 60px; background: #020617; border: 1px solid #334155; color: #fff; padding: 0.2rem 0.4rem; border-radius: 4px; text-align: center; }
+        .special-section { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #1e293b; }
+        .flex-row { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
+        .input-text { flex: 1; background: #020617; border: 1px solid #334155; color: #fff; padding: 0.5rem; border-radius: 6px; }
+        .italic { font-style: italic; }
       `}} />
     </div>
   );
