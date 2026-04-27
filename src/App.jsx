@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import Nivel1 from './pages/Nivel1'
 import Nivel2 from './pages/Nivel2'
 import Capacitaciones from './pages/Capacitaciones'
+import TecpetrolDashboard from './pages/TecpetrolDashboard'
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/diagnostico-gratis" element={<Nivel1 />} />
           <Route path="/auditoria-vip" element={<Nivel2 />} />
           <Route path="/capacitaciones" element={<Capacitaciones />} />
+          <Route path="/admin/ramos" element={<TecpetrolDashboard />} />
         </Routes>
       </main>
     </>
