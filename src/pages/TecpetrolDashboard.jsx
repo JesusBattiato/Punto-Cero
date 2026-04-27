@@ -10,312 +10,266 @@ import {
   Settings, 
   Clock,
   ChevronRight,
-  ClipboardList
+  ClipboardList,
+  Plus,
+  ArrowLeft,
+  Filter
 } from 'lucide-react';
 
 const TecpetrolDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
-  const [loading, setLoading] = useState(false);
+  const [selectedObjective, setSelectedObjective] = useState(null);
+  const [objectives, setObjectives] = useState([]);
+  const [punchList, setPunchList] = useState([]);
+  const [compressionData, setCompressionData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Mock data para previsualización inmediata
-  const objectives = [
-    { id: 1, title: 'Compresión', weight: 10, score: 3.5, status: 'En curso', color: '#3b82f6' },
-    { id: 2, title: 'Medición / LACT', weight: 15, score: 3.0, status: 'Prev. Auditoría', color: '#6366f1' },
-    { id: 3, title: 'Químicos / OPEX', weight: 15, score: 3.2, status: 'Analizando BG', color: '#10b981' },
-    { id: 4, title: 'Mejora Continua', weight: 15, score: 3.0, status: 'Buscando Desvíos', color: '#f59e0b' },
-    { id: 5, title: 'Paro de Planta', weight: 10, score: 4.2, status: 'Cierre Punch List', color: '#ef4444' },
-    { id: 6, title: 'Planta Aminas', weight: 10, score: 3.8, status: 'PEM Inicial', color: '#8b5cf6' },
-    { id: 7, title: 'Proyecto R1003', weight: 10, score: 5.0, status: 'CUMPLIDO', color: '#22c55e' },
-    { id: 8, title: 'Seguridad SAS', weight: 15, score: 3.5, status: '100% Proactividad', color: '#06b6d4' },
-  ];
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  const punchItems = [
-    { id: 1, sector: 'Facilities', item: 'Tinglado Amina', status: 'HOLD', rfsu: 'NO' },
-    { id: 2, sector: 'I&C', item: 'Recalibración PSH', status: 'Ejecutado', rfsu: 'SI' },
-    { id: 3, sector: 'GEIN', item: 'Hazop V-102', status: 'Pendiente', rfsu: 'NO' },
-  ];
+  const fetchData = async () => {
+    setLoading(true);
+    // 1. Obtener Objetivos
+    const { data: objData } = await supabase
+      .from('tecpetrol_objetivos')
+      .select('*')
+      .order('numero', { ascending: true });
+    
+    // 2. Obtener Punch List completa
+    const { data: punchData } = await supabase
+      .from('tecpetrol_punchlist')
+      .select('*')
+      .order('id', { ascending: true });
+
+    if (objData) setObjectives(objData);
+    if (punchData) setPunchList(punchData);
+    setLoading(false);
+  };
+
+  const updateStatus = async (id, newStatus) => {
+    const { error } = await supabase
+      .from('tecpetrol_punchlist')
+      .update({ status: newStatus })
+      .eq('id', id);
+    
+    if (!error) fetchData();
+  };
+
+  const handleObjClick = (obj) => {
+    setSelectedObjective(obj);
+    setActiveTab('obj_detail');
+  };
+
+  const goBack = () => {
+    setSelectedObjective(null);
+    setActiveTab('overview');
+  };
 
   return (
     <div className="industrial-dashboard">
-      {/* Sidebar / Nav */}
       <aside className="sidebar">
         <div className="sidebar-header">
           <Activity size={24} color="#3b82f6" />
           <span>RAMOS CONTROL</span>
         </div>
         <nav className="sidebar-nav">
-          <button 
-            className={activeTab === 'overview' ? 'active' : ''} 
-            onClick={() => setActiveTab('overview')}
-          >
+          <button className={activeTab === 'overview' ? 'active' : ''} onClick={() => setActiveTab('overview')}>
             <BarChart3 size={18} /> General
           </button>
-          <button 
-            className={activeTab === 'punchlist' ? 'active' : ''} 
-            onClick={() => setActiveTab('punchlist')}
-          >
+          <button className={activeTab === 'punchlist' ? 'active' : ''} onClick={() => setActiveTab('punchlist')}>
             <ClipboardList size={18} /> Punch List
           </button>
-          <button 
-            className={activeTab === 'compression' ? 'active' : ''} 
-            onClick={() => setActiveTab('compression')}
-          >
+          <button className={activeTab === 'compression' ? 'active' : ''} onClick={() => setActiveTab('compression')}>
             <Zap size={18} /> Compresión
           </button>
         </nav>
       </aside>
 
-      {/* Main Content */}
       <main className="content">
         <header className="content-header">
           <div>
-            <h1>Dashboard Objetivos 2026</h1>
-            <p className="text-secondary">Supervisor: Jesus Battiato | Planta de Aminas - Ramos</p>
+            <h1>{activeTab === 'obj_detail' ? selectedObjective?.titulo : 'Dashboard Operativo'}</h1>
+            <p className="text-secondary">Supervisor: Jesus Battiato | Ramos V3</p>
           </div>
           <div className="header-stats">
             <div className="card-mini">
-              <span className="label">Nota Proyectada</span>
-              <span className="value">3.62</span>
+              <span className="label">Eficiencia Global</span>
+              <span className="value">94.2%</span>
             </div>
           </div>
         </header>
 
-        {activeTab === 'overview' && (
-          <div className="grid-container">
-            {objectives.map((obj) => (
-              <div key={obj.id} className="obj-card" style={{ borderLeft: `4px solid ${obj.color}` }}>
-                <div className="obj-header">
-                  <h3>{obj.title}</h3>
-                  <span className="badge" style={{ backgroundColor: `${obj.color}22`, color: obj.color }}>{obj.weight}%</span>
-                </div>
-                <div className="obj-body">
-                  <div className="score-ring">
-                    <span className="score-val">{obj.score}</span>
-                    <span className="score-total">/ 5</span>
+        {loading ? (
+          <div className="loader">Cargando base de datos...</div>
+        ) : (
+          <>
+            {activeTab === 'overview' && (
+              <div className="grid-container fade-in">
+                {objectives.map((obj) => (
+                  <div key={obj.id} className="obj-card" onClick={() => handleObjClick(obj)}>
+                    <div className="obj-header">
+                      <h3>{obj.titulo}</h3>
+                      <span className="badge" style={{ backgroundColor: `${obj.color}22`, color: obj.color }}>{obj.peso}%</span>
+                    </div>
+                    <div className="obj-body">
+                      <div className="score-ring">
+                        <span className="score-val">{obj.nota_proyectada}</span>
+                        <span className="score-total">/ 5</span>
+                      </div>
+                      <div className="status-info">
+                        <p className="status-text">{obj.estado}</p>
+                        <div className="progress-bar">
+                          <div className="progress-fill" style={{ width: `${(obj.nota_proyectada/5)*100}%`, backgroundColor: obj.color }}></div>
+                        </div>
+                      </div>
+                      <ChevronRight size={16} className="arrow-icon" />
+                    </div>
                   </div>
-                  <div className="status-info">
-                    <p className="status-text">{obj.status}</p>
-                    <div className="progress-bar">
-                      <div className="progress-fill" style={{ width: `${(obj.score/5)*100}%`, backgroundColor: obj.color }}></div>
+                ))}
+              </div>
+            )}
+
+            {activeTab === 'obj_detail' && (
+              <div className="detail-view fade-in">
+                <button className="btn-back" onClick={goBack}><ArrowLeft size={16} /> Volver</button>
+                <div className="detail-card">
+                  <div className="detail-header">
+                    <div className="badge-lg" style={{ color: selectedObjective.color }}>Objetivo {selectedObjective.numero}</div>
+                    <span className="nota-big">{selectedObjective.nota_proyectada} <small>/ 5</small></span>
+                  </div>
+                  <div className="detail-body">
+                    <p><strong>Criterio para el 5:</strong> Cumplimiento total de cronograma y ahorros proyectados.</p>
+                    <div className="action-items">
+                      <h4>Tareas Pendientes para subir nota:</h4>
+                      <ul>
+                        <li>Identificación de desvíos en campo</li>
+                        <li>Cierre de firmas en el sector I&C</li>
+                      </ul>
                     </div>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
-        )}
+            )}
 
-        {activeTab === 'punchlist' && (
-          <div className="table-container fade-in">
-            <div className="table-header">
-              <h2>Seguimiento de Punch List (Mayo/Junio)</h2>
-              <button className="btn-primary">+ Nuevo Item</button>
-            </div>
-            <table className="industrial-table">
-              <thead>
-                <tr>
-                  <th>Sector</th>
-                  <th>Ítem / Tarea</th>
-                  <th>Importancia RFSU</th>
-                  <th>Estado</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {punchItems.map((item) => (
-                  <tr key={item.id}>
-                    <td className="font-bold">{item.sector}</td>
-                    <td>{item.item}</td>
-                    <td>
-                      <span className={`tag ${item.rfsu === 'SI' ? 'tag-red' : 'tag-gray'}`}>
-                        {item.rfsu === 'SI' ? 'CRÍTICO' : 'Normal'}
-                      </span>
-                    </td>
-                    <td>
-                      <span className={`status-pill ${item.status.toLowerCase()}`}>
-                        {item.status}
-                      </span>
-                    </td>
-                    <td><ChevronRight size={16} /></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+            {activeTab === 'punchlist' && (
+              <div className="table-container fade-in">
+                <div className="table-actions">
+                   <div className="filters">
+                      <Filter size={16} /> <span>Filtrar</span>
+                   </div>
+                   <button className="btn-primary"><Plus size={16} /> Agregar Ítem</button>
+                </div>
+                <table className="industrial-table">
+                  <thead>
+                    <tr>
+                      <th>Sector</th>
+                      <th>Ítem / Acción</th>
+                      <th>RFSU</th>
+                      <th>Status Actual</th>
+                      <th>Cambiar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {punchList.map((item) => (
+                      <tr key={item.id}>
+                        <td>{item.sector}</td>
+                        <td>
+                          <div className="item-name">{item.item}</div>
+                          <div className="item-action">{item.accion}</div>
+                        </td>
+                        <td>{item.es_rfsu ? <span className="rfsu-tag">SI</span> : <span className="no-tag">No</span>}</td>
+                        <td>
+                          <span className={`status-badge ${item.status.toLowerCase()}`}>{item.status}</span>
+                        </td>
+                        <td>
+                          <select 
+                            className="status-select" 
+                            value={item.status} 
+                            onChange={(e) => updateStatus(item.id, e.target.value)}
+                          >
+                            <option value="Pendiente">Pendiente</option>
+                            <option value="Ejecutado">Habilitado</option>
+                            <option value="HOLD">En Pausa</option>
+                          </select>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </>
         )}
       </main>
 
       <style dangerouslySetInnerHTML={{ __html: `
-        .industrial-dashboard {
-          display: flex;
-          min-height: 100vh;
-          background: #0a0c10;
-          color: #e2e8f0;
-          font-family: 'Inter', sans-serif;
-        }
+        .industrial-dashboard { display: flex; min-height: 100vh; background: #07090c; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        .sidebar { width: 220px; background: #0c0f16; border-right: 1px solid #1e293b; padding: 1.5rem; }
+        .sidebar-header { display: flex; align-items: center; gap: 0.75rem; font-weight: 800; color: #3b82f6; margin-bottom: 2rem; }
+        .sidebar-nav { display: flex; flex-direction: column; gap: 0.4rem; }
+        .sidebar-nav button { display: flex; align-items: center; gap: 0.75rem; background: transparent; border: none; color: #64748b; padding: 0.7rem; border-radius: 8px; cursor: pointer; transition: 0.2s; text-align: left; font-weight: 500;}
+        .sidebar-nav button:hover, .sidebar-nav button.active { background: #1e293b; color: #3b82f6; }
+        
+        .content { flex: 1; padding: 2rem; overflow-y: auto; }
+        .content-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem; }
+        h1 { font-size: 1.6rem; font-weight: 800; margin: 0; }
+        .text-secondary { color: #64748b; font-size: 0.9rem; }
+        
+        .card-mini { background: #0c0f16; padding: 0.8rem 1.2rem; border-radius: 10px; border: 1px solid #1e293b; }
+        .card-mini .label { display: block; font-size: 0.65rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card-mini .value { font-size: 1.4rem; font-weight: 800; color: #10b981; }
 
-        .sidebar {
-          width: 240px;
-          background: #11141b;
-          border-right: 1px solid #1e293b;
-          padding: 1.5rem;
-        }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; }
+        .obj-card { background: #0c0f16; padding: 1.2rem; border-radius: 12px; border: 1px solid #1e293b; cursor: pointer; transition: 0.2s; position: relative; }
+        .obj-card:hover { border-color: #3b82f6; transform: scale(1.02); }
+        .obj-header { display: flex; justify-content: space-between; margin-bottom: 1.2rem; }
+        .obj-header h3 { font-size: 1rem; margin: 0; font-weight: 700; color: #f1f5f9; }
+        .badge { font-size: 0.7rem; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 700; }
 
-        .sidebar-header {
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          font-weight: 800;
-          font-size: 1.1rem;
-          color: #3b82f6;
-          margin-bottom: 2rem;
-        }
-
-        .sidebar-nav {
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
-        }
-
-        .sidebar-nav button {
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          background: transparent;
-          border: none;
-          color: #94a3b8;
-          padding: 0.75rem;
-          border-radius: 8px;
-          cursor: pointer;
-          transition: all 0.2s;
-          text-align: left;
-        }
-
-        .sidebar-nav button:hover, .sidebar-nav button.active {
-          background: #1e293b;
-          color: #3b82f6;
-        }
-
-        .content {
-          flex: 1;
-          padding: 2rem;
-          overflow-y: auto;
-        }
-
-        .content-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
-          margin-bottom: 2rem;
-        }
-
-        h1 { font-size: 1.8rem; margin: 0; font-weight: 800; }
-        .text-secondary { color: #94a3b8; margin-top: 0.25rem; }
-
-        .card-mini {
-          background: #11141b;
-          padding: 1rem 1.5rem;
-          border-radius: 12px;
-          border: 1px solid #1e293b;
-          text-align: right;
-        }
-
-        .card-mini .label { display: block; font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; }
-        .card-mini .value { font-size: 1.5rem; font-weight: 800; color: #3b82f6; }
-
-        .grid-container {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-          gap: 1.5rem;
-        }
-
-        .obj-card {
-          background: #11141b;
-          padding: 1.5rem;
-          border-radius: 12px;
-          border: 1px solid #1e293b;
-          transition: transform 0.2s;
-        }
-
-        .obj-card:hover { transform: translateY(-4px); border-color: #3b82f6; }
-
-        .obj-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 1.5rem;
-        }
-
-        .obj-header h3 { margin: 0; font-size: 1.1rem; }
-        .badge { padding: 0.25rem 0.5rem; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
-
-        .obj-body { display: flex; align-items: center; gap: 1.5rem; }
-        .score-ring { text-align: center; }
-        .score-val { font-size: 1.8rem; font-weight: 800; display: block; line-height: 1; }
-        .score-total { font-size: 0.8rem; color: #94a3b8; }
-
+        .obj-body { display: flex; align-items: center; gap: 1rem; }
+        .score-ring { width: 50px; text-align: center; }
+        .score-val { font-size: 1.5rem; font-weight: 800; display: block; }
+        .score-total { font-size: 0.7rem; color: #64748b; }
         .status-info { flex: 1; }
-        .status-text { font-size: 0.85rem; margin-bottom: 0.5rem; color: #94a3b8; }
+        .status-text { font-size: 0.8rem; color: #94a3b8; margin-bottom: 0.4rem; }
+        .progress-bar { height: 4px; background: #1e293b; border-radius: 2px; }
+        .progress-fill { height: 100%; border-radius: 2px; }
+        .arrow-icon { color: #334155; }
 
-        .progress-bar { height: 6px; background: #1e293b; border-radius: 3px; overflow: hidden; }
-        .progress-fill { height: 100%; transition: width 0.5s ease-out; }
-
-        .table-container {
-          background: #11141b;
-          border-radius: 16px;
-          border: 1px solid #1e293b;
-          overflow: hidden;
-        }
-
-        .table-header {
-          padding: 1.5rem;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          border-bottom: 1px solid #1e293b;
-        }
-
+        .table-container { background: #0c0f16; border-radius: 12px; border: 1px solid #1e293b; overflow: hidden; }
+        .table-actions { padding: 1rem; display: flex; justify-content: space-between; background: #0f172a; }
+        .filters { display: flex; align-items: center; gap: 0.5rem; color: #64748b; font-size: 0.8rem; }
         .industrial-table { width: 100%; border-collapse: collapse; }
-        .industrial-table th {
-          background: #0a0c10;
-          text-align: left;
-          padding: 1rem 1.5rem;
-          font-size: 0.8rem;
-          text-transform: uppercase;
-          color: #64748b;
-        }
+        .industrial-table th { background: #1e293b55; color: #64748b; font-size: 0.75rem; text-transform: uppercase; padding: 0.8rem 1rem; text-align: left; }
+        .industrial-table td { padding: 0.8rem 1rem; border-bottom: 1px solid #1e293b; font-size: 0.85rem; }
+        .item-name { font-weight: 700; color: #f1f5f9; }
+        .item-action { font-size: 0.75rem; color: #64748b; margin-top: 2px; }
+        
+        .rfsu-tag { background: #ef444422; color: #f87171; padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.7rem; font-weight: 800; }
+        .no-tag { color: #475569; font-size: 0.7rem; }
 
-        .industrial-table td {
-          padding: 1rem 1.5rem;
-          border-bottom: 1px solid #1e293b;
-          font-size: 0.9rem;
-        }
+        .status-badge { padding: 0.2rem 0.5rem; border-radius: 20px; font-size: 0.7rem; font-weight: 700; }
+        .status-badge.pendiente { background: #7f1d1d; color: #fecaca; }
+        .status-badge.ejecutado { background: #064e3b; color: #d1fae5; }
+        .status-badge.hold { background: #78350f; color: #fef3c7; }
 
-        .status-pill {
-          padding: 0.25rem 0.75rem;
-          border-radius: 20px;
-          font-size: 0.75rem;
-          font-weight: 600;
-          text-transform: uppercase;
-        }
-        .status-pill.ejecutado { background: #064e3b; color: #34d399; }
-        .status-pill.pendiente { background: #450a0a; color: #f87171; }
-        .status-pill.hold { background: #451a03; color: #fbbf24; }
+        .status-select { background: #020617; color: #fff; border: 1px solid #334155; padding: 0.3rem; border-radius: 4px; font-size: 0.75rem; }
+        .btn-primary { background: #3b82f6; color: #fff; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; }
+        .btn-back { background: transparent; border: none; color: #3b82f6; display: flex; align-items: center; gap: 0.5rem; cursor: pointer; margin-bottom: 1rem; font-weight: 600; }
+        
+        .detail-card { background: #0c0f16; border: 1px solid #3b82f6; border-radius: 12px; padding: 2rem; }
+        .detail-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 1rem; margin-bottom: 1.5rem; }
+        .badge-lg { font-size: 1.2rem; font-weight: 800; }
+        .nota-big { font-size: 2.5rem; font-weight: 900; color: #fff; }
+        .nota-big small { font-size: 1rem; color: #64748b; }
+        
+        .action-items h4 { color: #3b82f6; margin-top: 2rem; }
+        .action-items ul { list-style: none; padding: 0; }
+        .action-items li { padding: 0.5rem 0; border-bottom: 1px solid #1e293b; color: #94a3b8; display: flex; align-items: center; gap: 0.5rem; }
+        .action-items li::before { content: '→'; color: #3b82f6; }
 
-        .tag { padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.7rem; }
-        .tag-red { background: #ef444422; color: #ef4444; border: 1px solid #ef444444; }
-        .tag-gray { color: #64748b; }
-
-        .btn-primary {
-          background: #3b82f6;
-          color: white;
-          border: none;
-          padding: 0.6rem 1.2rem;
-          border-radius: 8px;
-          cursor: pointer;
-          font-weight: 600;
-        }
-
+        .loader { display: flex; justify-content: center; padding: 4rem; color: #3b82f6; font-weight: 700; }
         .fade-in { animation: fadeIn 0.3s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
       `}} />
