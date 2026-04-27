@@ -44,8 +44,25 @@ const TecpetrolDashboard = () => {
 
     if (objData) setObjectives(objData);
     if (punchData) setPunchList(punchData);
+
+    // 3. Obtener Compresión
+    const { data: compData } = await supabase
+      .from('tecpetrol_compression')
+      .select('*')
+      .order('fecha', { ascending: false });
+    if (compData) setCompressionData(compData);
+
+    // 4. Obtener OPEX
+    const { data: opexDataRaw } = await supabase
+      .from('tecpetrol_opex')
+      .select('*')
+      .order('mes', { ascending: false });
+    if (opexDataRaw) setOpexData(opexDataRaw);
+
     setLoading(false);
   };
+
+  const [opexData, setOpexData] = useState([]);
 
   const updateStatus = async (id, newStatus) => {
     const { error } = await supabase
@@ -83,13 +100,19 @@ const TecpetrolDashboard = () => {
           <button className={activeTab === 'compression' ? 'active' : ''} onClick={() => setActiveTab('compression')}>
             <Zap size={18} /> Compresión
           </button>
+          <button className={activeTab === 'opex' ? 'active' : ''} onClick={() => setActiveTab('opex')}>
+            <ShieldCheck size={18} /> OPEX / Químicos
+          </button>
         </nav>
       </aside>
 
       <main className="content">
         <header className="content-header">
           <div>
-            <h1>{activeTab === 'obj_detail' ? selectedObjective?.titulo : 'Dashboard Operativo'}</h1>
+            <h1>{activeTab === 'obj_detail' ? selectedObjective?.titulo : 
+                 activeTab === 'opex' ? 'Control de Costos (OPEX)' :
+                 activeTab === 'compression' ? 'Telemetría de Compresión' : 
+                 'Dashboard Operativo'}</h1>
             <p className="text-secondary">Supervisor: Jesus Battiato | Ramos V3</p>
           </div>
           <div className="header-stats">
@@ -110,7 +133,7 @@ const TecpetrolDashboard = () => {
                   <div key={obj.id} className="obj-card" onClick={() => handleObjClick(obj)}>
                     <div className="obj-header">
                       <h3>{obj.titulo}</h3>
-                      <span className="badge" style={{ backgroundColor: `${obj.color}22`, color: obj.color }}>{obj.peso}%</span>
+                      <span className="badge" style={{ backgroundColor: `${obj.color || '#3b82f6'}22`, color: obj.color || '#3b82f6' }}>{obj.peso}%</span>
                     </div>
                     <div className="obj-body">
                       <div className="score-ring">
@@ -120,7 +143,7 @@ const TecpetrolDashboard = () => {
                       <div className="status-info">
                         <p className="status-text">{obj.estado}</p>
                         <div className="progress-bar">
-                          <div className="progress-fill" style={{ width: `${(obj.nota_proyectada/5)*100}%`, backgroundColor: obj.color }}></div>
+                          <div className="progress-fill" style={{ width: `${(obj.nota_proyectada/5)*100}%`, backgroundColor: obj.color || '#3b82f6' }}></div>
                         </div>
                       </div>
                       <ChevronRight size={16} className="arrow-icon" />
@@ -139,12 +162,13 @@ const TecpetrolDashboard = () => {
                     <span className="nota-big">{selectedObjective.nota_proyectada} <small>/ 5</small></span>
                   </div>
                   <div className="detail-body">
-                    <p><strong>Criterio para el 5:</strong> Cumplimiento total de cronograma y ahorros proyectados.</p>
+                    <p><strong>Criterio para el 5:</strong> {selectedObjective.numero === 6 || selectedObjective.numero === 7 ? 'Objetivo completado satisfactoriamente.' : 'Cumplimiento total de cronograma y ahorros proyectados.'}</p>
                     <div className="action-items">
-                      <h4>Tareas Pendientes para subir nota:</h4>
+                      <h4>Tareas Pendientes / Notas:</h4>
                       <ul>
-                        <li>Identificación de desvíos en campo</li>
-                        <li>Cierre de firmas en el sector I&C</li>
+                        {selectedObjective.numero === 6 ? <li>Queda pendiente el cierre del Punch List operacional.</li> : 
+                         selectedObjective.numero === 7 ? <li>Tie-in finalizado. Compresor en servicio.</li> :
+                         <li>Seguimiento diario de KPIs en dashboard.</li>}
                       </ul>
                     </div>
                   </div>
@@ -192,6 +216,68 @@ const TecpetrolDashboard = () => {
                             <option value="Ejecutado">Habilitado</option>
                             <option value="HOLD">En Pausa</option>
                           </select>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {activeTab === 'compression' && (
+              <div className="table-container fade-in">
+                <table className="industrial-table">
+                  <thead>
+                    <tr>
+                      <th>TAG</th>
+                      <th>Fecha</th>
+                      <th>Horas Marcha</th>
+                      <th>Disponibilidad</th>
+                      <th>Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {compressionData.map((comp) => (
+                      <tr key={comp.id}>
+                        <td><div className="item-name">{comp.tag}</div></td>
+                        <td>{comp.fecha}</td>
+                        <td>{comp.horas_marcha} hs</td>
+                        <td>
+                           <div className="progress-bar" style={{ width: '80px' }}>
+                              <div className="progress-fill" style={{ width: `${(comp.horas_marcha/24)*100}%`, backgroundColor: '#10b981' }}></div>
+                           </div>
+                        </td>
+                        <td><span className={`status-badge ${comp.estado === 'E/S' ? 'ejecutado' : 'hold'}`}>{comp.estado}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {activeTab === 'opex' && (
+              <div className="table-container fade-in">
+                 <table className="industrial-table">
+                  <thead>
+                    <tr>
+                      <th>Categoría</th>
+                      <th>Mes</th>
+                      <th>Presupuesto (BG)</th>
+                      <th>Real</th>
+                      <th>Desvío</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {opexData.map((item) => (
+                      <tr key={item.id}>
+                        <td><div className="item-name">{item.categoria}</div></td>
+                        <td>{item.mes}</td>
+                        <td>USD {item.presupuesto_bg}</td>
+                        <td>USD {item.gasto_real}</td>
+                        <td>
+                           <span style={{ color: item.gasto_real > item.presupuesto_bg ? '#ef4444' : '#10b981' }}>
+                              {item.presupuesto_bg > 0 ? (((item.gasto_real - item.presupuesto_bg) / item.presupuesto_bg) * 100).toFixed(1) : 0}%
+                           </span>
                         </td>
                       </tr>
                     ))}
