@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Máquina de la Verdad — Punto Cero</title>
+<meta name="description" content="Calculadora honesta para emprendedores. Descubrí cuánto vale realmente tu hora de trabajo.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #060b18;
+    --surface: rgba(15, 23, 42, 0.85);
+    --surface-2: rgba(30, 41, 59, 0.6);
+    --border: rgba(148, 163, 184, 0.1);
+    --border-hover: rgba(148, 163, 184, 0.25);
+    --text: #f1f5f9;
+    --text-muted: #64748b;
+    --text-soft: #94a3b8;
+    --accent: #6366f1;
+    --accent-light: #818cf8;
+    --green: #10b981;
+    --yellow: #f59e0b;
+    --red: #f43f5e;
+    --green-glow: rgba(16, 185, 129, 0.3);
+    --yellow-glow: rgba(245, 158, 11, 0.3);
+    --red-glow: rgba(244, 63, 94, 0.3);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Animated background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 10%, rgba(99, 102, 241, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding-top: 1rem;
+  }
+
+  .brand-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(99, 102, 241, 0.12);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: 999px;
+    padding: 0.35rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent-light);
+    margin-bottom: 1.25rem;
+  }
+  .brand-badge::before { content: '◆'; font-size: 0.6rem; }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    background: linear-gradient(135deg, #f1f5f9 30%, #94a3b8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.75rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    color: var(--text-soft);
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  /* ── Main Grid ── */
+  .main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  @media (max-width: 700px) {
+    .main-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--surface);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 1.75rem;
+    transition: border-color 0.3s;
+  }
+  .card:hover { border-color: var(--border-hover); }
+
+  .card-title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .card-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── Form Fields ── */
+  .field { margin-bottom: 1.1rem; }
+  .field:last-child { margin-bottom: 0; }
+
+  label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #cbd5e1;
+    margin-bottom: 0.3rem;
+  }
+
+  .help-text {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    display: block;
+    line-height: 1.5;
+  }
+
+  .input-wrap {
+    position: relative;
+  }
+
+  .input-prefix {
+    position: absolute;
+    left: 0.85rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+
+  input[type="number"], input[type="text"] {
+    width: 100%;
+    background: rgba(2, 6, 23, 0.6);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.7rem 0.85rem 0.7rem 2rem;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -moz-appearance: textfield;
+  }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+  input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  }
+
+  input.no-prefix {
+    padding-left: 0.85rem;
+  }
+
+  /* ── Sub-calculator ── */
+  details { margin-top: 0.65rem; }
+
+  summary {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent-light);
+    cursor: pointer;
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0;
+    transition: color 0.2s;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before { content: '▶'; font-size: 0.55rem; transition: transform 0.2s; }
+  details[open] summary::before { transform: rotate(90deg); }
+  summary:hover { color: #c7d2fe; }
+
+  .sub-calc {
+    margin-top: 0.65rem;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    border: 1px dashed var(--border);
+  }
+
+  .sub-hint {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-bottom: 0.65rem;
+    font-style: italic;
+  }
+
+  .item-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 0.4rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .item-row input {
+    font-size: 0.82rem;
+    padding: 0.45rem 0.65rem;
+    font-weight: 500;
+  }
+  .item-row input.no-prefix { padding-left: 0.65rem; }
+
+  .btn-add {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px dashed rgba(148,163,184,0.2);
+    padding: 0.45rem;
+    width: 100%;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    transition: all 0.2s;
+    margin-top: 0.3rem;
+  }
+  .btn-add:hover { background: rgba(255,255,255,0.06); color: var(--text-soft); }
+
+  /* ── Results Panel ── */
+  .results-card {
+    background: var(--surface);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: border-color 0.5s, box-shadow 0.5s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .results-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--border);
+    transition: background 0.5s;
+  }
+
+  /* Traffic light */
+  .signal-wrap {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+
+  .signal-ring {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 3px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.5s;
+  }
+
+  .signal-dot {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(30, 41, 59, 0.8);
+    transition: all 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+  }
+
+  .status-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.65rem;
+    transition: color 0.4s;
+    line-height: 1.2;
+  }
+
+  .status-desc {
+    font-size: 0.88rem;
+    color: var(--text-soft);
+    line-height: 1.7;
+    margin-bottom: 1.75rem;
+    max-width: 340px;
+  }
+
+  /* Stats grid */
+  .stats {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .stat-item {
+    background: rgba(0, 0, 0, 0.25);
+    padding: 0.85rem 0.9rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    text-align: left;
+    border-left: 3px solid transparent;
+    transition: border-color 0.4s;
+  }
+
+  .stat-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+
+  .stat-value {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.5px;
+    transition: color 0.4s;
+  }
+
+  /* CTA Button */
+  .cta-btn {
+    width: 100%;
+    padding: 0.9rem 1.25rem;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: none;
+    letter-spacing: 0.2px;
+  }
+  .cta-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+  .cta-btn:active { transform: translateY(0); }
+
+  /* ── State Colors ── */
+
+  /* Waiting */
+  .state-waiting .signal-dot { background: rgba(30, 41, 59, 0.8); font-size: 0; }
+  .state-waiting .status-title { color: var(--text-soft); }
+
+  /* Green */
+  .state-green { border-color: rgba(16, 185, 129, 0.35); box-shadow: 0 0 60px -20px var(--green-glow); }
+  .state-green::before { background: var(--green); }
+  .state-green .signal-ring { border-color: rgba(16, 185, 129, 0.4); }
+  .state-green .signal-dot { background: var(--green); box-shadow: 0 0 30px var(--green-glow), inset 0 0 15px rgba(255,255,255,0.2); }
+  .state-green .status-title { color: var(--green); }
+  .state-green .stat-item { border-left-color: var(--green); }
+  .state-green .stat-value { color: var(--green); }
+  .state-green .cta-btn { display: block; background: linear-gradient(135deg, #059669, #10b981); color: white; box-shadow: 0 8px 25px -5px var(--green-glow); }
+
+  /* Yellow */
+  .state-yellow { border-color: rgba(245, 158, 11, 0.35); box-shadow: 0 0 60px -20px var(--yellow-glow); }
+  .state-yellow::before { background: var(--yellow); }
+  .state-yellow .signal-ring { border-color: rgba(245, 158, 11, 0.4); }
+  .state-yellow .signal-dot { background: var(--yellow); box-shadow: 0 0 30px var(--yellow-glow), inset 0 0 15px rgba(255,255,255,0.2); }
+  .state-yellow .status-title { color: var(--yellow); }
+  .state-yellow .stat-item { border-left-color: var(--yellow); }
+  .state-yellow .stat-value { color: var(--yellow); }
+  .state-yellow .cta-btn { display: block; background: linear-gradient(135deg, #d97706, #f59e0b); color: #1c1917; box-shadow: 0 8px 25px -5px var(--yellow-glow); }
+
+  /* Red */
+  .state-red { border-color: rgba(244, 63, 94, 0.35); box-shadow: 0 0 60px -20px var(--red-glow); }
+  .state-red::before { background: var(--red); }
+  .state-red .signal-ring { border-color: rgba(244, 63, 94, 0.4); }
+  .state-red .signal-dot { background: var(--red); box-shadow: 0 0 30px var(--red-glow), inset 0 0 15px rgba(255,255,255,0.2); }
+  .state-red .status-title { color: var(--red); }
+  .state-red .stat-item { border-left-color: var(--red); }
+  .state-red .stat-value { color: var(--red); }
+  .state-red .cta-btn { display: block; background: linear-gradient(135deg, #be123c, #f43f5e); color: white; box-shadow: 0 8px 25px -5px var(--red-glow); }
+
+  /* Pulse animation for active dot */
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+  .state-green .signal-dot,
+  .state-yellow .signal-dot,
+  .state-red .signal-dot { animation: pulse-dot 2.5s ease-in-out infinite; }
+
+  /* ── Footer note ── */
+  .footer-note {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+  .footer-note a { color: var(--accent-light); text-decoration: none; }
+  .footer-note a:hover { text-decoration: underline; }
+
+  /* ── Number animation ── */
+  .stat-value { transition: color 0.4s; }
+
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <header class="header">
+    <div class="brand-badge">Punto Cero</div>
+    <h1>La Máquina de la Verdad</h1>
+    <p class="subtitle">Ingresá los números reales de tu emprendimiento.<br>Sin filtros. Sin adornos. Solo la verdad.</p>
+  </header>
+
+  <div class="main-grid">
+
+    <!-- ── Left Column: Inputs ── -->
+    <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+
+      <!-- Ingresos -->
+      <div class="card">
+        <div class="card-title">💰 Ingresos</div>
+
+        <div class="field">
+          <label for="p_venta">Precio de Venta por Unidad / Servicio</label>
+          <span class="help-text">Lo que el cliente paga, al contado, sin rodeos.</span>
+          <div class="input-wrap">
+            <span class="input-prefix">$</span>
+            <input type="number" id="p_venta" value="10000" min="0" oninput="calculate()" aria-label="Precio de venta">
+          </div>
+        </div>
+      </div>
+
+      <!-- Costos -->
+      <div class="card">
+        <div class="card-title">📦 Costos Variables</div>
+
+        <div class="field">
+          <label for="c_variable">Costo directo por unidad / servicio</label>
+          <span class="help-text">Materiales, insumos, packaging, comisiones por esa venta puntual.</span>
+          <div class="input-wrap">
+            <span class="input-prefix">$</span>
+            <input type="number" id="c_variable" value="4000" min="0" oninput="calculate()" aria-label="Costo variable">
+          </div>
+
+          <details>
+            <summary>Desglosar ítem por ítem</summary>
+            <div class="sub-calc">
+              <p class="sub-hint">Ej: 2.000 madera · 1.500 pintura · 500 packaging</p>
+              <div id="items_c_variable">
+                <div class="item-row">
+                  <input type="text" placeholder="Material o ítem" class="no-prefix">
+                  <div class="input-wrap">
+                    <span class="input-prefix">$</span>
+                    <input type="number" placeholder="0" class="val-cv" oninput="sumSub('c_variable')">
+                  </div>
+                </div>
+              </div>
+              <button class="btn-add" onclick="addItem('c_variable')">+ Agregar ítem</button>
+            </div>
+          </details>
+        </div>
+
+        <div class="field">
+          <label for="g_fijos">Gastos Fijos Mensuales</label>
+          <span class="help-text">Lo que pagás aunque no vendas nada: alquiler, servicios, monotributo, herramientas.</span>
+          <div class="input-wrap">
+            <span class="input-prefix">$</span>
+            <input type="number" id="g_fijos" value="50000" min="0" oninput="calculate()" aria-label="Gastos fijos">
+          </div>
+
+          <details>
+            <summary>Desglosar ítem por ítem</summary>
+            <div class="sub-calc">
+              <p class="sub-hint">Ej: 15.000 internet · 10.000 monotributo · 5.000 herramientas</p>
+              <div id="items_g_fijos">
+                <div class="item-row">
+                  <input type="text" placeholder="Gasto fijo" class="no-prefix">
+                  <div class="input-wrap">
+                    <span class="input-prefix">$</span>
+                    <input type="number" placeholder="0" class="val-gf" oninput="sumSub('g_fijos')">
+                  </div>
+                </div>
+              </div>
+              <button class="btn-add" onclick="addItem('g_fijos')">+ Agregar ítem</button>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- Tiempo -->
+      <div class="card">
+        <div class="card-title">⏱️ Tu Tiempo</div>
+
+        <div class="field">
+          <label for="t_unidad">Horas reales por unidad / servicio</label>
+          <span class="help-text">Incluí producción, traslados, mensajes de WhatsApp, empaque. Todo.</span>
+          <div class="input-wrap">
+            <span class="input-prefix">h</span>
+            <input type="number" id="t_unidad" value="2" min="0" step="0.5" oninput="calculate()" aria-label="Tiempo por unidad">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="h_libres">Horas disponibles por semana</label>
+          <span class="help-text">Sé honesto. Las que podés dedicarle sin descuidar familia ni trabajo actual.</span>
+          <div class="input-wrap">
+            <span class="input-prefix">h</span>
+            <input type="number" id="h_libres" value="10" min="0" oninput="calculate()" aria-label="Horas libres semanales">
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Right Column: Results ── -->
+    <div style="position: sticky; top: 1.5rem;">
+      <div class="results-card state-waiting" id="results">
+
+        <div class="signal-wrap">
+          <div class="signal-ring">
+            <div class="signal-dot" id="signal-dot">—</div>
+          </div>
+        </div>
+
+        <div class="status-title" id="s_title">Esperando datos...</div>
+        <div class="status-desc" id="s_desc">Completá los campos de la izquierda para ver el diagnóstico de tu emprendimiento.</div>
+
+        <div class="stats">
+          <div class="stat-item">
+            <span class="stat-label">Ganancia por unidad</span>
+            <span class="stat-value" id="val_margen">—</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Tu hora vale</span>
+            <span class="stat-value" id="val_sueldo_hora">—</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Punto de equilibrio</span>
+            <span class="stat-value" id="val_equilibrio">—</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Horas disponibles/mes</span>
+            <span class="stat-value" id="val_hd">—</span>
+          </div>
+        </div>
+
+        <button id="cta-button" class="cta-btn" onclick="handleCTA()">
+          Necesito ayuda urgente 🚀
+        </button>
+
+      </div>
+
+      <p class="footer-note">
+        Una herramienta de <a href="/">Punto Cero</a> · Tus datos nunca salen de este dispositivo.
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // ── Sub-calculators ──────────────────────────────────────────
+  function sumSub(type) {
+    const cls = type === 'c_variable' ? 'val-cv' : 'val-gf';
+    let sum = 0;
+    document.querySelectorAll(`.${cls}`).forEach(inp => {
+      sum += parseFloat(inp.value) || 0;
+    });
+    document.getElementById(type).value = sum;
+    calculate();
+  }
+
+  function addItem(type) {
+    const cont = document.getElementById(`items_${type}`);
+    const cls  = type === 'c_variable' ? 'val-cv' : 'val-gf';
+    const row  = document.createElement('div');
+    row.className = 'item-row';
+    row.innerHTML = `
+      <input type="text" placeholder="Otro ítem" class="no-prefix">
+      <div class="input-wrap">
+        <span class="input-prefix">$</span>
+        <input type="number" placeholder="0" class="${cls}" oninput="sumSub('${type}')">
+      </div>`;
+    cont.appendChild(row);
+  }
+
+  // ── Formatting ───────────────────────────────────────────────
+  function fmt(n) {
+    return '$ ' + Math.round(n).toLocaleString('es-AR');
+  }
+
+  // ── CTA handler ──────────────────────────────────────────────
+  function handleCTA() {
+    // Replace with WhatsApp link or form URL when ready
+    alert('¡Muy pronto! Vamos a conectarte directamente con el equipo de Punto Cero.');
+  }
+
+  // ── Main calculation ─────────────────────────────────────────
+  function calculate() {
+    const p_venta   = parseFloat(document.getElementById('p_venta').value)   || 0;
+    const c_var     = parseFloat(document.getElementById('c_variable').value) || 0;
+    const g_fijos   = parseFloat(document.getElementById('g_fijos').value)    || 0;
+    const h_libres  = parseFloat(document.getElementById('h_libres').value)   || 0;
+    const t_unidad  = parseFloat(document.getElementById('t_unidad').value)   || 0;
+
+    const margen       = p_venta - c_var;
+    const hd_mensual   = h_libres * 4;
+    const sueldo_hora  = t_unidad > 0 ? margen / t_unidad : 0;
+
+    const results  = document.getElementById('results');
+    const title    = document.getElementById('s_title');
+    const desc     = document.getElementById('s_desc');
+    const dot      = document.getElementById('signal-dot');
+    const cta      = document.getElementById('cta-button');
+
+    // Update always-visible stats
+    document.getElementById('val_margen').innerText      = p_venta > 0 ? fmt(margen)       : '—';
+    document.getElementById('val_sueldo_hora').innerText = p_venta > 0 ? fmt(sueldo_hora) + '/h' : '—';
+    document.getElementById('val_hd').innerText          = hd_mensual > 0 ? hd_mensual + ' hs' : '—';
+
+    // Reset state
+    results.className = 'results-card';
+    dot.textContent   = '';
+    cta.style.display = 'none';
+
+    if (p_venta <= 0) {
+      results.classList.add('state-waiting');
+      title.innerText = 'Esperando datos...';
+      desc.innerText  = 'Completá los campos de la izquierda para ver el diagnóstico de tu emprendimiento.';
+      document.getElementById('val_equilibrio').innerText = '—';
+      return;
+    }
+
+    // ── ROJO: Margen negativo ─────────────────────────────────
+    if (margen <= 0) {
+      results.classList.add('state-red');
+      dot.textContent = '🛑';
+      title.innerText = 'Crónica de un Colapso';
+      desc.innerText  = 'Tus costos son iguales o mayores al precio de venta. Podés vender un millón de unidades y seguirás perdiendo dinero. Esto no tiene solución vendiendo más — hay que replantear desde la raíz.';
+      document.getElementById('val_equilibrio').innerText = 'Imposible';
+      cta.style.display = 'block';
+      cta.innerText = 'Ayudame a replantear la idea 🚑';
+      return;
+    }
+
+    const equilibrio  = g_fijos / margen;
+    const hn_mensual  = equilibrio * t_unidad;
+
+    document.getElementById('val_equilibrio').innerText = Math.ceil(equilibrio) + ' uni/mes';
+
+    // ── ROJO: Tiempo físico insuficiente ─────────────────────
+    if (hn_mensual > hd_mensual) {
+      results.classList.add('state-red');
+      dot.textContent = '🔴';
+      title.innerText = 'Límite Físico Superado';
+      desc.innerText  = `Para apenas cubrir tus gastos fijos necesitás trabajar ${Math.ceil(hn_mensual)} horas al mes, pero solo tenés ${hd_mensual} horas disponibles. No es un problema de ganas — es matemática. Algo tiene que cambiar: bajar costos, subir el precio, o encontrar un modelo que escale sin depender solo de tu tiempo.`;
+      cta.style.display = 'block';
+      cta.innerText = 'Ayudame a arreglar esto 🛑';
+      return;
+    }
+
+    const ocupacion = hn_mensual / hd_mensual;
+    const margenPct = margen / p_venta;
+
+    // ── AMARILLO: Rentabilidad baja o vida al límite ──────────
+    if (ocupacion > 0.65 || margenPct < 0.3) {
+      results.classList.add('state-yellow');
+      dot.textContent = '⚠️';
+      title.innerText = 'Pasatiempo Caro';
+      desc.innerText  = `El negocio es matemáticamente posible, pero vas a usar el ${Math.round(ocupacion * 100)}% de tu tiempo disponible solo para no perder plata. Tu margen es del ${Math.round(margenPct * 100)}%. Con esos números no vas a escalar — vas a sobrevivir. Y sobrevivir cansa igual.`;
+      cta.style.display = 'block';
+      cta.innerText = 'Quiero aumentar mis márgenes 📈';
+      return;
+    }
+
+    // ── VERDE: Viable ────────────────────────────────────────
+    results.classList.add('state-green');
+    dot.textContent = '✅';
+    title.innerText = '¡Negocio Viable!';
+    desc.innerText  = `Tus números cierran. El punto de equilibrio es alcanzable con solo el ${Math.round(ocupacion * 100)}% de tu tiempo disponible, y tu margen es del ${Math.round(margenPct * 100)}%. Lo que necesitás ahora no es aguantar — es sistematizar para crecer.`;
+    cta.style.display = 'block';
+    cta.innerText = 'Quiero sistematizar y crecer 🚀';
+  }
+
+  // Run on load
+  calculate();
+</script>
+</body>
+</html>

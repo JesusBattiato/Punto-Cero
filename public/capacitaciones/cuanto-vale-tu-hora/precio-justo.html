@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Precio Justo — Punto Cero</title>
+<meta name="description" content="Calculadora de precio justo para emprendedores. Descubrí cuánto deberías cobrar realmente por tu trabajo.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #060b18;
+    --surface: rgba(15, 23, 42, 0.85);
+    --surface-2: rgba(30, 41, 59, 0.6);
+    --border: rgba(148, 163, 184, 0.1);
+    --border-hover: rgba(148, 163, 184, 0.25);
+    --text: #f1f5f9;
+    --text-muted: #64748b;
+    --text-soft: #94a3b8;
+    --accent: #6366f1;
+    --accent-light: #818cf8;
+    --emerald: #10b981;
+    --amber: #f59e0b;
+    --rose: #f43f5e;
+    --violet: #8b5cf6;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 20% 10%, rgba(139, 92, 246, 0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(99, 102, 241, 0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 980px;
+    margin: 0 auto;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding-top: 0.5rem;
+  }
+
+  .brand-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(139, 92, 246, 0.1);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 999px;
+    padding: 0.35rem 1rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #c4b5fd;
+    margin-bottom: 1.25rem;
+  }
+  .brand-badge::before { content: '◆'; font-size: 0.55rem; }
+
+  h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    background: linear-gradient(135deg, #f1f5f9 30%, #94a3b8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.75rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    color: var(--text-soft);
+    font-style: italic;
+    line-height: 1.7;
+  }
+
+  /* ── Philosophy banner ── */
+  .philosophy-strip {
+    background: rgba(139, 92, 246, 0.06);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    border-radius: 14px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .philosophy-icon { font-size: 1.5rem; flex-shrink: 0; }
+  .philosophy-text { font-size: 0.85rem; color: #c4b5fd; line-height: 1.6; }
+  .philosophy-text strong { color: #e9d5ff; }
+
+  /* ── 3-step progress ── */
+  .steps-bar {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 2rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 0.75rem 1rem;
+    overflow-x: auto;
+  }
+  .step-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 8px;
+    flex-shrink: 0;
+    transition: background 0.2s;
+    cursor: pointer;
+  }
+  .step-item.active { background: rgba(99,102,241,0.12); }
+  .step-num {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    transition: background 0.3s, color 0.3s;
+  }
+  .step-item.active .step-num {
+    background: var(--accent);
+    color: white;
+  }
+  .step-item.done .step-num {
+    background: var(--emerald);
+    color: white;
+  }
+  .step-item.done .step-num::before { content: '✓'; }
+  .step-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .step-item.active .step-label { color: var(--accent-light); }
+  .step-item.done .step-label { color: var(--emerald); }
+  .step-sep {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    min-width: 20px;
+    max-width: 60px;
+  }
+
+  /* ── Layout ── */
+  .calc-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  @media (max-width: 720px) {
+    .calc-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--surface);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 1.75rem;
+    transition: border-color 0.3s;
+    margin-bottom: 1.25rem;
+  }
+  .card:last-child { margin-bottom: 0; }
+  .card:hover { border-color: var(--border-hover); }
+
+  .card-title {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .card-title::after { content:''; flex:1; height:1px; background: var(--border); }
+
+  /* ── Fields ── */
+  .field { margin-bottom: 1.1rem; }
+  .field:last-child { margin-bottom: 0; }
+
+  label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #cbd5e1;
+    margin-bottom: 0.3rem;
+  }
+
+  .help-text {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    display: block;
+    line-height: 1.5;
+  }
+
+  .input-wrap { position: relative; }
+  .input-prefix {
+    position: absolute;
+    left: 0.85rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+
+  input[type="number"] {
+    width: 100%;
+    background: rgba(2, 6, 23, 0.65);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.7rem 0.85rem 0.7rem 2.1rem;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -moz-appearance: textfield;
+  }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+  input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+  }
+  input.no-prefix { padding-left: 0.85rem; }
+
+  /* Range slider */
+  .slider-wrap { position: relative; }
+  input[type="range"] {
+    width: 100%;
+    height: 6px;
+    border-radius: 999px;
+    border: none;
+    background: var(--border);
+    outline: none;
+    cursor: pointer;
+    padding: 0;
+    -webkit-appearance: none;
+    box-shadow: none;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 10px rgba(99,102,241,0.4);
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+  .slider-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.4rem;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  .slider-value {
+    display: block;
+    text-align: center;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--accent-light);
+    margin-bottom: 0.6rem;
+  }
+
+  /* ── Results panel ── */
+  .results-panel {
+    position: sticky;
+    top: 1.5rem;
+  }
+
+  .result-card {
+    background: var(--surface);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem 1.75rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.5s, box-shadow 0.5s;
+    margin-bottom: 1.25rem;
+  }
+
+  .result-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent);
+    transition: background 0.5s;
+  }
+
+  .price-display {
+    margin: 1rem 0 1.5rem;
+    position: relative;
+  }
+
+  .price-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .price-value {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(2.2rem, 6vw, 3rem);
+    font-weight: 900;
+    letter-spacing: -2px;
+    color: var(--text);
+    line-height: 1;
+    transition: color 0.4s;
+  }
+
+  .price-per {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+  }
+
+  /* Breakdown rows */
+  .breakdown {
+    width: 100%;
+    margin-bottom: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.65rem 0.85rem;
+    border-radius: 10px;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid var(--border);
+    font-size: 0.83rem;
+  }
+
+  .breakdown-label {
+    color: var(--text-soft);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .breakdown-value {
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .breakdown-row.highlight {
+    border-color: rgba(99,102,241,0.25);
+    background: rgba(99,102,241,0.06);
+  }
+  .breakdown-row.highlight .breakdown-label { color: var(--accent-light); }
+  .breakdown-row.highlight .breakdown-value { color: var(--accent-light); font-size: 1rem; }
+
+  /* Viability meter */
+  .viability-wrap { margin-bottom: 1.25rem; }
+  .viability-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+  }
+  .viability-bar-bg {
+    background: rgba(0,0,0,0.3);
+    border-radius: 999px;
+    height: 8px;
+    overflow: hidden;
+  }
+  .viability-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: var(--accent);
+    transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.4s;
+    width: 0%;
+  }
+
+  /* Warning callout */
+  .callout {
+    background: rgba(245, 158, 11, 0.06);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    font-size: 0.8rem;
+    color: #fcd34d;
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+    text-align: left;
+    display: none;
+  }
+
+  /* CTA */
+  .cta-btn {
+    width: 100%;
+    padding: 0.9rem 1.25rem;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    background: linear-gradient(135deg, var(--accent), #4f46e5);
+    color: white;
+    box-shadow: 0 8px 25px -5px rgba(99,102,241,0.45);
+    transition: all 0.25s;
+    letter-spacing: 0.2px;
+  }
+  .cta-btn:hover { transform: translateY(-2px); filter: brightness(1.08); }
+
+  /* Comparison card */
+  .compare-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 1.25rem;
+  }
+  .compare-title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .compare-title::after { content:''; flex:1; height:1px; background: var(--border); }
+
+  .compare-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.82rem;
+  }
+  .compare-row:last-child { border-bottom: none; }
+  .compare-desc { color: var(--text-soft); }
+  .compare-val { font-weight: 700; color: var(--text); }
+  .compare-val.bad { color: var(--rose); }
+  .compare-val.good { color: var(--emerald); }
+
+  .footer-note {
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+  }
+  .footer-note a { color: var(--accent-light); }
+
+  /* Tooltip */
+  .tooltip-wrap { position: relative; display: inline-block; cursor: help; }
+  .tooltip-icon {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--border);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 480px) {
+    body { padding: 1rem 0.75rem 3rem; }
+  }
+
+  @keyframes count-up {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .animate-in { animation: count-up 0.35s ease forwards; }
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="brand-badge">Punto Cero</div>
+    <h1>El Precio Justo</h1>
+    <p class="subtitle">No cuánto cobrás. Cuánto <em>deberías</em> cobrar para respetarte.<br>Construimos el precio desde tus costos reales hacia arriba.</p>
+  </header>
+
+  <!-- Philosophy strip -->
+  <div class="philosophy-strip">
+    <span class="philosophy-icon">💡</span>
+    <p class="philosophy-text">
+      La mayoría de los emprendedores ponen un precio mirando a la competencia o por instinto. Esta calculadora lo hace al revés: <strong>parte de cuánto necesitás ganar</strong>, suma todos tus costos reales, y te dice cuál es el precio mínimo que tenés que cobrar para no estar trabajando gratis.
+    </p>
+  </div>
+
+  <!-- Steps bar -->
+  <div class="steps-bar" role="navigation">
+    <div class="step-item active" id="step1-indicator" onclick="jumpToCard('card-tiempo')">
+      <div class="step-num" id="snum1">1</div>
+      <span class="step-label">Tu tiempo</span>
+    </div>
+    <div class="step-sep"></div>
+    <div class="step-item" id="step2-indicator" onclick="jumpToCard('card-costos')">
+      <div class="step-num" id="snum2">2</div>
+      <span class="step-label">Tus costos</span>
+    </div>
+    <div class="step-sep"></div>
+    <div class="step-item" id="step3-indicator" onclick="jumpToCard('card-margen')">
+      <div class="step-num" id="snum3">3</div>
+      <span class="step-label">Margen y precio</span>
+    </div>
+  </div>
+
+  <div class="calc-grid">
+
+    <!-- ── LEFT COLUMN: Inputs ── -->
+    <div>
+
+      <!-- Card 1: Tiempo -->
+      <div class="card" id="card-tiempo">
+        <div class="card-title">⏱️ Paso 1 — Tu Tiempo</div>
+
+        <div class="field">
+          <label for="sueldo_deseado">Sueldo neto mensual deseado</label>
+          <span class="help-text">Si fueras empleado de alguien, ¿cuánto querés llevarte limpio al bolsillo por mes? Sé ambicioso pero realista.</span>
+          <div class="input-wrap">
+            <span class="input-prefix">$</span>
+            <input type="number" id="sueldo_deseado" value="500000" min="0" step="10000" oninput="calculate()">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="horas_mes">Horas reales disponibles por mes</label>
+          <span class="help-text">Incluí solo las horas que realmente podés dedicarle. Sé honesto: descontá familia, descanso y trabajo actual.</span>
+          <span class="slider-value" id="horas_display">80 horas/mes</span>
+          <div class="slider-wrap">
+            <input type="range" id="horas_mes" min="10" max="200" step="5" value="80" oninput="updateSlider(); calculate()">
+            <div class="slider-labels">
+              <span>10 h</span>
+              <span>Part-time (~80h)</span>
+              <span>Full-time (~160h)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="tiempo_unidad">Tiempo real por unidad / servicio (horas)</label>
+          <span class="help-text">Todo incluido: producción, comunicación con el cliente, traslados, packaging. Sé brutal.</span>
+          <div class="input-wrap">
+            <span class="input-prefix">h</span>
+            <input type="number" id="tiempo_unidad" value="3" min="0.25" step="0.25" oninput="calculate()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Costos -->
+      <div class="card" id="card-costos">
+        <div class="card-title">📦 Paso 2 — Tus Costos</div>
+
+        <div class="field">
+          <label for="c_materiales">Costo de materiales / insumos por unidad</label>
+          <span class="help-text">Todo lo que gastás directamente en producir o entregar UNA sola unidad/servicio.</span>
+          <div class="input-wrap">
+            <span class="input-prefix">$</span>
+            <input type="number" id="c_materiales" value="2000" min="0" oninput="calculate()">
+          </div>
+          <details>
+            <summary>Desglosar ítem por ítem</summary>
+            <div class="sub-calc">
+              <p style="font-size:0.7rem;color:#64748b;margin-bottom:0.6rem;font-style:italic;">Ej: 800 madera · 600 barniz · 400 packaging · 200 flete</p>
+              <div id="items_mat">
+                <div class="item-row">
+                  <input type="text" placeholder="Material" class="no-prefix">
+                  <input type="number" placeholder="$" class="val-mat no-prefix" oninput="sumSub('c_materiales')">
+                </div>
+              </div>
+              <button class="btn-add" onclick="addItem('mat')">+ Agregar ítem</button>
+            </div>
+          </details>
+        </div>
+
+        <div class="field">
+          <label for="g_fijos_mes">Gastos fijos mensuales del emprendimiento</label>
+          <span class="help-text">Monotributo, internet, herramientas, alquiler de espacio. Lo que pagás vendas o no vendas.</span>
+          <div class="input-wrap">
+            <span class="input-prefix">$</span>
+            <input type="number" id="g_fijos_mes" value="40000" min="0" oninput="calculate()">
+          </div>
+          <details>
+            <summary>Desglosar ítem por ítem</summary>
+            <div class="sub-calc">
+              <p style="font-size:0.7rem;color:#64748b;margin-bottom:0.6rem;font-style:italic;">Ej: 15.000 monotributo · 10.000 internet · 5.000 hosting</p>
+              <div id="items_fijos">
+                <div class="item-row">
+                  <input type="text" placeholder="Gasto fijo" class="no-prefix">
+                  <input type="number" placeholder="$" class="val-fij no-prefix" oninput="sumSub('g_fijos_mes')">
+                </div>
+              </div>
+              <button class="btn-add" onclick="addItem('fijos')">+ Agregar ítem</button>
+            </div>
+          </details>
+        </div>
+
+        <div class="field">
+          <label for="unidades_mes">Unidades / servicios que planeás vender por mes</label>
+          <span class="help-text">Estimación realista, no optimista. ¿Cuánto podés producir en tus horas disponibles?</span>
+          <div class="input-wrap">
+            <span class="input-prefix">#</span>
+            <input type="number" id="unidades_mes" value="15" min="1" oninput="calculate()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Margen -->
+      <div class="card" id="card-margen">
+        <div class="card-title">📈 Paso 3 — Margen y precio final</div>
+
+        <div class="field">
+          <label for="margen_pct">Margen de ganancia adicional</label>
+          <span class="help-text">Porcentaje extra sobre el costo total para reinvertir, ahorrar y crecer. Al menos un 20% para ser sostenible.</span>
+          <span class="slider-value" id="margen_display">20% margen</span>
+          <div class="slider-wrap">
+            <input type="range" id="margen_pct" min="0" max="100" step="5" value="20" oninput="updateSlider(); calculate()">
+            <div class="slider-labels">
+              <span>0% (solo sobrevivir)</span>
+              <span>50% (saludable)</span>
+              <span>100% (escalar)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="precio_actual">¿Cuánto cobrás actualmente? <span style="color:#64748b;font-weight:400;">(opcional)</span></label>
+          <span class="help-text">Si ya tenés precio de venta, lo comparamos con el precio justo para ver la brecha.</span>
+          <div class="input-wrap">
+            <span class="input-prefix">$</span>
+            <input type="number" id="precio_actual" value="0" min="0" oninput="calculate()">
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── RIGHT COLUMN: Results ── -->
+    <div class="results-panel">
+
+      <!-- Main result card -->
+      <div class="result-card" id="main-result">
+        <div class="price-label">PRECIO MÍNIMO JUSTO POR UNIDAD</div>
+        <div class="price-display">
+          <div class="price-value" id="precio_justo">$ —</div>
+          <div class="price-per" id="precio-por">Completá los datos para ver el resultado</div>
+        </div>
+
+        <div class="viability-wrap">
+          <div class="viability-label">
+            <span>Viabilidad del modelo</span>
+            <span id="viability-pct">—</span>
+          </div>
+          <div class="viability-bar-bg">
+            <div class="viability-bar-fill" id="viability-fill"></div>
+          </div>
+        </div>
+
+        <div class="breakdown" id="breakdown">
+          <div class="breakdown-row">
+            <span class="breakdown-label">💼 Tu sueldo por hora</span>
+            <span class="breakdown-value" id="r_sueldo_hora">—</span>
+          </div>
+          <div class="breakdown-row">
+            <span class="breakdown-label">📦 Materiales por unidad</span>
+            <span class="breakdown-value" id="r_materiales">—</span>
+          </div>
+          <div class="breakdown-row">
+            <span class="breakdown-label">🏛️ Costos fijos por unidad</span>
+            <span class="breakdown-value" id="r_fijos_uni">—</span>
+          </div>
+          <div class="breakdown-row">
+            <span class="breakdown-label">⏱️ Tu trabajo por unidad</span>
+            <span class="breakdown-value" id="r_trabajo_uni">—</span>
+          </div>
+          <div class="breakdown-row highlight">
+            <span class="breakdown-label">🎯 Precio justo (con margen)</span>
+            <span class="breakdown-value" id="r_precio_final">—</span>
+          </div>
+        </div>
+
+        <div class="callout" id="callout-bajo">
+          ⚠️ <strong>Estás cobrando muy poco.</strong> Tu precio actual cubre apenas el <span id="brecha-pct">—</span>% de lo que necesitás. Cada venta te acerca más al agotamiento, no a la prosperidad.
+        </div>
+        <div class="callout" id="callout-ok" style="background:rgba(16,185,129,0.06);border-color:rgba(16,185,129,0.2);color:#6ee7b7;display:none;">
+          ✅ <strong>¡Bien posicionado!</strong> Tu precio actual está por encima del mínimo necesario. Tenés margen para competir con flexibilidad.
+        </div>
+
+        <button class="cta-btn" onclick="handleCTA()">
+          Quiero mejorar mis márgenes 🚀
+        </button>
+      </div>
+
+      <!-- Comparison card -->
+      <div class="compare-card" id="compare-card">
+        <div class="compare-title">📊 Comparativa mensual</div>
+        <div class="compare-row">
+          <span class="compare-desc">Horas disponibles</span>
+          <span class="compare-val" id="c_horas">—</span>
+        </div>
+        <div class="compare-row">
+          <span class="compare-desc">Unidades posibles (tiempo)</span>
+          <span class="compare-val" id="c_cap_tiempo">—</span>
+        </div>
+        <div class="compare-row">
+          <span class="compare-desc">Unidades planificadas</span>
+          <span class="compare-val" id="c_planificadas">—</span>
+        </div>
+        <div class="compare-row">
+          <span class="compare-desc">Ingreso bruto proyectado</span>
+          <span class="compare-val good" id="c_ingreso">—</span>
+        </div>
+        <div class="compare-row">
+          <span class="compare-desc">Sueldo real neto</span>
+          <span class="compare-val" id="c_sueldo_real">—</span>
+        </div>
+        <div class="compare-row">
+          <span class="compare-desc">Diferencia vs. objetivo</span>
+          <span class="compare-val" id="c_diferencia">—</span>
+        </div>
+      </div>
+
+      <p class="footer-note">Una herramienta de <a href="/">Punto Cero</a> · Datos solo en tu dispositivo.</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── Sub-calculators ──────────────────────────────────────────
+function sumSub(targetId) {
+  const cls = targetId === 'c_materiales' ? 'val-mat' : 'val-fij';
+  let sum = 0;
+  document.querySelectorAll(`.${cls}`).forEach(i => sum += parseFloat(i.value) || 0);
+  document.getElementById(targetId).value = sum;
+  calculate();
+}
+
+function addItem(type) {
+  const cont = document.getElementById(`items_${type === 'mat' ? 'mat' : 'fijos'}`);
+  const cls  = type === 'mat' ? 'val-mat' : 'val-fij';
+  const row  = document.createElement('div');
+  row.className = 'item-row';
+  row.innerHTML = `
+    <input type="text" placeholder="Ítem" class="no-prefix">
+    <input type="number" placeholder="$" class="${cls} no-prefix" oninput="sumSub('${type === 'mat' ? 'c_materiales' : 'g_fijos_mes'}')">`;
+  cont.appendChild(row);
+}
+
+// ── Sliders ──────────────────────────────────────────────────
+function updateSlider() {
+  const h = parseFloat(document.getElementById('horas_mes').value);
+  const m = parseFloat(document.getElementById('margen_pct').value);
+  document.getElementById('horas_display').textContent = `${h} horas/mes`;
+  document.getElementById('margen_display').textContent = `${m}% margen`;
+}
+
+// ── Formatting ───────────────────────────────────────────────
+function fmt(n) {
+  if (isNaN(n) || n === null) return '—';
+  return '$ ' + Math.round(n).toLocaleString('es-AR');
+}
+
+// ── Step indicators ──────────────────────────────────────────
+function jumpToCard(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function updateSteps(filled) {
+  for (let i = 1; i <= 3; i++) {
+    const el = document.getElementById(`step${i}-indicator`);
+    el.classList.remove('active','done');
+    if (i < filled) el.classList.add('done');
+    else if (i === filled) el.classList.add('active');
+  }
+}
+
+// ── CTA ──────────────────────────────────────────────────────
+function handleCTA() {
+  alert('¡Muy pronto! El equipo de Punto Cero te va a acompañar a implementar este precio con confianza.');
+}
+
+// ── Main calculation ─────────────────────────────────────────
+function calculate() {
+  const sueldo     = parseFloat(document.getElementById('sueldo_deseado').value) || 0;
+  const horas_mes  = parseFloat(document.getElementById('horas_mes').value) || 1;
+  const t_unidad   = parseFloat(document.getElementById('tiempo_unidad').value) || 0;
+  const c_mat      = parseFloat(document.getElementById('c_materiales').value) || 0;
+  const g_fijos    = parseFloat(document.getElementById('g_fijos_mes').value) || 0;
+  const unidades   = parseFloat(document.getElementById('unidades_mes').value) || 1;
+  const margen_pct = parseFloat(document.getElementById('margen_pct').value) || 0;
+  const precio_act = parseFloat(document.getElementById('precio_actual').value) || 0;
+
+  // Core calculations
+  const sueldo_hora     = sueldo / horas_mes;                        // $/h
+  const trabajo_uni     = sueldo_hora * t_unidad;                    // $ de tu tiempo por unidad
+  const fijos_uni       = g_fijos / unidades;                        // costos fijos prorrateados
+  const costo_total_uni = c_mat + trabajo_uni + fijos_uni;           // costo real por unidad
+  const precio_justo    = costo_total_uni * (1 + margen_pct / 100);  // precio mínimo con margen
+
+  // Monthly projection
+  const cap_tiempo      = t_unidad > 0 ? Math.floor(horas_mes / t_unidad) : '∞';
+  const ingreso_bruto   = precio_justo * unidades;
+  const sueldo_real     = ingreso_bruto - g_fijos - (c_mat * unidades);
+  const diferencia      = sueldo_real - sueldo;
+
+  // Viability
+  const viability = Math.min(100, Math.max(0, (sueldo_real / sueldo) * 100));
+
+  // Update step indicators
+  const filled = t_unidad > 0 ? (c_mat >= 0 && g_fijos >= 0 ? 3 : 2) : 1;
+  updateSteps(filled);
+
+  // Update main price
+  document.getElementById('precio_justo').textContent = fmt(precio_justo);
+  document.getElementById('precio-por').textContent   = `Por unidad / servicio · ${fmt(sueldo_hora)}/h tu tiempo`;
+
+  // Breakdown
+  document.getElementById('r_sueldo_hora').textContent  = fmt(sueldo_hora) + '/h';
+  document.getElementById('r_materiales').textContent   = fmt(c_mat);
+  document.getElementById('r_fijos_uni').textContent    = fmt(fijos_uni);
+  document.getElementById('r_trabajo_uni').textContent  = fmt(trabajo_uni);
+  document.getElementById('r_precio_final').textContent = fmt(precio_justo);
+
+  // Viability bar
+  const fill = document.getElementById('viability-fill');
+  fill.style.width = viability + '%';
+  fill.style.background = viability >= 80 ? '#10b981' : viability >= 50 ? '#f59e0b' : '#f43f5e';
+  document.getElementById('viability-pct').textContent = Math.round(viability) + '%';
+
+  // Comparison card
+  document.getElementById('c_horas').textContent      = horas_mes + ' h';
+  document.getElementById('c_cap_tiempo').textContent = cap_tiempo + ' uni';
+  document.getElementById('c_planificadas').textContent = unidades + ' uni';
+  document.getElementById('c_ingreso').textContent    = fmt(ingreso_bruto);
+  document.getElementById('c_sueldo_real').textContent = fmt(sueldo_real);
+
+  const difEl = document.getElementById('c_diferencia');
+  difEl.textContent = (diferencia >= 0 ? '+' : '') + fmt(diferencia);
+  difEl.className = 'compare-val ' + (diferencia >= 0 ? 'good' : 'bad');
+
+  // Comparison with current price
+  const calloutBajo = document.getElementById('callout-bajo');
+  const calloutOk   = document.getElementById('callout-ok');
+  calloutBajo.style.display = 'none';
+  calloutOk.style.display   = 'none';
+
+  if (precio_act > 0 && precio_justo > 0) {
+    if (precio_act < precio_justo * 0.9) {
+      const pct = Math.round((precio_act / precio_justo) * 100);
+      document.getElementById('brecha-pct').textContent = pct;
+      calloutBajo.style.display = 'block';
+    } else if (precio_act >= precio_justo) {
+      calloutOk.style.display = 'block';
+    }
+  }
+
+  // Result card color
+  const card = document.getElementById('main-result');
+  card.style.borderColor = viability >= 80
+    ? 'rgba(16,185,129,0.3)'
+    : viability >= 50
+    ? 'rgba(245,158,11,0.3)'
+    : 'rgba(244,63,94,0.3)';
+  card.querySelector('::before');
+  card.style.boxShadow = viability >= 80
+    ? '0 0 60px -20px rgba(16,185,129,0.25)'
+    : viability >= 50
+    ? '0 0 60px -20px rgba(245,158,11,0.2)'
+    : '0 0 60px -20px rgba(244,63,94,0.2)';
+}
+
+// Init
+updateSlider();
+calculate();
+</script>
+</body>
+</html>

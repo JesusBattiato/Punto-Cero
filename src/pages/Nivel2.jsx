@@ -1,221 +1,338 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { supabase } from '../lib/supabase'
+
+// ── Field styles using design system ─────────────────────────────────────────
+const S = {
+  field: { marginBottom: '1.6rem' },
+  label: { display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.35rem', color: '#cbd5e1' },
+  hint:  { fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.5rem', display: 'block', lineHeight: 1.5 },
+  input: {
+    width: '100%', backgroundColor: 'rgba(2,6,23,0.7)', border: '1px solid var(--border)',
+    borderRadius: '8px', padding: '0.75rem 1rem', color: 'var(--text)',
+    fontFamily: 'inherit', fontSize: '0.95rem', fontWeight: 500, boxSizing: 'border-box',
+    transition: 'border-color 0.2s, box-shadow 0.2s',
+  },
+  textarea: {
+    width: '100%', backgroundColor: 'rgba(2,6,23,0.7)', border: '1px solid var(--border)',
+    borderRadius: '8px', padding: '0.75rem 1rem', color: 'var(--text)',
+    fontFamily: 'inherit', fontSize: '0.95rem', fontWeight: 500, boxSizing: 'border-box',
+    minHeight: '90px', resize: 'vertical', lineHeight: 1.6,
+    transition: 'border-color 0.2s, box-shadow 0.2s',
+  },
+}
+
+function Field({ number, label, hint, children }) {
+  return (
+    <div style={S.field}>
+      <label style={S.label}>{number && <span style={{ color: 'var(--accent-light)', marginRight: '0.4rem' }}>{number}.</span>}{label}</label>
+      {hint && <span style={S.hint}>{hint}</span>}
+      {children}
+    </div>
+  )
+}
+
+function SectionTitle({ children }) {
+  return (
+    <div className="section-divider" style={{ margin: '2.5rem 0 1.75rem 0' }}>
+      {children}
+    </div>
+  )
+}
 
 export default function Nivel2() {
   const [formData, setFormData] = useState({
-    nombre: '', edad: '', ubicacion: '', situacionLaboral: '', horasDisponibles: '',
-    idea: '', estadoActual: '', diferencial: '', clienteIdeal: '',
-    competenciaUrls: '', presupuestoInicial: '', nivelUrgencia: '',
-    metaIngreso: '', historialClinico: '', cuelloBotella: ''
-  });
-  
-  const [noComp, setNoComp] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+    // Sobre vos
+    nombre: '', ubicacion: '', situacionLaboral: '', horasDisponibles: '', equipoOSolo: '',
+    // El negocio
+    idea: '', estadoActual: '', diferencial: '', clienteIdeal: '', competencia: '',
+    // Canales
+    canalesVenta: [], comoConsigueClientes: '',
+    presenciaOnline: '',
+    // Números reales
+    precioActual: '', costoUnitario: '', ventasMensualesUnidades: '', gastosFijos: '',
+    presupuestoInversion: '', metaIngreso: '', nivelUrgencia: '',
+    // Bloqueos
+    historialProyectos: '', cuelloBotella: '',
+  })
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
 
-  const handleCheckbox = (e) => {
-    setNoComp(e.target.checked);
-    if (e.target.checked) {
-      setFormData(prev => ({ ...prev, competenciaUrls: 'No sé contra quién compito' }));
-    } else {
-      setFormData(prev => ({ ...prev, competenciaUrls: '' }));
-    }
-  };
+  const set = (e) => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
+
+  const toggleCanal = (canal) => {
+    setFormData(prev => {
+      const arr = prev.canalesVenta
+      return {
+        ...prev,
+        canalesVenta: arr.includes(canal) ? arr.filter(c => c !== canal) : [...arr, canal]
+      }
+    })
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
+    e.preventDefault()
+    setIsSubmitting(true)
     if (supabase) {
       const { error } = await supabase
         .from('nivel2_diagnostico')
-        .insert([{ form_data: formData, price_quoted: 0 }]);
+        .insert([{ form_data: formData, price_quoted: 0 }])
       if (error) {
-        console.error("Error saving VIP lead:", error);
-        alert("Error de base de datos: " + error.message);
+        console.error('Error saving:', error)
+        alert('Error de base de datos: ' + error.message)
       }
     } else {
-      alert("La aplicación no se pudo conectar a la base de datos. Verifica si las llaves de Supabase se cargaron y si reiniciaste el servidor.");
+      alert('Sin conexión a la base de datos. Verificá las variables de entorno.')
     }
-    
-    setIsSubmitting(false);
-    setSubmitted(true);
-  };
+    setIsSubmitting(false)
+    setSubmitted(true)
+  }
 
   if (submitted) {
     return (
       <div className="container" style={{ textAlign: 'center', paddingTop: '5rem', paddingBottom: '10rem' }}>
-        <div style={{ background: 'rgba(30, 41, 59, 0.7)', padding: '4rem 2rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', maxWidth: '600px', margin: '0 auto' }}>
-          <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🎉</div>
-          <h2 style={{ color: 'var(--text-primary)', marginBottom: '1rem' }}>¡Información asegurada!</h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', lineHeight: '1.6' }}>
-            Nuestra inteligencia de datos ya tiene todo lo que necesita. Generaremos tu Plan de Trabajo y te contactaremos de inmediato. Preparate para la realidad.
+        <div className="card" style={{ maxWidth: '580px', margin: '0 auto', padding: '3.5rem 2.5rem' }}>
+          <div style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>🎉</div>
+          <h2 style={{ marginBottom: '1rem' }}>¡Información recibida!</h2>
+          <p style={{ fontSize: '1rem', lineHeight: '1.8' }}>
+            Nuestra inteligencia de datos ya tiene todo lo que necesita.
+            Vamos a procesar tu situación y generaremos tu Plan de Trabajo personalizado.
+            Te contactaremos a la brevedad.
           </p>
         </div>
       </div>
-    );
+    )
   }
 
+  const canales = ['Instagram / TikTok', 'WhatsApp', 'Ferias / Mercados', 'Local físico', 'MercadoLibre / Marketplace', 'Boca a boca', 'Página web', 'Email / Newsletter']
+
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', padding: '1.5rem', marginBottom: '5rem', fontFamily: "'Inter', sans-serif" }}>
-      <div style={{ background: 'rgba(22, 29, 45, 0.95)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '16px', padding: '3rem', maxWidth: '700px', width: '100%', boxShadow: '0 20px 40px rgba(0,0,0,0.6)', boxSizing: 'border-box' }}>
-        
-        <div style={{ textAlign: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', paddingBottom: '1.5rem', marginBottom: '2.5rem' }}>
-          <div style={{ fontWeight: 700, fontSize: '1.2rem', color: '#3b82f6', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Punto Cero</div>
-          <h2 style={{ margin: 0, fontSize: '1.8rem', fontWeight: 700 }}>Generar Plan de Trabajo</h2>
-          <p style={{ fontSize: '0.85rem', color: '#94a3b8', marginTop: '1rem' }}>Procesaremos detalladamente tus respuestas para entregarte una hoja de ruta estricta adaptada a tus cuellos de botella. Sé brutalmente honesto.</p>
+    <div style={{ display: 'flex', justifyContent: 'center', padding: '1.5rem 1.5rem 6rem' }}>
+      <div className="card" style={{ maxWidth: '720px', width: '100%', padding: '2.5rem 2.5rem 3rem' }}>
+
+        {/* Header */}
+        <div style={{ textAlign: 'center', borderBottom: '1px solid var(--border)', paddingBottom: '1.75rem', marginBottom: '0.5rem' }}>
+          <div className="section-badge" style={{ marginBottom: '1rem' }}>Plan de Trabajo</div>
+          <h2 style={{ marginBottom: '0.75rem' }}>Auditoría de Despegue</h2>
+          <p style={{ fontSize: '0.88rem', maxWidth: '500px', margin: '0 auto', lineHeight: '1.7' }}>
+            Respondé con honestidad brutal. Cuanto más preciso seas, más concreto y accionable será tu plan.
+            No hay respuestas incorrectas — hay respuestas honestas.
+          </p>
         </div>
 
         <form onSubmit={handleSubmit}>
-          
-          {/* Seccion 1 */}
-          <div style={{ fontSize: '1.2rem', color: '#3b82f6', margin: '2rem 0 1.5rem 0', paddingBottom: '0.5rem', borderBottom: '1px solid rgba(59,130,246,0.2)' }}>Sobre Vos</div>
-          
-          <div className="responsive-grid-small" style={{ marginBottom: '1.8rem' }}>
-            <div>
-              <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, marginBottom: '0.5rem' }}>1. Nombre y Apellido</label>
-              <input type="text" name="nombre" required placeholder="Ej: Juan Pérez" onChange={handleChange} style={inputStyles} />
-            </div>
-            <div>
-              <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, marginBottom: '0.5rem' }}>2. Edad</label>
-              <input type="number" name="edad" required placeholder="Ej: 33" onChange={handleChange} style={inputStyles} />
-            </div>
+
+          {/* ── SECCIÓN 1: SOBRE VOS ── */}
+          <SectionTitle>👤 Sobre vos</SectionTitle>
+
+          <div className="responsive-grid-small">
+            <Field number="1" label="Nombre y Apellido">
+              <input type="text" name="nombre" required placeholder="Ej: María González" onChange={set} style={S.input} />
+            </Field>
+            <Field number="2" label="Ciudad / País">
+              <input type="text" name="ubicacion" required placeholder="Ej: Tartagal, Salta" onChange={set} style={S.input} />
+            </Field>
           </div>
 
-          <div className="responsive-grid-small" style={{ marginBottom: '1.8rem' }}>
-            <div>
-              <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, marginBottom: '0.5rem' }}>3. Ubicación (Ciudad / País)</label>
-              <input type="text" name="ubicacion" required placeholder="Ej: Buenos Aires, Argentina" onChange={handleChange} style={inputStyles} />
-            </div>
-            <div>
-              <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, marginBottom: '0.5rem' }}>4. Situación Laboral Actual</label>
-              <select name="situacionLaboral" required onChange={handleChange} style={inputStyles}>
-                <option value="" disabled selected>Seleccioná...</option>
-                <option value="empleado">Relación de dependencia (Empleado)</option>
-                <option value="autonomo">Profesional Independiente</option>
+          <div className="responsive-grid-small">
+            <Field number="3" label="Situación laboral actual">
+              <select name="situacionLaboral" required onChange={set} style={S.input}>
+                <option value="" disabled defaultValue="">Seleccioná...</option>
+                <option value="empleado">En relación de dependencia</option>
+                <option value="autonomo">Profesional independiente</option>
                 <option value="desempleado">Sin trabajo formal actualmente</option>
-                <option value="dedicacion">Dedicado 100% a este emprendimiento</option>
+                <option value="dedicacion">Dedicado 100% al emprendimiento</option>
               </select>
-            </div>
+            </Field>
+            <Field number="4" label="Horas semanales disponibles"
+              hint="Sé honesto. ¿Cuántas horas reales podés sentarte a trabajar en esto?">
+              <input type="number" name="horasDisponibles" required placeholder="Ej: 10" min="1" onChange={set} style={S.input} />
+            </Field>
           </div>
 
-          <div style={{ marginBottom: '1.8rem' }}>
-            <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, marginBottom: '0.5rem' }}>5. Disponibilidad Horaria Semanal</label>
-            <span style={{ fontSize: '0.8rem', color: '#94a3b8', marginBottom: '0.75rem', display: 'block' }}>Siendo brutalmente honesto, ¿cuántas horas vas a sentarte frente a esto?</span>
-            <input type="number" name="horasDisponibles" required placeholder="Ej: 10 horas" onChange={handleChange} style={inputStyles} />
-          </div>
-
-          {/* Seccion 2 */}
-          <div style={{ fontSize: '1.2rem', color: '#3b82f6', margin: '2rem 0 1.5rem 0', paddingBottom: '0.5rem', borderBottom: '1px solid rgba(59,130,246,0.2)' }}>El Emprendimiento</div>
-
-          <div style={{ marginBottom: '1.8rem' }}>
-            <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, marginBottom: '0.5rem' }}>6. Resumí la idea o negocio en 2 renglones</label>
-            <span style={{ fontSize: '0.8rem', color: '#94a3b8', marginBottom: '0.75rem', display: 'block' }}>Sin palabras poéticas. Qué vendés.</span>
-            <textarea name="idea" required placeholder="Ej: Vendo servicios de poda..." onChange={handleChange} style={{...inputStyles, minHeight: '80px'}}></textarea>
-          </div>
-
-          <div style={{ marginBottom: '1.8rem' }}>
-            <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, marginBottom: '0.5rem' }}>7. Estado Actual del Proyecto</label>
-            <select name="estadoActual" required onChange={handleChange} style={inputStyles}>
-              <option value="" disabled selected>¿Dónde estás parado hoy?</option>
-              <option value="idea">Es solo una idea</option>
-              <option value="armado">Tengo marca armada pero no lancé</option>
-              <option value="ventas_bajas">Ventas esporádicas</option>
-              <option value="estancado">Vendiendo pero estancado</option>
+          <Field number="5" label="¿Trabajás solo/a o tenés ayuda?"
+            hint="Esto define cuánto podés delegar y cómo escalar.">
+            <select name="equipoOSolo" required onChange={set} style={S.input}>
+              <option value="" disabled defaultValue="">Seleccioná...</option>
+              <option value="solo">Solo/a, hago todo yo</option>
+              <option value="familiar">Con ayuda familiar informal</option>
+              <option value="socio">Tengo un socio o socia</option>
+              <option value="equipo_chico">Equipo pequeño (1-3 personas)</option>
+              <option value="equipo_mediano">Equipo mediano (4+ personas)</option>
             </select>
-          </div>
+          </Field>
 
-          <div style={{ marginBottom: '1.8rem' }}>
-            <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, marginBottom: '0.5rem' }}>8. Tu Diferencial Competitivo</label>
-            <span style={{ fontSize: '0.8rem', color: '#94a3b8', marginBottom: '0.75rem', display: 'block' }}>¿Por qué alguien te compraría a vos?</span>
-            <textarea name="diferencial" required onChange={handleChange} style={{...inputStyles, minHeight: '80px'}}></textarea>
-          </div>
+          {/* ── SECCIÓN 2: EL NEGOCIO ── */}
+          <SectionTitle>🏪 El negocio</SectionTitle>
 
-          <div style={{ marginBottom: '1.8rem' }}>
-            <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, marginBottom: '0.5rem' }}>9. Tu Cliente Ideal Promedio</label>
-            <span style={{ fontSize: '0.8rem', color: '#94a3b8', marginBottom: '0.75rem', display: 'block' }}>Quién es hoy tu público real.</span>
-            <input type="text" name="clienteIdeal" required placeholder="Ej: Hombres de 40+..." onChange={handleChange} style={inputStyles} />
-          </div>
+          <Field number="6" label="¿Qué vendés? Resumilo en 2 renglones."
+            hint="Sin palabras poéticas. Producto o servicio concreto.">
+            <textarea name="idea" required placeholder="Ej: Fabrico y vendo velas aromáticas artesanales. También hago talleres de aromaterapia en grupos." onChange={set} style={S.textarea} />
+          </Field>
 
-          <div style={{ marginBottom: '1.8rem' }}>
-            <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, marginBottom: '0.5rem' }}>10. Análisis de Competencia Activa</label>
-            <span style={{ fontSize: '0.8rem', color: '#94a3b8', marginBottom: '0.75rem', display: 'block' }}>URLs directas o @usuarios de Instagram.</span>
-            <div style={{ background: 'rgba(255,255,255,0.02)', padding: '1rem', borderRadius: '8px', border: '1px dashed rgba(255,255,255,0.08)', opacity: noComp ? 0.3 : 1, pointerEvents: noComp ? 'none' : 'auto' }}>
-              <input type="text" placeholder="URL Competidor 1" onChange={(e) => { if(!noComp){ setFormData({...formData, competenciaUrls: e.target.value}) } }} style={{...inputStyles, marginBottom: '0.5rem'}} />
-            </div>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '1rem', fontSize: '0.9rem', color: '#cbd5e1', background: 'rgba(239, 68, 68, 0.1)', padding: '0.75rem', borderRadius: '6px', border: '1px solid rgba(239, 68, 68, 0.2)', cursor: 'pointer' }}>
-              <input type="checkbox" onChange={handleCheckbox} style={{ width: '18px', height: '18px', accentColor: '#3b82f6' }} />
-              <span>No sé contra quién compito o no tengo links.</span>
-            </label>
-          </div>
-
-          {/* Seccion 3 */}
-          <div style={{ fontSize: '1.2rem', color: '#3b82f6', margin: '2rem 0 1.5rem 0', paddingBottom: '0.5rem', borderBottom: '1px solid rgba(59,130,246,0.2)' }}>Fricciones y Finanzas</div>
-
-          <div className="responsive-grid-small" style={{ marginBottom: '1.8rem' }}>
-            <div>
-              <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, marginBottom: '0.5rem' }}>11. Presupuesto Actual</label>
-              <select name="presupuestoInicial" required onChange={handleChange} style={inputStyles}>
-                <option value="" disabled selected>Seleccioná...</option>
-                <option value="zero">$0 ARS (Orgánico)</option>
-                <option value="low">Menos de $50.000 ARS</option>
-                <option value="mid">Entre $50K y $300K ARS</option>
-                <option value="high">Más de $500K ARS</option>
+          <div className="responsive-grid-small">
+            <Field number="7" label="Estado actual del proyecto">
+              <select name="estadoActual" required onChange={set} style={S.input}>
+                <option value="" disabled defaultValue="">¿Dónde estás hoy?</option>
+                <option value="idea">Solo tengo la idea</option>
+                <option value="armado">Armado pero sin lanzar</option>
+                <option value="ventas_bajas">Ventas esporádicas</option>
+                <option value="estancado">Vendiendo pero estancado</option>
+                <option value="creciendo">Creciendo y necesito orden</option>
               </select>
-            </div>
-            <div>
-              <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, marginBottom: '0.5rem' }}>12. Nivel de Urgencia</label>
-              <select name="nivelUrgencia" required onChange={handleChange} style={inputStyles}>
-                <option value="" disabled selected>Seleccioná...</option>
-                <option value="inmediata">Extrema (2 meses)</option>
-                <option value="media">Moderada (1 año)</option>
-                <option value="baja">Baja (Futuro)</option>
+            </Field>
+            <Field number="8" label="Nivel de urgencia">
+              <select name="nivelUrgencia" required onChange={set} style={S.input}>
+                <option value="" disabled defaultValue="">Nivel de urgencia</option>
+                <option value="inmediata">Crítica — necesito cambios en 2 meses</option>
+                <option value="media">Moderada — tengo margen de 6-12 meses</option>
+                <option value="baja">Baja — exploro para el futuro</option>
               </select>
+            </Field>
+          </div>
+
+          <Field number="9" label="¿Por qué te comprarían a vos y no a otro?"
+            hint="Tu diferencial real. No el que querés tener — el que tenés hoy.">
+            <textarea name="diferencial" required placeholder="Ej: Uso ingredientes naturales certificados y entrego en 24hs con packaging personalizado." onChange={set} style={S.textarea} />
+          </Field>
+
+          <Field number="10" label="¿Quién es tu cliente ideal hoy?"
+            hint="Descripción concreta: edad, situación, dónde vive, qué le duele.">
+            <textarea name="clienteIdeal" required placeholder="Ej: Mujeres de 30-45 años, zona urbana, con interés en bienestar. Buscan regalos originales y tienen presupuesto medio-alto." onChange={set} style={S.textarea} />
+          </Field>
+
+          <Field number="11" label="¿Conocés tu competencia?"
+            hint="Describila brevemente. No necesitamos links — necesitamos tu análisis.">
+            <textarea name="competencia" placeholder="Ej: Hay 3-4 productoras locales en Instagram. Cobran menos que yo pero no tienen diferenciación de producto. También compito con marcas de Buenos Aires con mejor presencia online." onChange={set} style={S.textarea} />
+          </Field>
+
+          {/* ── SECCIÓN 3: CANALES ── */}
+          <SectionTitle>📣 Canales y clientes</SectionTitle>
+
+          <Field number="12" label="¿Dónde vendés actualmente? (Seleccioná todos los que apliquen)">
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.25rem' }}>
+              {canales.map(c => {
+                const active = formData.canalesVenta.includes(c)
+                return (
+                  <button
+                    key={c}
+                    type="button"
+                    onClick={() => toggleCanal(c)}
+                    style={{
+                      padding: '0.45rem 0.9rem',
+                      borderRadius: '999px',
+                      border: `1px solid ${active ? 'var(--accent)' : 'var(--border)'}`,
+                      background: active ? 'rgba(99,102,241,0.15)' : 'rgba(0,0,0,0.2)',
+                      color: active ? 'var(--accent-light)' : 'var(--text-soft)',
+                      fontSize: '0.8rem',
+                      fontWeight: active ? 600 : 400,
+                      cursor: 'pointer',
+                      transition: 'all 0.15s',
+                      fontFamily: 'inherit',
+                    }}
+                  >
+                    {c}
+                  </button>
+                )
+              })}
             </div>
+          </Field>
+
+          <Field number="13" label="¿Cómo conseguís clientes hoy?"
+            hint="Sé específico: ¿vienen solos, los buscás, publicás, pedís referidos?">
+            <textarea name="comoConsigueClientes" required placeholder="Ej: El 80% viene por recomendación de clientes anteriores. Publico 2 veces por semana en Instagram pero no sé si funciona. Nunca hice publicidad paga." onChange={set} style={S.textarea} />
+          </Field>
+
+          <Field number="14" label="¿Tenés presencia online? Describila."
+            hint="Instagram, web, catálogo digital, reseñas, seguidores aproximados — lo que haya.">
+            <textarea name="presenciaOnline" placeholder="Ej: Instagram con 800 seguidores, baja interacción. No tengo web. Sí tengo perfil de MercadoLibre pero casi no lo uso." onChange={set} style={S.textarea} />
+          </Field>
+
+          {/* ── SECCIÓN 4: NÚMEROS REALES ── */}
+          <SectionTitle>💰 Los números reales</SectionTitle>
+
+          <div style={{
+            background: 'rgba(99,102,241,0.05)',
+            border: '1px solid rgba(99,102,241,0.15)',
+            borderRadius: '10px',
+            padding: '0.85rem 1rem',
+            marginBottom: '1.5rem',
+            fontSize: '0.82rem',
+            color: 'var(--accent-light)',
+            lineHeight: 1.6
+          }}>
+            💡 Esta sección es la más importante. Sin números reales, cualquier plan es puro deseo. Si no los tenés exactos, aproximá honestamente.
           </div>
 
-          <div style={{ marginBottom: '1.8rem' }}>
-            <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, marginBottom: '0.5rem' }}>13. Meta de Ingreso Neto a 6 Meses</label>
-            <span style={{ fontSize: '0.8rem', color: '#94a3b8', marginBottom: '0.75rem', display: 'block' }}>Lo que querés limpio en bolsillo ($ ARS).</span>
-            <input type="number" name="metaIngreso" required placeholder="Ej: 800000" onChange={handleChange} style={inputStyles} />
+          <div className="responsive-grid-small">
+            <Field number="15" label="¿Cuánto cobrás por producto o servicio?"
+              hint="Precio promedio de venta al cliente.">
+              <input type="number" name="precioActual" placeholder="$ ARS" min="0" onChange={set} style={S.input} />
+            </Field>
+            <Field number="16" label="¿Cuánto te cuesta producir uno?"
+              hint="Materiales + insumos directos. No incluyas tu tiempo todavía.">
+              <input type="number" name="costoUnitario" placeholder="$ ARS" min="0" onChange={set} style={S.input} />
+            </Field>
           </div>
 
-          <div style={{ marginBottom: '1.8rem' }}>
-            <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, marginBottom: '0.5rem' }}>14. Historial Clínico</label>
-            <span style={{ fontSize: '0.8rem', color: '#94a3b8', marginBottom: '0.75rem', display: 'block' }}>¿Cerraste otros proyectos antes?</span>
-            <textarea name="historialClinico" required onChange={handleChange} style={{...inputStyles, minHeight: '80px'}}></textarea>
+          <div className="responsive-grid-small">
+            <Field number="17" label="¿Cuántas unidades / servicios vendés por mes hoy?"
+              hint="Promedio real de los últimos 3 meses.">
+              <input type="number" name="ventasMensualesUnidades" placeholder="Ej: 20" min="0" onChange={set} style={S.input} />
+            </Field>
+            <Field number="18" label="Gastos fijos mensuales del emprendimiento"
+              hint="Monotributo, internet, alquiler, herramientas. Solo del negocio.">
+              <input type="number" name="gastosFijos" placeholder="$ ARS" min="0" onChange={set} style={S.input} />
+            </Field>
           </div>
 
-          <div style={{ marginBottom: '1.8rem' }}>
-            <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, marginBottom: '0.5rem' }}>15. El Cuello de Botella Final</label>
-            <span style={{ fontSize: '0.8rem', color: '#94a3b8', marginBottom: '0.75rem', display: 'block' }}>Último escollo u obstáculo emocional/técnico.</span>
-            <textarea name="cuelloBotella" required onChange={handleChange} style={{...inputStyles, minHeight: '80px'}}></textarea>
+          <div className="responsive-grid-small">
+            <Field number="19" label="Meta de ingreso neto mensual a 6 meses"
+              hint="Lo que querés llevarte limpio al bolsillo.">
+              <input type="number" name="metaIngreso" required placeholder="$ ARS" min="0" onChange={set} style={S.input} />
+            </Field>
+            <Field number="20" label="Presupuesto disponible para invertir"
+              hint="Para publicidad, herramientas, capacitación, etc.">
+              <select name="presupuestoInversion" required onChange={set} style={S.input}>
+                <option value="" disabled defaultValue="">Seleccioná...</option>
+                <option value="zero">$0 — solo con lo que tengo</option>
+                <option value="bajo">Menos de $50.000 ARS</option>
+                <option value="medio">$50.000 – $300.000 ARS</option>
+                <option value="alto">Más de $300.000 ARS</option>
+              </select>
+            </Field>
           </div>
 
-          <div style={{ marginTop: '2rem', background: 'rgba(0,0,0,0.3)', padding: '1.5rem', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
-            <button type="submit" disabled={isSubmitting} style={{ width: '100%', background: '#3b82f6', color: 'white', fontSize: '1.1rem', fontWeight: 700, padding: '1.2rem', border: 'none', borderRadius: '8px', cursor: 'pointer', transition: 'background 0.3s' }}>
-              {isSubmitting ? 'Auditando Datos...' : 'Auditar'}
+          {/* ── SECCIÓN 5: BLOQUEOS ── */}
+          <SectionTitle>🧱 Historia y bloqueos</SectionTitle>
+
+          <Field number="21" label="¿Intentaste emprender antes? ¿Qué pasó?"
+            hint="No tenés que impresionar a nadie. El historial define el patrón.">
+            <textarea name="historialProyectos" required placeholder="Ej: Tuve una tienda de ropa en 2022 pero la cerré porque no podía costear el alquiler. También intenté dar clases de inglés pero no conseguí alumnos suficientes." onChange={set} style={S.textarea} />
+          </Field>
+
+          <Field number="22" label="¿Cuál es el obstáculo más grande hoy?"
+            hint="Un único cuello de botella. El que si lo resolvieras, todo cambiaría.">
+            <textarea name="cuelloBotella" required placeholder="Ej: No sé cómo fijar precios sin perder clientes. Cada vez que subo el precio alguien me dice que es caro y lo bajo. Termino trabajando más por lo mismo." onChange={set} style={S.textarea} />
+          </Field>
+
+          {/* Submit */}
+          <div style={{ marginTop: '2.5rem' }}>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="btn-primary"
+              style={{ width: '100%', justifyContent: 'center', padding: '1rem', fontSize: '1rem' }}
+            >
+              {isSubmitting ? 'Procesando tu auditoría...' : 'Generar mi Plan de Trabajo →'}
             </button>
+            <p style={{ textAlign: 'center', marginTop: '0.85rem', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+              Tus respuestas se procesan con IA. Te contactamos en menos de 48 horas.
+            </p>
           </div>
 
         </form>
       </div>
     </div>
-  );
+  )
 }
-
-const inputStyles = {
-  width: '100%',
-  backgroundColor: '#0f172a',
-  border: '1px solid rgba(255, 255, 255, 0.08)',
-  borderRadius: '8px',
-  padding: '1rem',
-  color: '#f8fafc',
-  fontFamily: 'inherit',
-  fontSize: '0.95rem',
-  boxSizing: 'border-box'
-};

@@ -3,11 +3,11 @@ import React, { useState } from 'react'
 // ── Data de capacitaciones ──────────────────────────────────────────────────
 const capacitaciones = [
   {
-    id: 'sueldo-fantasma',
+    id: 'cuanto-vale-tu-hora',
     cliente: 'Punto Cero',
     titulo: '¿Cuánto Vale Tu Hora?',
     subtitulo: 'Economía Emprendedora',
-    descripcion: 'Taller de educación financiera para emprendedores. Costos fijos, sueldo fantasma y punto de equilibrio.',
+    descripcion: 'Taller de educación financiera para emprendedores. Costos fijos, análisis de margen real y punto de equilibrio.',
     color: '#3b82f6',
     colorLight: 'rgba(59,130,246,0.1)',
     tag: 'Emprendedores',
@@ -17,21 +17,28 @@ const capacitaciones = [
         icono: '📄',
         titulo: 'Manual Clínico: Economía Emprendedora',
         descripcion: '10 páginas · Teoría + ejercicios prácticos',
-        url: '/capacitaciones/sueldo-fantasma/cartilla-economia-emprendedora.html',
+        url: '/capacitaciones/cuanto-vale-tu-hora/cartilla-economia-emprendedora.html',
       },
       {
         tipo: 'Presentación',
         icono: '🖥️',
         titulo: 'Presentación: ¿Cuánto Vale Tu Hora?',
         descripcion: '9 slides interactivos · Con calculadora embebida',
-        url: '/capacitaciones/sueldo-fantasma/presentacion.html',
+        url: '/capacitaciones/cuanto-vale-tu-hora/presentacion.html',
       },
       {
         tipo: 'Herramienta',
         icono: '🧮',
         titulo: 'Máquina de la Verdad',
-        descripcion: 'Calculadora financiera interactiva',
-        url: '/capacitaciones/sueldo-fantasma/maquina-de-la-verdad.html',
+        descripcion: 'Calculadora de diagnóstico financiero · Semáforo de viabilidad',
+        url: '/capacitaciones/cuanto-vale-tu-hora/maquina-de-la-verdad.html',
+      },
+      {
+        tipo: 'Herramienta',
+        icono: '🎯',
+        titulo: 'El Precio Justo',
+        descripcion: 'Calculadora de precio mínimo · 3 pasos guiados · Con margen',
+        url: '/capacitaciones/cuanto-vale-tu-hora/precio-justo.html',
       },
     ],
   },
@@ -217,7 +224,7 @@ export default function Capacitaciones() {
       </div>
 
       {/* Footer note */}
-      <p style={{ textAlign: 'center', marginTop: '3rem', fontSize: '0.8rem', color: '#374151' }}>
+      <p style={{ textAlign: 'center', marginTop: '3rem', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
         Sistemas en Línea · Estrategia Operativa Punto Cero
       </p>
     </div>
