@@ -4,7 +4,7 @@ import Home from './pages/Home'
 import Nivel1 from './pages/Nivel1'
 import Nivel2 from './pages/Nivel2'
 import Capacitaciones from './pages/Capacitaciones'
-import TecpetrolDashboard from './pages/TecpetrolDashboard'
+import AdminDashboard from './pages/AdminDashboard'
 import Charla from './pages/Charla'
 
 const TOOL_ITEMS = [
@@ -201,7 +201,7 @@ function App() {
           <Route path="/auditoria-vip"      element={<Nivel2 />} />
           <Route path="/capacitaciones"     element={<Capacitaciones />} />
           <Route path="/charla"             element={<Charla />} />
-          <Route path="/admin/ramos"        element={<TecpetrolDashboard />} />
+          <Route path="/admin"              element={<AdminDashboard />} />
         </Routes>
       </main>
     </>
