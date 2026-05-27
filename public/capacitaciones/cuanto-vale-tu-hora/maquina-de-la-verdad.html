@@ -650,8 +650,11 @@
 
   // ── CTA handler ──────────────────────────────────────────────
   function handleCTA() {
-    // Replace with WhatsApp link or form URL when ready
-    alert('¡Muy pronto! Vamos a conectarte directamente con el equipo de Punto Cero.');
+    if (window.self !== window.top) {
+      window.top.location.href = '/auditoria-vip';
+    } else {
+      window.location.href = '/auditoria-vip';
+    }
   }
 
   // ── Main calculation ─────────────────────────────────────────
