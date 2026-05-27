@@ -56,9 +56,29 @@
 > 
 > Automáticamente la máquina les dirá cuántos pesos reales ganan por cada 60 minutos de vida que dejan ahí. Y se pintará de rojo o verde. Úsenla a partir de mañana antes de pasar un presupuesto. Y cuando alguien les diga 'qué caro'... ustedes miran ese número en el celular y recuerdan por qué lo cobran. No es caro. Es el precio que necesito para respetarme frente al espejo."
 
+
 ---
 
-## ⏱️ Minuto 55 a 65: El Cierre Suave (El Puente al Nivel 2)
+## ⏱️ Minuto 55 a 62: ¿Y si no puedo subir el precio? (Las 4 Palancas)
+*Anticípate a la objeción más grande antes de que la digan en voz alta. Hazlos sentir inteligentes y con opciones.*
+
+**Tu Guion:**
+> "Ahora bien, sé perfectamente lo que muchos están pensando en este momento. Me miran y dicen: 'Qué lindo suena tu cálculo, Jesús. Pero si yo cobro eso en mi barrio, en mi mercado, no vendo un solo alfiler. El precio ya está fijado por la sociedad y no lo puedo mover'.
+> 
+> Tienen toda la razón. Y es un excelente punto. A veces el precio lo define la competencia y el cliente, y no podemos aumentarlo. Pero la matemática no miente: si el precio de venta se queda quieto y hoy no nos da para pagarnos un sueldo digno, tenemos que mover otras perillas. No estamos acorralados.
+> 
+> Existen **4 Palancas de Ajuste** que ustedes pueden accionar hoy mismo para salvar su hora de trabajo sin tocar el precio de venta:
+> 
+> 1. **La Palanca del Oxígeno (Costos Fijos):** ¿Qué suscripción, qué gasto mensual podemos recortar o compartir? Si bajamos el peso de la mochila fija, reducimos inmediatamente el Punto de Equilibrio mensual.
+> 2. **La Palanca de la Sangre (Costo de Insumos):** Negociar con proveedores, buscar compras colectivas/comunitarias con otros colegas para conseguir precios mayoristas, o rediseñar el producto para usar insumos más eficientes sin perder la calidad.
+> 3. **La Palanca del Reloj (Eficiencia de Tiempo):** Si el precio final está topeado, la única forma de que tu hora valga más es **tardar menos tiempo por unidad**. ¿Podemos usar un molde, una plantilla o estandarizar el proceso para fabricar en 30 minutos lo que hoy nos toma 2 horas?
+> 4. **La Palanca del Modelo (Diferenciación):** Dejar de competir en el barro del precio bajo. ¿Cómo empaquetamos el producto de forma distinta? ¿Podemos hacer combos, personalización o apuntar a un nicho que valore la exclusividad por sobre el precio?
+> 
+> No se queden de brazos cruzados sintiendo que el mercado los condena. Si el precio no sube, muevan las palancas."
+
+---
+
+## ⏱️ Minuto 62 a 75: El Cierre Suave (El Puente al Nivel 2)
 *Al coach bondadoso no le divierte vender, le apasiona ayudar. La venta tiene que sentirse como una oportunidad de sanación.*
 
 **Tu Guion:**
