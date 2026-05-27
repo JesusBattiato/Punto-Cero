@@ -839,7 +839,11 @@ function updateSteps(filled) {
 
 // ── CTA ──────────────────────────────────────────────────────
 function handleCTA() {
-  alert('¡Muy pronto! El equipo de Punto Cero te va a acompañar a implementar este precio con confianza.');
+  if (window.self !== window.top) {
+    window.top.location.href = '/auditoria-vip';
+  } else {
+    window.location.href = '/auditoria-vip';
+  }
 }
 
 // ── Main calculation ─────────────────────────────────────────
