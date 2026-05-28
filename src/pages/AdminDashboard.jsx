@@ -104,6 +104,81 @@ Por favor, analiza estos datos y genera una hoja de ruta clínica de 90 días, p
     })
   }
 
+  const exportCharlaToCSV = () => {
+    if (charlaRegistros.length === 0) return
+    const headers = ['Nombre', 'WhatsApp', 'Rubro', 'Pregunta', 'Fecha Registro']
+    const csvRows = [
+      headers.join(','),
+      ...charlaRegistros.map(reg => [
+        `"${(reg.nombre || '').replace(/"/g, '""')}"`,
+        `"${(reg.whatsapp || '').replace(/"/g, '""')}"`,
+        `"${(reg.rubro || '').replace(/"/g, '""')}"`,
+        `"${(reg.pregunta || '').replace(/"/g, '""')}"`,
+        `"${reg.created_at ? new Date(reg.created_at).toLocaleDateString('es-AR') : ''}"`
+      ].join(','))
+    ]
+    const csvContent = '\uFEFF' + csvRows.join('\n')
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.setAttribute('href', url)
+    link.setAttribute('download', `inscriptos_charla_${new Date().toISOString().slice(0, 10)}.csv`)
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
+  const exportAuditoriasToCSV = () => {
+    if (auditorias.length === 0) return
+    const headers = [
+      'Nombre', 'Ubicación', 'Situación Laboral', 'Horas Semanales', 'Equipo o Solo',
+      'Qué vende', 'Estado actual', 'Diferencial', 'Cliente ideal', 'Competencia',
+      'Canales', 'Cómo consigue clientes', 'Presencia online', 'Precio actual',
+      'Costo unitario', 'Ventas mensuales', 'Gastos fijos', 'Meta ingreso',
+      'Presupuesto inversión', 'Urgencia', 'Historial', 'Cuello de botella', 'Fecha Registro'
+    ]
+    const csvRows = [
+      headers.join(','),
+      ...auditorias.map(audit => {
+        const data = audit.form_data || audit
+        return [
+          `"${(data.nombre || '').replace(/"/g, '""')}"`,
+          `"${(data.ubicacion || '').replace(/"/g, '""')}"`,
+          `"${(data.situacionLaboral || '').replace(/"/g, '""')}"`,
+          `"${data.horasDisponibles || '0'}"`,
+          `"${(data.equipoOSolo || '').replace(/"/g, '""')}"`,
+          `"${(data.idea || '').replace(/"/g, '""')}"`,
+          `"${(data.estadoActual || '').replace(/"/g, '""')}"`,
+          `"${(data.diferencial || '').replace(/"/g, '""')}"`,
+          `"${(data.clienteIdeal || '').replace(/"/g, '""')}"`,
+          `"${(data.competencia || '').replace(/"/g, '""')}"`,
+          `"${(Array.isArray(data.canalesVenta) ? data.canalesVenta.join('; ') : '').replace(/"/g, '""')}"`,
+          `"${(data.comoConsigueClientes || '').replace(/"/g, '""')}"`,
+          `"${(data.presenciaOnline || '').replace(/"/g, '""')}"`,
+          `"${data.precioActual || '0'}"`,
+          `"${data.costoUnitario || '0'}"`,
+          `"${data.ventasMensualesUnidades || '0'}"`,
+          `"${data.gastosFijos || '0'}"`,
+          `"${data.metaIngreso || '0'}"`,
+          `"${(data.presupuestoInversion || '').replace(/"/g, '""')}"`,
+          `"${(data.nivelUrgencia || '').replace(/"/g, '""')}"`,
+          `"${(data.historialProyectos || '').replace(/"/g, '""')}"`,
+          `"${(data.cuelloBotella || '').replace(/"/g, '""')}"`,
+          `"${audit.created_at ? new Date(audit.created_at).toLocaleDateString('es-AR') : ''}"`
+        ].join(',')
+      })
+    ]
+    const csvContent = '\uFEFF' + csvRows.join('\n')
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.setAttribute('href', url)
+    link.setAttribute('download', `auditorias_nivel2_${new Date().toISOString().slice(0, 10)}.csv`)
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
   if (!isAuthenticated) {
     return (
       <div className="container" style={{ display: 'flex', justifyContent: 'center', padding: '6rem 1.5rem 10rem' }}>
@@ -210,10 +285,15 @@ Por favor, analiza estos datos y genera una hoja de ruta clínica de 90 días, p
       {/* ── TAB 1: CHARLA REGISTROS ── */}
       {!loading && activeTab === 'charla' && (
         <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
             <span style={{ fontSize: '0.85rem', color: 'var(--text-soft)' }}>
               Total de inscriptos para el taller del Viernes 29: <strong>{charlaRegistros.length}</strong>
             </span>
+            {charlaRegistros.length > 0 && (
+              <button className="btn-outline" onClick={exportCharlaToCSV} style={{ padding: '0.4rem 0.85rem', fontSize: '0.8rem' }}>
+                📥 Descargar CSV
+              </button>
+            )}
           </div>
           
           <div style={{ overflowX: 'auto', background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: '14px' }}>
@@ -261,10 +341,15 @@ Por favor, analiza estos datos y genera una hoja de ruta clínica de 90 días, p
       {/* ── TAB 2: AUDITORIAS NIVEL 2 ── */}
       {!loading && activeTab === 'auditorias' && (
         <div>
-          <div style={{ marginBottom: '1.5rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
             <span style={{ fontSize: '0.85rem', color: 'var(--text-soft)' }}>
               Planes de Trabajo solicitados: <strong>{auditorias.length}</strong>
             </span>
+            {auditorias.length > 0 && (
+              <button className="btn-outline" onClick={exportAuditoriasToCSV} style={{ padding: '0.4rem 0.85rem', fontSize: '0.8rem' }}>
+                📥 Descargar CSV
+              </button>
+            )}
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
