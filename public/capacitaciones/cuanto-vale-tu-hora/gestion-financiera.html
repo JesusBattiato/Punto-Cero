@@ -232,6 +232,39 @@
   }
   .btn-remove:hover { background: rgba(244, 63, 94, 0.1); }
 
+  .btn-edit {
+    background: transparent;
+    border: none;
+    color: var(--accent-light);
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    transition: background 0.2s;
+    margin-right: 0.25rem;
+  }
+  .btn-edit:hover { background: rgba(129, 140, 248, 0.15); }
+
+  .btn-outline-cancel {
+    background: transparent;
+    border: 1px solid rgba(148, 163, 184, 0.3);
+    color: var(--text-soft);
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+  .btn-outline-cancel:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--text-soft);
+    color: var(--text);
+  }
+
+
   .btn-add-item {
     background: transparent;
     color: var(--accent-light);
@@ -479,8 +512,8 @@
       </div>
 
       <!-- Add Product Card -->
-      <div class="card">
-        <div class="card-title">📦 Añadir Producto al Catálogo</div>
+      <div class="card" id="product-form-card">
+        <div class="card-title" id="form-title">📦 Añadir Producto al Catálogo</div>
         
         <div class="field-row">
           <div class="field">
@@ -538,9 +571,11 @@
         </div>
 
         <div style="margin-top: 1.5rem;">
-          <button class="btn-primary" onclick="addProduct()">Agregar Producto al Catálogo ➔</button>
+          <button class="btn-primary" id="btn-add-product" onclick="submitProductForm()">Agregar Producto al Catálogo ➔</button>
+          <button class="btn-outline-cancel" id="btn-cancel-edit" onclick="cancelEdit()" style="display: none;">Cancelar Edición</button>
         </div>
       </div>
+
 
       <!-- Catalog Card -->
       <div class="card" id="catalog-card" style="display: none;">
@@ -719,7 +754,9 @@
   }
 
   // ── Product Operations ───────────────────────────────────────
-  function addProduct() {
+  let editingIdx = -1;
+
+  function submitProductForm() {
     const name = document.getElementById('p_nombre').value.trim();
     const precio = parseFloat(document.getElementById('p_precio').value) || 0;
     const ventas = parseFloat(document.getElementById('p_ventas').value) || 0;
@@ -731,28 +768,94 @@
       return;
     }
 
-    // Collect materials cost
-    let insumos_cost = 0;
-    const matCostInputs = document.querySelectorAll('#list-materiales .mat-cost');
-    matCostInputs.forEach(inp => {
-      insumos_cost += parseFloat(inp.value) || 0;
+    // Collect materials list and cost
+    let materials = [];
+    const matRows = document.querySelectorAll('#list-materiales .item-row');
+    matRows.forEach(row => {
+      const mName = row.querySelector('.mat-name').value.trim();
+      const mCost = parseFloat(row.querySelector('.mat-cost').value) || 0;
+      if (mName || mCost > 0) {
+        materials.push({ name: mName, cost: mCost });
+      }
+    });
+    const insumos_cost = materials.reduce((acc, m) => acc + m.cost, 0);
+
+    if (editingIdx >= 0) {
+      // Edit existing product
+      products[editingIdx] = {
+        id: products[editingIdx].id || Date.now(),
+        name,
+        p_venta: precio,
+        v_estimadas: ventas,
+        t_unidad: tiempo,
+        sueldo_hora: valor_hora,
+        c_insumos: insumos_cost,
+        materials: materials
+      };
+    } else {
+      // Add new product
+      const prod = {
+        id: Date.now(),
+        name,
+        p_venta: precio,
+        v_estimadas: ventas,
+        t_unidad: tiempo,
+        sueldo_hora: valor_hora,
+        c_insumos: insumos_cost,
+        materials: materials
+      };
+      products.push(prod);
+    }
+
+    saveState();
+    resetProductForm();
+    renderCatalog();
+    calculate();
+  }
+
+  function editProduct(idx) {
+    editingIdx = idx;
+    const p = products[idx];
+
+    // Change form state to editing
+    document.getElementById('form-title').innerText = '✏️ Editar Producto';
+    document.getElementById('btn-add-product').innerText = 'Guardar Cambios ➔';
+    document.getElementById('btn-cancel-edit').style.display = 'inline-block';
+
+    // Populate form fields
+    document.getElementById('p_nombre').value = p.name;
+    document.getElementById('p_precio').value = p.p_venta;
+    document.getElementById('p_ventas').value = p.v_estimadas;
+    document.getElementById('p_tiempo').value = p.t_unidad;
+    document.getElementById('p_valor_hora').value = p.sueldo_hora;
+
+    // Populate materials list
+    const list = document.getElementById('list-materiales');
+    list.innerHTML = '';
+
+    const mats = p.materials || [{ name: 'Insumos básicos', cost: p.c_insumos }];
+    mats.forEach(m => {
+      addMaterialRow(m.name, m.cost);
     });
 
-    // Create product object
-    const prod = {
-      id: Date.now(),
-      name,
-      p_venta: precio,
-      v_estimadas: ventas,
-      t_unidad: tiempo,
-      sueldo_hora: valor_hora,
-      c_insumos: insumos_cost
-    };
+    if (mats.length === 0) {
+      addMaterialRow('', '');
+    }
 
-    products.push(prod);
-    saveState();
+    // Scroll to form card
+    document.getElementById('product-form-card').scrollIntoView({ behavior: 'smooth' });
+  }
 
-    // Reset fields in form
+  function cancelEdit() {
+    resetProductForm();
+  }
+
+  function resetProductForm() {
+    editingIdx = -1;
+    document.getElementById('form-title').innerText = '📦 Añadir Producto al Catálogo';
+    document.getElementById('btn-add-product').innerText = 'Agregar Producto al Catálogo ➔';
+    document.getElementById('btn-cancel-edit').style.display = 'none';
+
     document.getElementById('p_nombre').value = '';
     document.getElementById('p_precio').value = '15000';
     document.getElementById('p_ventas').value = '10';
@@ -768,12 +871,12 @@
         <button class="btn-remove" onclick="this.parentElement.remove()">✕</button>
       </div>
     `;
-
-    renderCatalog();
-    calculate();
   }
 
   function removeProduct(idx) {
+    if (editingIdx === idx) {
+      resetProductForm();
+    }
     products.splice(idx, 1);
     saveState();
     renderCatalog();
@@ -810,11 +913,15 @@
         <td style="color:${margen_unit >= 0 ? 'var(--green)' : 'var(--red)'};font-weight:700;">${fmt(margen_unit)}</td>
         <td>${p.v_estimadas} ud</td>
         <td><span class="badge-mix">${Math.round(mezcla)}%</span></td>
-        <td><button class="btn-remove" onclick="removeProduct(${idx})">✕</button></td>
+        <td>
+          <button class="btn-edit" onclick="editProduct(${idx})" title="Editar producto">✏️</button>
+          <button class="btn-remove" onclick="removeProduct(${idx})" title="Eliminar producto">✕</button>
+        </td>
       `;
       tbody.appendChild(tr);
     });
   }
+
 
   // ── Global Calculations & Diagnostics ────────────────────────
   function calculate() {
