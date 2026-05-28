@@ -52,9 +52,9 @@
 **Tu Guion:**
 > "Darse cuenta de que regalamos el tiempo duele, claro. Pero ese 'dolor' es en realidad el primer paso para curarse. Es el primer día en que empezamos a exigir ganar en serio.
 > 
-> Para que no lo tengan que hacer mentalmente, en nuestra agencia desarrollamos un 'Escudo Protector'. Lo llamamos el **Simulador de Viabilidad Financiera**, y lo van a abrir desde su celular siempre. Ponen ahí los costos del material y algo sagrado: **El reloj**. Ponen cuántas horas tardan y cuál es el precio. 
+> Para que no lo tengan que hacer mentalmente, en nuestra agencia desarrollamos un 'Escudo Protector'. Lo llamamos el **Simulador de Viabilidad Financiera**, y lo van a abrir desde su celular siempre. Ponen ahí su sueldo deseado, sus horas disponibles, sus costos de materiales y su precio de venta. 
 > 
-> Automáticamente el simulador les dirá cuántos pesos reales ganan por cada 60 minutos de vida que dejan ahí. Y se pintará de rojo o verde. Úsenlo a partir de mañana antes de pasar un presupuesto. Y cuando alguien les diga 'qué caro'... ustedes miran ese número en el celular y recuerdan por qué lo cobran. No es caro. Es el precio que necesito para respetarme frente al espejo."
+> Automáticamente el simulador les dirá la verdad sin rodeos: cuánto dinero neto se llevan de bolsillo al mes, cuánto ganan por cada hora real trabajada, y si les da el tiempo físico para alcanzarlo. Y se pintará de rojo, amarillo o verde según su salud financiera. Úsenlo a partir de mañana antes de pasar un presupuesto. Y cuando alguien les diga 'qué caro'... ustedes miran ese número en el celular y recuerdan por qué lo cobran. No es caro. Es el precio que necesito para respetarme frente al espejo y vivir con dignidad."
 
 
 ---

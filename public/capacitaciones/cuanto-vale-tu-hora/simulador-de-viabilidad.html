@@ -546,16 +546,16 @@
         </div>
       </div>
 
-      <!-- Tiempo -->
+      <!-- Tiempo y Sueldo -->
       <div class="card">
-        <div class="card-title">⏱️ Tu Tiempo</div>
+        <div class="card-title">⏱️ Tu Tiempo y Sueldo</div>
 
         <div class="field">
-          <label for="t_unidad">Horas reales por unidad / servicio</label>
-          <span class="help-text">Incluí producción, traslados, mensajes de WhatsApp, empaque. Todo.</span>
+          <label for="sueldo_deseado">Sueldo neto mensual deseado</label>
+          <span class="help-text">¿Cuánto querés llevarte limpio al bolsillo por mes para vivir en paz?</span>
           <div class="input-wrap">
-            <span class="input-prefix">h</span>
-            <input type="number" id="t_unidad" value="2" min="0" step="0.5" oninput="calculate()" aria-label="Tiempo por unidad">
+            <span class="input-prefix">$</span>
+            <input type="number" id="sueldo_deseado" value="500000" min="0" oninput="calculate()" aria-label="Sueldo deseado">
           </div>
         </div>
 
@@ -565,6 +565,24 @@
           <div class="input-wrap">
             <span class="input-prefix">h</span>
             <input type="number" id="h_libres" value="10" min="0" oninput="calculate()" aria-label="Horas libres semanales">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="t_unidad">Horas reales por unidad / servicio</label>
+          <span class="help-text">Tiempo de fabricación o duración del servicio por unidad. Todo incluido.</span>
+          <div class="input-wrap">
+            <span class="input-prefix">h</span>
+            <input type="number" id="t_unidad" value="2" min="0" step="0.5" oninput="calculate()" aria-label="Tiempo por unidad">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="v_estimadas">Ventas estimadas por mes</label>
+          <span class="help-text">Cantidad de unidades que planeás o estimás vender en el mes.</span>
+          <div class="input-wrap">
+            <span class="input-prefix">#</span>
+            <input type="number" id="v_estimadas" value="15" min="1" oninput="calculate()" aria-label="Ventas estimadas">
           </div>
         </div>
       </div>
@@ -586,20 +604,20 @@
 
         <div class="stats">
           <div class="stat-item">
-            <span class="stat-label">Ganancia por unidad</span>
-            <span class="stat-value" id="val_margen">—</span>
+            <span class="stat-label">Sueldo de Bolsillo Neto</span>
+            <span class="stat-value" id="val_sueldo_bolsillo">—</span>
           </div>
           <div class="stat-item">
-            <span class="stat-label">Tu hora vale</span>
+            <span class="stat-label">Tu hora real neta</span>
             <span class="stat-value" id="val_sueldo_hora">—</span>
           </div>
           <div class="stat-item">
-            <span class="stat-label">Punto de equilibrio</span>
-            <span class="stat-value" id="val_equilibrio">—</span>
+            <span class="stat-label">P.E. Supervivencia</span>
+            <span class="stat-value" id="val_pe_supervivencia">—</span>
           </div>
           <div class="stat-item">
-            <span class="stat-label">Horas disponibles/mes</span>
-            <span class="stat-value" id="val_hd">—</span>
+            <span class="stat-label">P.E. Vida Digna</span>
+            <span class="stat-value" id="val_pe_vidadigna">—</span>
           </div>
         </div>
 
@@ -659,15 +677,24 @@
 
   // ── Main calculation ─────────────────────────────────────────
   function calculate() {
-    const p_venta   = parseFloat(document.getElementById('p_venta').value)   || 0;
-    const c_var     = parseFloat(document.getElementById('c_variable').value) || 0;
-    const g_fijos   = parseFloat(document.getElementById('g_fijos').value)    || 0;
-    const h_libres  = parseFloat(document.getElementById('h_libres').value)   || 0;
-    const t_unidad  = parseFloat(document.getElementById('t_unidad').value)   || 0;
+    const p_venta        = parseFloat(document.getElementById('p_venta').value)        || 0;
+    const c_var          = parseFloat(document.getElementById('c_variable').value)     || 0;
+    const g_fijos        = parseFloat(document.getElementById('g_fijos').value)        || 0;
+    const sueldo_deseado = parseFloat(document.getElementById('sueldo_deseado').value)   || 0;
+    const h_libres       = parseFloat(document.getElementById('h_libres').value)        || 0;
+    const t_unidad       = parseFloat(document.getElementById('t_unidad').value)        || 0;
+    const v_estimadas    = parseFloat(document.getElementById('v_estimadas').value)     || 0;
 
-    const margen       = p_venta - c_var;
-    const hd_mensual   = h_libres * 4;
-    const sueldo_hora  = t_unidad > 0 ? margen / t_unidad : 0;
+    const margen_mat       = p_venta - c_var;
+    const hd_mensual       = h_libres * 4;
+    const horas_necesarias = v_estimadas * t_unidad;
+    
+    // Sueldo Neto de Bolsillo
+    const sueldo_bolsillo  = (v_estimadas * margen_mat) - g_fijos;
+    
+    // Sueldo Real por Hora
+    const total_horas_trabajadas = v_estimadas * t_unidad;
+    const sueldo_hora      = total_horas_trabajadas > 0 ? (sueldo_bolsillo > 0 ? sueldo_bolsillo / total_horas_trabajadas : 0) : 0;
 
     const results  = document.getElementById('results');
     const title    = document.getElementById('s_title');
@@ -676,9 +703,8 @@
     const cta      = document.getElementById('cta-button');
 
     // Update always-visible stats
-    document.getElementById('val_margen').innerText      = p_venta > 0 ? fmt(margen)       : '—';
-    document.getElementById('val_sueldo_hora').innerText = p_venta > 0 ? fmt(sueldo_hora) + '/h' : '—';
-    document.getElementById('val_hd').innerText          = hd_mensual > 0 ? hd_mensual + ' hs' : '—';
+    document.getElementById('val_sueldo_bolsillo').innerText = p_venta > 0 ? fmt(sueldo_bolsillo) : '—';
+    document.getElementById('val_sueldo_hora').innerText     = p_venta > 0 ? fmt(sueldo_hora) + '/h' : '—';
 
     // Reset state
     results.className = 'results-card';
@@ -689,49 +715,60 @@
       results.classList.add('state-waiting');
       title.innerText = 'Esperando datos...';
       desc.innerText  = 'Completá los campos de la izquierda para ver el diagnóstico de tu emprendimiento.';
-      document.getElementById('val_equilibrio').innerText = '—';
+      document.getElementById('val_pe_supervivencia').innerText = '—';
+      document.getElementById('val_pe_vidadigna').innerText     = '—';
       return;
     }
 
-    // ── ROJO: Margen negativo ─────────────────────────────────
-    if (margen <= 0) {
+    // Calcular P.E.
+    const pe_supervivencia = margen_mat > 0 ? g_fijos / margen_mat : 0;
+    const pe_vidadigna     = margen_mat > 0 ? (g_fijos + sueldo_deseado) / margen_mat : 0;
+
+    document.getElementById('val_pe_supervivencia').innerText = margen_mat > 0 ? Math.ceil(pe_supervivencia) + ' uni' : 'Imposible';
+    document.getElementById('val_pe_vidadigna').innerText     = margen_mat > 0 ? Math.ceil(pe_vidadigna) + ' uni' : 'Imposible';
+
+    // ── ROJO: Margen unitario de materiales negativo o cero ──
+    if (margen_mat <= 0) {
       results.classList.add('state-red');
       dot.textContent = '🛑';
       title.innerText = 'Margen Crítico (Pérdidas)';
-      desc.innerText  = 'Tus costos son iguales o mayores al precio de venta. Podés vender un millón de unidades y seguirás perdiendo dinero. Esto no tiene solución vendiendo más — hay que replantear desde la raíz.';
-      document.getElementById('val_equilibrio').innerText = 'Imposible';
+      desc.innerText  = 'Tus costos de materiales son iguales o mayores al precio de venta. Cada venta te genera pérdidas físicas. Esto no se arregla vendiendo más — tenés que subir el precio o cambiar el proveedor.';
       cta.style.display = 'block';
-      cta.innerText = 'Ayudame a replantear la idea 🚑';
+      cta.innerText = 'Replantear costos y precios 🚑';
       return;
     }
 
-    const equilibrio  = g_fijos / margen;
-    const hn_mensual  = equilibrio * t_unidad;
-
-    document.getElementById('val_equilibrio').innerText = Math.ceil(equilibrio) + ' uni/mes';
-
-    // ── ROJO: Tiempo físico insuficiente ─────────────────────
-    if (hn_mensual > hd_mensual) {
+    // ── ROJO: Capacidad de Tiempo Excedida ────────────────────
+    if (horas_necesarias > hd_mensual) {
       results.classList.add('state-red');
       dot.textContent = '🔴';
-      title.innerText = 'Capacidad de Tiempo Excedida';
-      desc.innerText  = `Para apenas cubrir tus gastos fijos necesitás trabajar ${Math.ceil(hn_mensual)} horas al mes, pero solo tenés ${hd_mensual} horas disponibles. No es un problema de ganas — es matemática. Algo tiene que cambiar: bajar costos, subir el precio, o encontrar un modelo que escale sin depender solo de tu tiempo.`;
+      title.innerText = 'Tiempo Físico Excedido';
+      desc.innerText  = `Para producir las ${v_estimadas} unidades estimadas necesitás trabajar ${Math.ceil(horas_necesarias)} horas al mes, pero solo disponés de ${hd_mensual} horas operativas. Físicamente no te da el tiempo. Debés subir el precio de venta o reducir el tiempo de fabricación por unidad.`;
       cta.style.display = 'block';
-      cta.innerText = 'Ayudame a arreglar esto 🛑';
+      cta.innerText = 'Optimizar mi tiempo y procesos 🛑';
       return;
     }
 
-    const ocupacion = hn_mensual / hd_mensual;
-    const margenPct = margen / p_venta;
+    // ── ROJO: Bolsillo neto negativo ──────────────────────────
+    if (sueldo_bolsillo < 0) {
+      results.classList.add('state-red');
+      dot.textContent = '🛑';
+      title.innerText = 'Sueldo de Bolsillo Negativo';
+      desc.innerText  = `Con tus ventas estimadas (${v_estimadas} uni), no cubrís los costos fijos. Estás perdiendo ${fmt(Math.abs(sueldo_bolsillo))} al mes y tu sueldo neto es de $0. Necesitás superar el Punto de Equilibrio de Supervivencia de ${Math.ceil(pe_supervivencia)} unidades para empezar a ganar algo.`;
+      cta.style.display = 'block';
+      cta.innerText = 'Ayudame a arreglar esto 🚑';
+      return;
+    }
 
-    // ── AMARILLO: Rentabilidad baja o vida al límite ──────────
-    if (ocupacion > 0.65 || margenPct < 0.3) {
+    // ── AMARILLO: Rentabilidad de bolsillo por debajo del deseado ──
+    if (sueldo_bolsillo < sueldo_deseado) {
       results.classList.add('state-yellow');
       dot.textContent = '⚠️';
-      title.innerText = 'Rentabilidad Limitada';
-      desc.innerText  = `El negocio es matemáticamente posible, pero vas a usar el ${Math.round(ocupacion * 100)}% de tu tiempo disponible solo para no perder plata. Tu margen es del ${Math.round(margenPct * 100)}%. Con esos números no vas a escalar — vas a sobrevivir. Y sobrevivir cansa igual.`;
+      title.innerText = 'Sueldo Parcial (Bajo el Objetivo)';
+      const pct_objetivo = Math.round((sueldo_bolsillo / sueldo_deseado) * 100);
+      desc.innerText  = `Cubrís los gastos fijos y te llevás ${fmt(sueldo_bolsillo)} netos de bolsillo al mes, pero esto representa solo el ${pct_objetivo}% de tu sueldo deseado de ${fmt(sueldo_deseado)}. Para alcanzar tu objetivo de vida digna necesitás vender ${Math.ceil(pe_vidadigna)} unidades al mes.`;
       cta.style.display = 'block';
-      cta.innerText = 'Quiero aumentar mis márgenes 📈';
+      cta.innerText = 'Quiero aumentar mis ventas y márgenes 📈';
       return;
     }
 
@@ -739,7 +776,7 @@
     results.classList.add('state-green');
     dot.textContent = '✅';
     title.innerText = '¡Negocio Viable!';
-    desc.innerText  = `Tus números cierran. El punto de equilibrio es alcanzable con solo el ${Math.round(ocupacion * 100)}% de tu tiempo disponible, y tu margen es del ${Math.round(margenPct * 100)}%. Lo que necesitás ahora no es aguantar — es sistematizar para crecer.`;
+    desc.innerText  = `¡Tus números cierran con creces! Al vender las ${v_estimadas} unidades estimadas, cubrís la estructura y te llevás un sueldo neto de bolsillo de ${fmt(sueldo_bolsillo)}, superando tu objetivo de ${fmt(sueldo_deseado)}. Tu sueldo real neto es de ${fmt(sueldo_hora)} por hora. ¡Es hora de sistematizar y crecer!`;
     cta.style.display = 'block';
     cta.innerText = 'Quiero sistematizar y crecer 🚀';
   }
