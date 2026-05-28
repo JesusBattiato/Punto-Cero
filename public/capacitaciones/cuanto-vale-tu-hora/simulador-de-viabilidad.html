@@ -80,8 +80,15 @@
     text-transform: uppercase;
     color: var(--accent-light);
     margin-bottom: 1.25rem;
+    text-decoration: none;
+    transition: all 0.2s;
   }
   .brand-badge::before { content: '◆'; font-size: 0.6rem; }
+  .brand-badge:hover {
+    background: rgba(99, 102, 241, 0.2);
+    border-color: rgba(99, 102, 241, 0.5);
+    color: var(--text);
+  }
 
   h1 {
     font-size: clamp(2rem, 5vw, 3rem);
@@ -465,7 +472,7 @@
 <div class="page-wrap">
 
   <header class="header">
-    <div class="brand-badge">Punto Cero</div>
+    <a href="/" class="brand-badge">Punto Cero</a>
     <h1>Simulador de Viabilidad Financiera</h1>
     <p class="subtitle">Ingresá los números reales de tu emprendimiento.<br>Obtené un diagnóstico objetivo de tu rentabilidad y tiempo.</p>
   </header>
