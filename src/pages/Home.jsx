@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom'
 const TOOLS = [
   {
     icon: '🧮',
-    name: 'La Máquina de la Verdad',
-    desc: 'Ingresás tus números y te dice si tu negocio es viable o te estás mintiendo. Semáforo rojo, amarillo o verde según tus márgenes reales.',
+    name: 'Simulador de Viabilidad Financiera',
+    desc: 'Ingresás tus números y obtenés un diagnóstico objetivo de tu rentabilidad y tiempo. Semáforo rojo, amarillo o verde según tus márgenes reales.',
     tag: 'Diagnóstico',
     tagColor: 'rgba(99,102,241,0.15)',
     tagBorder: 'rgba(99,102,241,0.3)',
     tagText: '#818cf8',
-    url: '/capacitaciones/cuanto-vale-tu-hora/maquina-de-la-verdad.html',
+    url: '/capacitaciones/cuanto-vale-tu-hora/simulador-de-viabilidad.html',
     accent: 'rgba(99,102,241,0.2)',
     accentBorder: 'rgba(99,102,241,0.4)',
   },

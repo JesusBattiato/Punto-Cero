@@ -29,9 +29,9 @@ const capacitaciones = [
       {
         tipo: 'Herramienta',
         icono: '🧮',
-        titulo: 'Máquina de la Verdad',
+        titulo: 'Simulador de Viabilidad Financiera',
         descripcion: 'Calculadora de diagnóstico financiero · Semáforo de viabilidad',
-        url: '/capacitaciones/cuanto-vale-tu-hora/maquina-de-la-verdad.html',
+        url: '/capacitaciones/cuanto-vale-tu-hora/simulador-de-viabilidad.html',
       },
       {
         tipo: 'Herramienta',

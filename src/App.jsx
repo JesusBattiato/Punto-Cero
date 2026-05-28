@@ -10,9 +10,9 @@ import Charla from './pages/Charla'
 const TOOL_ITEMS = [
   {
     icon: '🧮',
-    label: 'Máquina de la Verdad',
+    label: 'Simulador de Viabilidad',
     desc: '¿Tu precio es viable?',
-    href: '/capacitaciones/cuanto-vale-tu-hora/maquina-de-la-verdad.html',
+    href: '/capacitaciones/cuanto-vale-tu-hora/simulador-de-viabilidad.html',
   },
   {
     icon: '🎯',
