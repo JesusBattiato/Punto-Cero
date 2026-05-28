@@ -482,7 +482,32 @@
     font-size: 0.72rem;
     color: var(--text-muted);
   }
-  .footer-note a { color: var(--accent-light); text-decoration: none; }
+  @media (max-width: 500px) {
+    body { padding: 1rem 0.5rem 3rem; }
+    .card { padding: 1.25rem 1rem; }
+    .results-card { padding: 1.5rem 1rem; }
+    .stats-grid { grid-template-columns: 1fr; }
+    h1 { font-size: 1.8rem; }
+    .item-row {
+      grid-template-columns: 1.2fr 1fr auto;
+      gap: 0.35rem;
+    }
+    input[type="number"], input[type="text"] {
+      font-size: 0.85rem;
+      padding: 0.55rem 0.75rem 0.55rem 1.8rem;
+    }
+    input.no-prefix {
+      padding-left: 0.75rem;
+    }
+    .input-prefix {
+      font-size: 0.75rem;
+      left: 0.75rem;
+    }
+    th, td {
+      padding: 0.6rem 0.75rem;
+      font-size: 0.75rem;
+    }
+  }
 </style>
 </head>
 <body>

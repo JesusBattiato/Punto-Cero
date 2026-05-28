@@ -527,7 +527,101 @@
     from { opacity: 0; transform: translateY(6px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-  .animate-in { animation: count-up 0.35s ease forwards; }
+  /* ── Details & Breakdown (precio-justo.html) ── */
+  details {
+    margin-top: 0.6rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(148, 163, 184, 0.08);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+  
+  details[open] {
+    background: rgba(0, 0, 0, 0.15);
+    border-color: rgba(139, 92, 246, 0.2);
+  }
+
+  summary {
+    padding: 0.6rem 1rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--accent-light);
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+    transition: color 0.2s;
+  }
+  summary:hover {
+    color: var(--text);
+  }
+
+  .sub-calc {
+    padding: 0.5rem 1rem 1rem 1rem;
+    border-top: 1px solid rgba(148, 163, 184, 0.08);
+  }
+
+  .item-row {
+    display: grid;
+    grid-template-columns: 2fr 1.2fr auto;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    align-items: center;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    background: rgba(2, 6, 23, 0.65);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.55rem 0.85rem;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: border-color 0.2s;
+  }
+  input[type="text"]:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  /* Style inputs in sub-calc */
+  .sub-calc input[type="number"] {
+    padding: 0.55rem 0.85rem;
+    font-size: 0.85rem;
+    border-radius: 8px;
+  }
+
+  .btn-add {
+    background: transparent;
+    color: var(--accent-light);
+    border: 1px dashed rgba(129, 140, 248, 0.3);
+    padding: 0.5rem;
+    width: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    margin-top: 0.4rem;
+  }
+  .btn-add:hover {
+    background: rgba(99, 102, 241, 0.08);
+    border-color: var(--accent-light);
+  }
+
+  .btn-remove {
+    background: transparent;
+    border: none;
+    color: var(--rose);
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    transition: background 0.2s;
+  }
+  .btn-remove:hover { background: rgba(244, 63, 94, 0.1); }
 </style>
 </head>
 <body>
@@ -628,6 +722,7 @@
                 <div class="item-row">
                   <input type="text" placeholder="Material" class="no-prefix">
                   <input type="number" placeholder="$" class="val-mat no-prefix" oninput="sumSub('c_materiales')">
+                  <button class="btn-remove" onclick="this.parentElement.remove(); sumSub('c_materiales')">✕</button>
                 </div>
               </div>
               <button class="btn-add" onclick="addItem('mat')">+ Agregar ítem</button>
@@ -650,6 +745,7 @@
                 <div class="item-row">
                   <input type="text" placeholder="Gasto fijo" class="no-prefix">
                   <input type="number" placeholder="$" class="val-fij no-prefix" oninput="sumSub('g_fijos_mes')">
+                  <button class="btn-remove" onclick="this.parentElement.remove(); sumSub('g_fijos_mes')">✕</button>
                 </div>
               </div>
               <button class="btn-add" onclick="addItem('fijos')">+ Agregar ítem</button>
@@ -801,11 +897,13 @@ function sumSub(targetId) {
 function addItem(type) {
   const cont = document.getElementById(`items_${type === 'mat' ? 'mat' : 'fijos'}`);
   const cls  = type === 'mat' ? 'val-mat' : 'val-fij';
+  const targetId = type === 'mat' ? 'c_materiales' : 'g_fijos_mes';
   const row  = document.createElement('div');
   row.className = 'item-row';
   row.innerHTML = `
     <input type="text" placeholder="Ítem" class="no-prefix">
-    <input type="number" placeholder="$" class="${cls} no-prefix" oninput="sumSub('${type === 'mat' ? 'c_materiales' : 'g_fijos_mes'}')">`;
+    <input type="number" placeholder="$" class="${cls} no-prefix" oninput="sumSub('${targetId}')">
+    <button class="btn-remove" onclick="this.parentElement.remove(); sumSub('${targetId}')">✕</button>`;
   cont.appendChild(row);
 }
 
