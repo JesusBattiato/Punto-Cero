@@ -20,6 +20,12 @@ const TOOL_ITEMS = [
     desc: '¿Cuánto deberías cobrar?',
     href: '/capacitaciones/cuanto-vale-tu-hora/precio-justo.html',
   },
+  {
+    icon: '📊',
+    label: 'Gestión Financiera',
+    desc: 'Planilla de costos y P.E. multiproducto',
+    href: '/capacitaciones/cuanto-vale-tu-hora/gestion-financiera.html',
+  },
 ]
 
 function ToolsDropdown({ isActive }) {

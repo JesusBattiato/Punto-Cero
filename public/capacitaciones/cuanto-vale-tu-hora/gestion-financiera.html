@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestión Financiera Multi-Producto — Punto Cero</title>
+<meta name="description" content="Planilla interactiva multi-producto para evaluar costos, gastos fijos y punto de equilibrio ponderado.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #060b18;
+    --surface: rgba(15, 23, 42, 0.85);
+    --surface-2: rgba(30, 41, 59, 0.6);
+    --border: rgba(148, 163, 184, 0.1);
+    --border-hover: rgba(148, 163, 184, 0.25);
+    --text: #f1f5f9;
+    --text-muted: #64748b;
+    --text-soft: #94a3b8;
+    --accent: #6366f1;
+    --accent-light: #818cf8;
+    --green: #10b981;
+    --yellow: #f59e0b;
+    --red: #f43f5e;
+    --green-glow: rgba(16, 185, 129, 0.3);
+    --yellow-glow: rgba(245, 158, 11, 0.3);
+    --red-glow: rgba(244, 63, 94, 0.3);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Animated background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 10%, rgba(99, 102, 241, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding-top: 1rem;
+  }
+
+  .brand-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(99, 102, 241, 0.12);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: 999px;
+    padding: 0.35rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent-light);
+    margin-bottom: 1.25rem;
+  }
+  .brand-badge::before { content: '◆'; font-size: 0.6rem; }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    background: linear-gradient(135deg, #f1f5f9 30%, #94a3b8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.75rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    color: var(--text-soft);
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  /* ── Layout Grid ── */
+  .layout-grid {
+    display: grid;
+    grid-template-columns: 7fr 5fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  @media (max-width: 950px) {
+    .layout-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--surface);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 1.75rem;
+    transition: border-color 0.3s;
+    margin-bottom: 1.5rem;
+  }
+  .card:hover { border-color: var(--border-hover); }
+
+  .card-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .card-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── Form elements ── */
+  .field-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .field { margin-bottom: 1.1rem; }
+  .field:last-child { margin-bottom: 0; }
+
+  label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #cbd5e1;
+    margin-bottom: 0.35rem;
+  }
+
+  .help-text {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+    display: block;
+  }
+
+  .input-wrap { position: relative; }
+  .input-prefix {
+    position: absolute;
+    left: 0.85rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+
+  input[type="number"], input[type="text"] {
+    width: 100%;
+    background: rgba(2, 6, 23, 0.6);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.6rem 0.85rem 0.6rem 2rem;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -moz-appearance: textfield;
+  }
+  input.no-prefix { padding-left: 0.85rem; }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+  input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  }
+
+  /* ── Interactive Lists (Gastos Fijos / Insumos) ── */
+  .items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .item-row {
+    display: grid;
+    grid-template-columns: 2fr 1.2fr auto;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .btn-remove {
+    background: transparent;
+    border: none;
+    color: var(--red);
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    transition: background 0.2s;
+  }
+  .btn-remove:hover { background: rgba(244, 63, 94, 0.1); }
+
+  .btn-add-item {
+    background: transparent;
+    color: var(--accent-light);
+    border: 1px dashed rgba(129, 140, 248, 0.25);
+    padding: 0.5rem;
+    width: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+  .btn-add-item:hover { background: rgba(99, 102, 241, 0.08); border-color: var(--accent-light); }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), #4f46e5);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
+    transition: all 0.2s;
+    width: 100%;
+  }
+  .btn-primary:hover { transform: translateY(-1px); filter: brightness(1.08); }
+
+  /* ── Tables ── */
+  .table-responsive {
+    overflow-x: auto;
+    width: 100%;
+    margin-top: 1rem;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.85rem;
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  th {
+    background: rgba(15, 23, 42, 0.5);
+    color: var(--text-soft);
+    font-weight: 700;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border);
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+  }
+
+  td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .prod-name { font-weight: 700; color: #fff; }
+  .badge-mix {
+    background: rgba(99, 102, 241, 0.15);
+    color: var(--accent-light);
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.75rem;
+  }
+
+  /* ── Right Panel: Results ── */
+  .results-card {
+    background: var(--surface);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+  .results-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--border);
+    transition: background 0.5s;
+  }
+
+  .status-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+  .status-desc {
+    font-size: 0.85rem;
+    color: var(--text-soft);
+    line-height: 1.6;
+    margin-bottom: 1.75rem;
+    max-width: 380px;
+  }
+
+  .stats-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
+    margin-bottom: 1.5rem;
+  }
+  .stat-item {
+    background: rgba(0, 0, 0, 0.25);
+    padding: 0.85rem 0.9rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    text-align: left;
+    border-left: 3px solid transparent;
+  }
+  .stat-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+  .stat-value {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--text);
+  }
+
+  /* Traffic light states */
+  .state-waiting .status-title { color: var(--text-soft); }
+  .state-waiting::before { background: var(--border); }
+
+  .state-green { border-color: rgba(16, 185, 129, 0.3); box-shadow: 0 0 40px -20px var(--green-glow); }
+  .state-green::before { background: var(--green); }
+  .state-green .status-title { color: var(--green); }
+  .state-green .stat-item { border-left-color: var(--green); }
+
+  .state-yellow { border-color: rgba(245, 158, 11, 0.3); box-shadow: 0 0 40px -20px var(--yellow-glow); }
+  .state-yellow::before { background: var(--yellow); }
+  .state-yellow .status-title { color: var(--yellow); }
+  .state-yellow .stat-item { border-left-color: var(--yellow); }
+
+  .state-red { border-color: rgba(244, 63, 94, 0.3); box-shadow: 0 0 40px -20px var(--red-glow); }
+  .state-red::before { background: var(--red); }
+  .state-red .status-title { color: var(--red); }
+  .state-red .stat-item { border-left-color: var(--red); }
+
+  /* PE list in right panel */
+  .pe-list-card {
+    width: 100%;
+    background: rgba(0,0,0,0.15);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    padding: 1rem 1.25rem;
+    text-align: left;
+    margin-bottom: 1.5rem;
+  }
+  .pe-list-title {
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    letter-spacing: 1px;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 0.4rem;
+  }
+  .pe-list-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .pe-list-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.82rem;
+  }
+  .pe-list-name { color: var(--text-soft); }
+  .pe-list-val { font-weight: 700; color: #fff; }
+
+  /* ── Sub-calculator for adding products ── */
+  .sub-form {
+    background: rgba(0,0,0,0.2);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-top: 1rem;
+  }
+  .sub-form-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--accent-light);
+    margin-bottom: 0.85rem;
+  }
+
+  .footer-note {
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+  .footer-note a { color: var(--accent-light); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <header class="header">
+    <div class="brand-badge">Punto Cero</div>
+    <h1>Gestión Financiera</h1>
+    <p class="subtitle">Metodología ABC Contable de Productos y Punto de Equilibrio Ponderado.<br>Guardado automático en tu navegador.</p>
+  </header>
+
+  <div class="layout-grid">
+
+    <!-- ── Left Column: Tables & Forms ── -->
+    <div>
+
+      <!-- Gastos Fijos Card -->
+      <div class="card">
+        <div class="card-title">🏛️ Estructura Fija Mensual</div>
+        <p class="help-text" style="margin-bottom: 1rem;">Gastos operativos que tenés que pagar sí o sí para mantener el negocio abierto (alquiler, impuestos, monotributo, herramientas).</p>
+
+        <div class="items-list" id="list-fijos">
+          <!-- Rows inserted by JS -->
+        </div>
+        <button class="btn-add-item" onclick="addFijoRow('', '')">+ Agregar concepto de gasto fijo</button>
+      </div>
+
+      <!-- Add Product Card -->
+      <div class="card">
+        <div class="card-title">📦 Añadir Producto al Catálogo</div>
+        
+        <div class="field-row">
+          <div class="field">
+            <label for="p_nombre">Nombre del Producto</label>
+            <input type="text" id="p_nombre" placeholder="Ej: Torta de Bodas" class="no-prefix">
+          </div>
+          <div class="field">
+            <label for="p_precio">Precio de Venta Planificado</label>
+            <div class="input-wrap">
+              <span class="input-prefix">$</span>
+              <input type="number" id="p_precio" value="15000" min="0">
+            </div>
+          </div>
+          <div class="field">
+            <label for="p_ventas">Ventas Estimadas al Mes (unidades)</label>
+            <div class="input-wrap">
+              <span class="input-prefix">#</span>
+              <input type="number" id="p_ventas" value="10" min="1">
+            </div>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="p_tiempo">Tiempo de Elaboración (horas)</label>
+            <div class="input-wrap">
+              <span class="input-prefix">h</span>
+              <input type="number" id="p_tiempo" value="3" min="0" step="0.5">
+            </div>
+          </div>
+          <div class="field">
+            <label for="p_valor_hora">Valor de Hora de Mano de Obra</label>
+            <div class="input-wrap">
+              <span class="input-prefix">$</span>
+              <input type="number" id="p_valor_hora" value="4000" min="0">
+            </div>
+          </div>
+        </div>
+
+        <!-- Materials sub-form -->
+        <div class="sub-form">
+          <div class="sub-form-title">🛒 Materiales e Insumos Directos</div>
+          <p class="help-text" style="margin-bottom: 0.75rem;">Materia prima, packaging y comisiones directas de fabricación por unidad.</p>
+          <div class="items-list" id="list-materiales">
+            <div class="item-row">
+              <input type="text" placeholder="Ej: Harina y Azúcar" class="no-prefix mat-name">
+              <div class="input-wrap">
+                <span class="input-prefix">$</span>
+                <input type="number" placeholder="0" class="mat-cost">
+              </div>
+              <button class="btn-remove" onclick="this.parentElement.remove()">✕</button>
+            </div>
+          </div>
+          <button class="btn-add-item" onclick="addMaterialRow('', '')">+ Agregar material / insumo</button>
+        </div>
+
+        <div style="margin-top: 1.5rem;">
+          <button class="btn-primary" onclick="addProduct()">Agregar Producto al Catálogo ➔</button>
+        </div>
+      </div>
+
+      <!-- Catalog Card -->
+      <div class="card" id="catalog-card" style="display: none;">
+        <div class="card-title">📊 Planilla de Productos (Mezcla de Ventas)</div>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Insumos</th>
+                <th>Mano de Obra</th>
+                <th>Costo Total</th>
+                <th>Precio</th>
+                <th>Margen Unit.</th>
+                <th>Ventas Plan.</th>
+                <th>Mezcla</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="catalog-body">
+              <!-- Products inserted by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Right Column: Diagnostic & Results ── -->
+    <div style="position: sticky; top: 1.5rem;">
+
+      <!-- Results Diagnostics -->
+      <div class="results-card state-waiting" id="results">
+        <div class="status-title" id="res-title">Faltan Productos</div>
+        <div class="status-desc" id="res-desc">Ingresá tus gastos fijos y agregá al menos un producto a tu catálogo para ver el diagnóstico general.</div>
+
+        <div class="stats-grid">
+          <div class="stat-item">
+            <span class="stat-label">Sueldo de Bolsillo Neto</span>
+            <span class="stat-value" id="stat-bolsillo">—</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Tu Hora Promedio Neta</span>
+            <span class="stat-value" id="stat-hora">—</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Utilidad del Negocio</span>
+            <span class="stat-value" id="stat-utilidad">—</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Gastos Fijos Totales</span>
+            <span class="stat-value" id="stat-fijos">—</span>
+          </div>
+        </div>
+
+        <!-- Multiproduc Break-Even list -->
+        <div class="pe-list-card" id="pe-list-card" style="display: none;">
+          <div class="pe-list-title">Punto de Equilibrio Ponderado</div>
+          <div class="pe-list-items" id="pe-list-items">
+            <!-- PE per product list inserted by JS -->
+          </div>
+        </div>
+
+      </div>
+
+      <p class="footer-note">
+        Una herramienta de <a href="/">Punto Cero</a> · Todos los datos se guardan de forma segura en local storage.
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // ── State variables ──────────────────────────────────────────
+  let fijos = [];
+  let products = [];
+
+  // Load from local storage
+  function loadState() {
+    try {
+      const savedFijos = localStorage.getItem('pc_fijos');
+      const savedProducts = localStorage.getItem('pc_products');
+      
+      if (savedFijos) {
+        fijos = JSON.parse(savedFijos);
+      } else {
+        fijos = [
+          { name: 'Alquiler Taller', cost: 120000 },
+          { name: 'Monotributo', cost: 15000 },
+          { name: 'Internet y Teléfono', cost: 18000 }
+        ];
+      }
+      
+      if (savedProducts) {
+        products = JSON.parse(savedProducts);
+      } else {
+        products = [];
+      }
+    } catch (e) {
+      console.error("Error loading localStorage", e);
+    }
+  }
+
+  // Save to local storage
+  function saveState() {
+    try {
+      localStorage.setItem('pc_fijos', JSON.stringify(fijos));
+      localStorage.setItem('pc_products', JSON.stringify(products));
+    } catch (e) {
+      console.error("Error saving to localStorage", e);
+    }
+  }
+
+  // ── Formatting ───────────────────────────────────────────────
+  function fmt(n) {
+    return '$ ' + Math.round(n).toLocaleString('es-AR');
+  }
+
+  // ── Fixed Expenses List Operations ───────────────────────────
+  function renderFijos() {
+    const container = document.getElementById('list-fijos');
+    container.innerHTML = '';
+    
+    fijos.forEach((f, idx) => {
+      const row = document.createElement('div');
+      row.className = 'item-row';
+      row.innerHTML = `
+        <input type="text" placeholder="Concepto (ej. Alquiler)" value="${f.name}" onchange="updateFijoName(${idx}, this.value)" class="no-prefix f-name">
+        <div class="input-wrap">
+          <span class="input-prefix">$</span>
+          <input type="number" placeholder="0" value="${f.cost}" oninput="updateFijoCost(${idx}, this.value)">
+        </div>
+        <button class="btn-remove" onclick="removeFijo(${idx})">✕</button>
+      `;
+      container.appendChild(row);
+    });
+    calculate();
+  }
+
+  function addFijoRow(name = '', cost = '') {
+    fijos.push({ name, cost: parseFloat(cost) || 0 });
+    renderFijos();
+  }
+
+  function removeFijo(idx) {
+    fijos.splice(idx, 1);
+    renderFijos();
+  }
+
+  function updateFijoName(idx, val) {
+    fijos[idx].name = val;
+    saveState();
+  }
+
+  function updateFijoCost(idx, val) {
+    fijos[idx].cost = parseFloat(val) || 0;
+    saveState();
+    calculate();
+  }
+
+  // ── Materials Rows Operations (Adding form) ──────────────────
+  function addMaterialRow(name = '', val = '') {
+    const list = document.getElementById('list-materiales');
+    const row = document.createElement('div');
+    row.className = 'item-row';
+    row.innerHTML = `
+      <input type="text" placeholder="Insumo / Material" value="${name}" class="no-prefix mat-name">
+      <div class="input-wrap">
+        <span class="input-prefix">$</span>
+        <input type="number" placeholder="0" value="${val}" class="mat-cost">
+      </div>
+      <button class="btn-remove" onclick="this.parentElement.remove()">✕</button>
+    `;
+    list.appendChild(row);
+  }
+
+  // ── Product Operations ───────────────────────────────────────
+  function addProduct() {
+    const name = document.getElementById('p_nombre').value.trim();
+    const precio = parseFloat(document.getElementById('p_precio').value) || 0;
+    const ventas = parseFloat(document.getElementById('p_ventas').value) || 0;
+    const tiempo = parseFloat(document.getElementById('p_tiempo').value) || 0;
+    const valor_hora = parseFloat(document.getElementById('p_valor_hora').value) || 0;
+
+    if (!name) {
+      alert("Por favor, ingresá el nombre del producto.");
+      return;
+    }
+
+    // Collect materials cost
+    let insumos_cost = 0;
+    const matCostInputs = document.querySelectorAll('#list-materiales .mat-cost');
+    matCostInputs.forEach(inp => {
+      insumos_cost += parseFloat(inp.value) || 0;
+    });
+
+    // Create product object
+    const prod = {
+      id: Date.now(),
+      name,
+      p_venta: precio,
+      v_estimadas: ventas,
+      t_unidad: tiempo,
+      sueldo_hora: valor_hora,
+      c_insumos: insumos_cost
+    };
+
+    products.push(prod);
+    saveState();
+
+    // Reset fields in form
+    document.getElementById('p_nombre').value = '';
+    document.getElementById('p_precio').value = '15000';
+    document.getElementById('p_ventas').value = '10';
+    document.getElementById('p_tiempo').value = '3';
+    document.getElementById('p_valor_hora').value = '4000';
+    document.getElementById('list-materiales').innerHTML = `
+      <div class="item-row">
+        <input type="text" placeholder="Ej: Harina y Azúcar" class="no-prefix mat-name">
+        <div class="input-wrap">
+          <span class="input-prefix">$</span>
+          <input type="number" placeholder="0" class="mat-cost">
+        </div>
+        <button class="btn-remove" onclick="this.parentElement.remove()">✕</button>
+      </div>
+    `;
+
+    renderCatalog();
+    calculate();
+  }
+
+  function removeProduct(idx) {
+    products.splice(idx, 1);
+    saveState();
+    renderCatalog();
+    calculate();
+  }
+
+  function renderCatalog() {
+    const card = document.getElementById('catalog-card');
+    const tbody = document.getElementById('catalog-body');
+    tbody.innerHTML = '';
+
+    if (products.length === 0) {
+      card.style.display = 'none';
+      return;
+    }
+    card.style.display = 'block';
+
+    // Calculate total planned units
+    let totalUnits = products.reduce((acc, p) => acc + p.v_estimadas, 0);
+
+    products.forEach((p, idx) => {
+      const mod_unit = p.t_unidad * p.sueldo_hora;
+      const costo_total = p.c_insumos + mod_unit;
+      const margen_unit = p.p_venta - costo_total;
+      const mezcla = totalUnits > 0 ? (p.v_estimadas / totalUnits) * 100 : 0;
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="prod-name">${p.name}</td>
+        <td>${fmt(p.c_insumos)}</td>
+        <td>${fmt(mod_unit)} <span style="font-size:0.75rem;color:var(--text-muted);">(${p.t_unidad}h)</span></td>
+        <td style="font-weight:700;">${fmt(costo_total)}</td>
+        <td>${fmt(p.p_venta)}</td>
+        <td style="color:${margen_unit >= 0 ? 'var(--green)' : 'var(--red)'};font-weight:700;">${fmt(margen_unit)}</td>
+        <td>${p.v_estimadas} ud</td>
+        <td><span class="badge-mix">${Math.round(mezcla)}%</span></td>
+        <td><button class="btn-remove" onclick="removeProduct(${idx})">✕</button></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // ── Global Calculations & Diagnostics ────────────────────────
+  function calculate() {
+    const totalFijos = fijos.reduce((acc, f) => acc + f.cost, 0);
+    document.getElementById('stat-fijos').innerText = fmt(totalFijos);
+
+    if (products.length === 0) {
+      const results = document.getElementById('results');
+      results.className = 'results-card state-waiting';
+      document.getElementById('res-title').innerText = 'Faltan Productos';
+      document.getElementById('res-desc').innerText = 'Ingresá tus gastos fijos y agregá al menos un producto a tu catálogo para ver el diagnóstico general.';
+      document.getElementById('stat-bolsillo').innerText = '—';
+      document.getElementById('stat-hora').innerText = '—';
+      document.getElementById('stat-utilidad').innerText = '—';
+      document.getElementById('pe-list-card').style.display = 'none';
+      return;
+    }
+
+    // 1. Calculate sales volumes, mixes, margins, and pocket money
+    let totalVentasPlanificadas = 0;
+    products.forEach(p => totalVentasPlanificadas += p.v_estimadas);
+
+    // Mezcla de ventas, costos variables totales y contribuciones
+    let mcp = 0; // Margen de Contribución Ponderado
+    let total_horas_trabajadas = 0;
+    let total_sueldo_mano_obra = 0; // Sueldo cobrado por MOD
+    let total_margen_contribucion = 0; // Ingresos - Costos de Producción Totales (utilidad del negocio)
+    let total_material_margin = 0; // Ventas - Costo Materiales
+
+    products.forEach(p => {
+      p.mezcla = totalVentasPlanificadas > 0 ? p.v_estimadas / totalVentasPlanificadas : 0;
+      
+      const mod_unit = p.t_unidad * p.sueldo_hora;
+      const costo_unit_total = p.c_insumos + mod_unit;
+      p.margen_unitario = p.p_venta - costo_unit_total;
+      
+      mcp += p.margen_unitario * p.mezcla;
+
+      // Proyectados mensuales
+      total_horas_trabajadas += p.v_estimadas * p.t_unidad;
+      total_sueldo_mano_obra += p.v_estimadas * mod_unit;
+      total_margen_contribucion += p.v_estimadas * p.margen_unitario;
+      total_material_margin += p.v_estimadas * (p.p_venta - p.c_insumos);
+    });
+
+    // Utilidad de la empresa (Margen de contribución total - Gastos Fijos)
+    const utilidad_empresa = total_margen_contribucion - totalFijos;
+
+    // Sueldo neto de bolsillo del emprendedor
+    // Representa: Dinero cobrado por MOD + Utilidad de la empresa (si la retira).
+    // Si la empresa da pérdida, esa pérdida se resta de su sueldo neto.
+    // Matemáticamente equivale a: (Ventas * Margen de Materiales) - Gastos Fijos.
+    const sueldo_bolsillo = total_material_margin - totalFijos;
+    const hora_neta = total_horas_trabajadas > 0 ? (sueldo_bolsillo > 0 ? sueldo_bolsillo / total_horas_trabajadas : 0) : 0;
+
+    // Update global stat cards
+    document.getElementById('stat-bolsillo').innerText = fmt(sueldo_bolsillo);
+    document.getElementById('stat-hora').innerText     = fmt(hora_neta) + '/h';
+    document.getElementById('stat-utilidad').innerText = fmt(utilidad_empresa);
+
+    // 2. Punto de Equilibrio Ponderado (Mezcla de Ventas)
+    const pe_total = mcp > 0 ? totalFijos / mcp : 0;
+
+    // PE list rendering
+    const peCard = document.getElementById('pe-list-card');
+    const peItemsContainer = document.getElementById('pe-list-items');
+    peItemsContainer.innerHTML = '';
+
+    if (mcp <= 0) {
+      peCard.style.display = 'block';
+      peItemsContainer.innerHTML = '<div style="color:var(--red);font-size:0.82rem;font-weight:700;">Margen promedio negativo. Inviable.</div>';
+    } else {
+      peCard.style.display = 'block';
+      
+      let rowpe_tot = document.createElement('div');
+      rowpe_tot.className = 'pe-list-row';
+      rowpe_tot.style.borderBottom = '1px dashed rgba(255,255,255,0.1)';
+      rowpe_tot.style.paddingBottom = '0.35rem';
+      rowpe_tot.style.marginBottom = '0.35rem';
+      rowpe_tot.innerHTML = `
+        <span class="pe-list-name" style="font-weight:700;color:var(--text-soft);">VENTAS TOTALES REQUERIDAS</span>
+        <span class="pe-list-val" style="color:var(--accent-light); font-size:1rem;">${Math.ceil(pe_total)} unidades</span>
+      `;
+      peItemsContainer.appendChild(rowpe_tot);
+
+      products.forEach(p => {
+        const pe_ind = Math.ceil(pe_total * p.mezcla);
+        const row = document.createElement('div');
+        row.className = 'pe-list-row';
+        row.innerHTML = `
+          <span class="pe-list-name">${p.name} <span style="font-size:0.75rem;color:var(--text-muted);">(${Math.round(p.mezcla * 100)}% mezcla)</span></span>
+          <span class="pe-list-val">${pe_ind} uni/mes</span>
+        `;
+        peItemsContainer.appendChild(row);
+      });
+    }
+
+    // 3. Traffic Light Diagnóstico
+    const results = document.getElementById('results');
+    const titleEl = document.getElementById('res-title');
+    const descEl  = document.getElementById('res-desc');
+
+    results.className = 'results-card';
+
+    if (mcp <= 0) {
+      results.classList.add('state-red');
+      titleEl.innerText = 'Margen Ponderado Negativo';
+      descEl.innerText = 'Tus costos promedio superan a los precios de venta. Cada venta promedio te genera pérdidas. Tenés que aumentar los precios de venta de tus productos o reducir los costos de materiales de inmediato.';
+    } else if (sueldo_bolsillo < 0) {
+      results.classList.add('state-red');
+      titleEl.innerText = 'Sueldo de Bolsillo Negativo';
+      descEl.innerText = `Con la mezcla de ventas planificada, el negocio genera pérdidas netas de ${fmt(Math.abs(sueldo_bolsillo))} para vos. La facturación no alcanza para pagar la estructura. Necesitás aumentar los precios o el volumen de ventas para superar el punto de equilibrio.`;
+    } else if (utilidad_empresa < 0) {
+      results.classList.add('state-yellow');
+      titleEl.innerText = 'Autoempleo de Bajo Margen';
+      descEl.innerText = `Cubrís los fijos y te llevás un sueldo de bolsillo de ${fmt(sueldo_bolsillo)}, pero la utilidad de la empresa es negativa (${fmt(utilidad_empresa)}). Esto significa que tu negocio sobrevive licuando parte del sueldo de tus horas. Estás al límite.`;
+    } else {
+      results.classList.add('state-green');
+      titleEl.innerText = '¡Planilla Financiera Saludable!';
+      descEl.innerText = `¡Tu mezcla de ventas es financieramente viable! Cubrís todos los gastos fijos del mes, te pagás el sueldo correspondiente por tus horas trabajadas (${fmt(total_sueldo_mano_obra)}) y el negocio genera una utilidad neta de ${fmt(utilidad_empresa)} para reinversión.`;
+    }
+  }
+
+  // Initial load
+  loadState();
+  renderFijos();
+  renderCatalog();
+  calculate();
+</script>
+</body>
+</html>

@@ -40,6 +40,13 @@ const capacitaciones = [
         descripcion: 'Calculadora de precio mínimo · 3 pasos guiados · Con margen',
         url: '/capacitaciones/cuanto-vale-tu-hora/precio-justo.html',
       },
+      {
+        tipo: 'Herramienta',
+        icono: '📊',
+        titulo: 'Gestión Financiera',
+        descripcion: 'Planilla de costos y P.E. multiproducto · Automatizada',
+        url: '/capacitaciones/cuanto-vale-tu-hora/gestion-financiera.html',
+      },
     ],
   },
   {

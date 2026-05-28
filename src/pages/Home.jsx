@@ -26,6 +26,18 @@ const TOOLS = [
     accent: 'rgba(16,185,129,0.15)',
     accentBorder: 'rgba(16,185,129,0.35)',
   },
+  {
+    icon: '📊',
+    name: 'Gestión Financiera',
+    desc: 'Planilla contable multi-producto. Calculá costos unitarios de mano de obra y materiales, y el Punto de Equilibrio Ponderado.',
+    tag: 'Planilla',
+    tagColor: 'rgba(139,92,246,0.12)',
+    tagBorder: 'rgba(139,92,246,0.3)',
+    tagText: '#a78bfa',
+    url: '/capacitaciones/cuanto-vale-tu-hora/gestion-financiera.html',
+    accent: 'rgba(139,92,246,0.15)',
+    accentBorder: 'rgba(139,92,246,0.35)',
+  },
 ]
 
 export default function Home() {
@@ -169,7 +181,7 @@ export default function Home() {
                 Herramientas gratuitas
               </div>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'inherit' }}>
-                2 calculadoras listas para usar — sin registro
+                3 herramientas listas para usar — sin registro
               </div>
             </div>
           </div>
