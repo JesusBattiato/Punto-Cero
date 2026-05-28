@@ -697,7 +697,7 @@
     if (margen <= 0) {
       results.classList.add('state-red');
       dot.textContent = '🛑';
-      title.innerText = 'Crónica de un Colapso';
+      title.innerText = 'Margen Crítico (Pérdidas)';
       desc.innerText  = 'Tus costos son iguales o mayores al precio de venta. Podés vender un millón de unidades y seguirás perdiendo dinero. Esto no tiene solución vendiendo más — hay que replantear desde la raíz.';
       document.getElementById('val_equilibrio').innerText = 'Imposible';
       cta.style.display = 'block';
@@ -714,7 +714,7 @@
     if (hn_mensual > hd_mensual) {
       results.classList.add('state-red');
       dot.textContent = '🔴';
-      title.innerText = 'Límite Físico Superado';
+      title.innerText = 'Capacidad de Tiempo Excedida';
       desc.innerText  = `Para apenas cubrir tus gastos fijos necesitás trabajar ${Math.ceil(hn_mensual)} horas al mes, pero solo tenés ${hd_mensual} horas disponibles. No es un problema de ganas — es matemática. Algo tiene que cambiar: bajar costos, subir el precio, o encontrar un modelo que escale sin depender solo de tu tiempo.`;
       cta.style.display = 'block';
       cta.innerText = 'Ayudame a arreglar esto 🛑';
@@ -728,7 +728,7 @@
     if (ocupacion > 0.65 || margenPct < 0.3) {
       results.classList.add('state-yellow');
       dot.textContent = '⚠️';
-      title.innerText = 'Pasatiempo Caro';
+      title.innerText = 'Rentabilidad Limitada';
       desc.innerText  = `El negocio es matemáticamente posible, pero vas a usar el ${Math.round(ocupacion * 100)}% de tu tiempo disponible solo para no perder plata. Tu margen es del ${Math.round(margenPct * 100)}%. Con esos números no vas a escalar — vas a sobrevivir. Y sobrevivir cansa igual.`;
       cta.style.display = 'block';
       cta.innerText = 'Quiero aumentar mis márgenes 📈';

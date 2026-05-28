@@ -65,24 +65,24 @@ export default function Nivel1() {
     if (p_venta > 0) {
       if (margen <= 0) {
         statusType = 'red';
-        title = 'Crónica de un Colapso';
-        desc = 'Tus costos son mayores o iguales al precio de venta. Ni vendiendo un millón de unidades te vas a volver rico, solo vas a perder plata más rápido.';
+        title = 'Margen Crítico (Pérdidas)';
+        desc = 'Tus costos son mayores o iguales al precio de venta. Ni vendiendo un millón de unidades vas a poder obtener ganancias, solo acumularás pérdidas de forma más rápida. Se requiere replantear la estructura.';
       } else {
         equilibrio = g_fijos / margen;
         hn_mensual = equilibrio * t_unidad;
 
         if (hn_mensual > hd_mensual) {
           statusType = 'red';
-          title = 'Límite Físico Superado';
-          desc = `Necesitás trabajar ${Math.ceil(hn_mensual)} horas al mes solo para salir hecho, pero solo tenés ${hd_mensual} horas libres. El día solo tiene 24hs. Dejá de mentirte. O bajás tus costos fijos, o subís el precio drásticamente.`;
+          title = 'Capacidad de Tiempo Excedida';
+          desc = `Necesitás trabajar ${Math.ceil(hn_mensual)} horas al mes solo para salir hecho, pero solo disponés de ${hd_mensual} horas operativas. Es un límite físico. Es necesario reducir tus costos fijos o aumentar el precio de venta.`;
         } else if ((hn_mensual / hd_mensual) > 0.7 || (margen / p_venta) < 0.3) {
           statusType = 'yellow';
-          title = 'Pasatiempo Caro';
-          desc = 'Vas a trabajar como esclavo solo para llegar al punto de equilibrio. El negocio existe matemáticamente, pero tu margen es muy bajo. Estás regalando tus horas.';
+          title = 'Rentabilidad Limitada';
+          desc = 'Estarás dedicando un porcentaje muy alto de tus horas disponibles únicamente para alcanzar el punto de equilibrio. El margen neto es bajo.';
         } else {
           statusType = 'green';
           title = '¡Negocio Viable!';
-          desc = 'Felicidades. Tu punto de equilibrio es bajo y los márgenes son fenomenales. Tenés tiempo físico de sobra para escalar esto hacia ganancias reales.';
+          desc = 'Felicidades. Tu punto de equilibrio es alcanzable y disponés del margen y del tiempo físico necesario para escalar tus ganancias de forma sostenible.';
         }
       }
     }

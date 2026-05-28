@@ -69,9 +69,9 @@
 > 
 > Existen **4 Palancas de Ajuste** que ustedes pueden accionar hoy mismo para salvar su hora de trabajo sin tocar el precio de venta:
 > 
-> 1. **La Palanca del Oxígeno (Costos Fijos):** ¿Qué suscripción, qué gasto mensual podemos recortar o compartir? Si bajamos el peso de la mochila fija, reducimos inmediatamente el Punto de Equilibrio mensual.
-> 2. **La Palanca de la Sangre (Costo de Insumos):** Negociar con proveedores, buscar compras colectivas/comunitarias con otros colegas para conseguir precios mayoristas, o rediseñar el producto para usar insumos más eficientes sin perder la calidad.
-> 3. **La Palanca del Reloj (Eficiencia de Tiempo):** Si el precio final está topeado, la única forma de que tu hora valga más es **tardar menos tiempo por unidad**. ¿Podemos usar un molde, una plantilla o estandarizar el proceso para fabricar en 30 minutos lo que hoy nos toma 2 horas?
+> 1. **La Palanca de la Estructura (Costos Fijos):** ¿Qué suscripción, qué gasto mensual podemos recortar o compartir? Si bajamos el peso de la mochila fija, reducimos inmediatamente el Punto de Equilibrio mensual.
+> 2. **La Palanca de la Operación (Costo de Insumos):** Negociar con proveedores, buscar compras colectivas/comunitarias con otros colegas para conseguir precios mayoristas, o rediseñar el producto para usar insumos más eficientes sin perder la calidad.
+> 3. **La Palanca de los Procesos (Eficiencia de Tiempo):** Si el precio final está topeado, la única forma de que tu hora valga más es **tardar menos tiempo por unidad**. ¿Podemos usar un molde, una plantilla o estandarizar el proceso para fabricar en 30 minutos lo que hoy nos toma 2 horas?
 > 4. **La Palanca del Modelo (Diferenciación):** Dejar de competir en el barro del precio bajo. ¿Cómo empaquetamos el producto de forma distinta? ¿Podemos hacer combos, personalización o apuntar a un nicho que valore la exclusividad por sobre el precio?
 > 
 > No se queden de brazos cruzados sintiendo que el mercado los condena. Si el precio no sube, muevan las palancas."
