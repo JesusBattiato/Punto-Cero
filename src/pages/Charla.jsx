@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 
 export default function Charla() {
@@ -8,8 +9,38 @@ export default function Charla() {
     rubro: '',
     pregunta: '',
   })
+  const [activeTalk, setActiveTalk] = useState(null)
+  const [loadingTalk, setLoadingTalk] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+
+  useEffect(() => {
+    async function fetchActiveTalk() {
+      if (!supabase) {
+        setLoadingTalk(false)
+        return
+      }
+      try {
+        const { data, error } = await supabase
+          .from('charlas')
+          .select('*')
+          .eq('activa', true)
+          .order('created_at', { ascending: false })
+          .limit(1)
+
+        if (error) {
+          console.error('Error fetching active talk:', error)
+        } else if (data && data.length > 0) {
+          setActiveTalk(data[0])
+        }
+      } catch (err) {
+        console.error('Error loading talk details:', err)
+      } finally {
+        setLoadingTalk(false)
+      }
+    }
+    fetchActiveTalk()
+  }, [])
 
   const handleChange = (e) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
@@ -19,7 +50,7 @@ export default function Charla() {
     e.preventDefault()
     setIsSubmitting(true)
 
-    if (supabase) {
+    if (supabase && activeTalk) {
       const { error } = await supabase
         .from('charla_registros')
         .insert([{
@@ -27,17 +58,61 @@ export default function Charla() {
           whatsapp: formData.whatsapp,
           rubro: formData.rubro,
           pregunta: formData.pregunta,
-          fecha_charla: '2026-05-29'
+          fecha_charla: activeTalk.fecha_identificador,
+          charla_id: activeTalk.id
         }])
       
       if (error) {
         console.error('Error saving registration:', error)
-        // Fallback locally in case table doesn't exist yet
+        alert('Error al guardar la inscripción: ' + error.message)
+      } else {
+        setSubmitted(true)
       }
+    } else {
+      // Fallback
+      setSubmitted(true)
     }
 
     setIsSubmitting(false)
-    setSubmitted(true)
+  }
+
+  if (loadingTalk) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh', color: 'var(--accent-light)', gap: '0.5rem' }}>
+        <span style={{ fontSize: '1.2rem', animation: 'spin 1.5s infinite linear' }}>🔄</span> Cargando detalles del taller...
+      </div>
+    )
+  }
+
+  if (!activeTalk) {
+    return (
+      <div className="container" style={{ display: 'flex', justifyContent: 'center', padding: '6rem 1.5rem 10rem' }}>
+        <div className="card" style={{ maxWidth: '540px', width: '100%', textAlign: 'center', padding: '3.5rem 2.5rem' }}>
+          <div style={{ fontSize: '3.5rem', marginBottom: '1.25rem' }}>🎟️</div>
+          <h2 style={{ marginBottom: '1.25rem', color: 'var(--text-muted)' }}>Inscripciones Cerradas</h2>
+          <p style={{ fontSize: '1.05rem', lineHeight: '1.8', color: '#cbd5e1', marginBottom: '2rem' }}>
+            Por el momento no tenemos talleres o charlas con inscripciones abiertas.
+          </p>
+          <div style={{
+            background: 'rgba(99, 102, 241, 0.05)',
+            border: '1px solid rgba(99, 102, 241, 0.15)',
+            borderRadius: '12px',
+            padding: '1.5rem',
+            textAlign: 'center',
+            fontSize: '0.9rem',
+            color: 'var(--text-soft)',
+            lineHeight: '1.6'
+          }}>
+            📢 ¡Te mantendremos al tanto! Estate atento/a a las novedades en la página de inicio o ponte en contacto con nosotros para enterarte de los próximos encuentros prácticos.
+          </div>
+          <div style={{ marginTop: '2.5rem' }}>
+            <Link to="/" className="btn-primary" style={{ padding: '0.65rem 1.5rem', fontSize: '0.9rem', textDecoration: 'none' }}>
+              Volver a la Página Principal
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   if (submitted) {
@@ -47,7 +122,7 @@ export default function Charla() {
           <div style={{ fontSize: '3.5rem', marginBottom: '1.25rem' }}>🎟️</div>
           <h2 style={{ marginBottom: '1rem', color: 'var(--accent-light)' }}>¡Lugar reservado!</h2>
           <p style={{ fontSize: '1.05rem', lineHeight: '1.8', color: '#cbd5e1', marginBottom: '2rem' }}>
-            Listo, ya te agendamos para la charla. Nos vemos el <strong>viernes 29 de mayo a las 20:00 hs</strong> en la <strong>Fundación Tendiendo Lazos</strong> (Pasaje Ituzaingó 280).
+            Listo, ya te agendamos para la charla. Nos vemos el <strong>{activeTalk.fecha_descripcion}</strong> en <strong>{activeTalk.lugar}</strong> ({activeTalk.direccion}).
           </p>
           <div style={{
             background: 'rgba(255,255,255,0.03)',
@@ -59,9 +134,14 @@ export default function Charla() {
             color: 'var(--text-soft)',
             lineHeight: '1.6'
           }}>
-            📍 <strong>Ubicación:</strong> Pasaje Ituzaingó 280 (entre Bolivia y Warnes)<br />
-            ⏰ <strong>Hora:</strong> 20:00 hs (puntual)<br />
+            📍 <strong>Ubicación:</strong> {activeTalk.lugar} - {activeTalk.direccion} {activeTalk.detalle_direccion ? `(${activeTalk.detalle_direccion})` : ''}<br />
+            ⏰ <strong>Hora:</strong> {activeTalk.fecha_descripcion}<br />
             💡 <strong>Qué traer:</strong> Tu celular con batería para usar las calculadoras interactivas en vivo.
+          </div>
+          <div style={{ marginTop: '2rem' }}>
+            <Link to="/" className="btn-outline" style={{ padding: '0.55rem 1.25rem', fontSize: '0.85rem', textDecoration: 'none' }}>
+              Volver a Inicio
+            </Link>
           </div>
         </div>
       </div>
@@ -91,11 +171,11 @@ export default function Charla() {
           }}>Taller Presencial Abierto</div>
           
           <h1 style={{ fontSize: '2rem', fontWeight: 800, color: '#f8fafc', marginBottom: '0.75rem', letterSpacing: '-0.5px' }}>
-            ¿Cuánto Vale Tu Hora?
+            {activeTalk.titulo}
           </h1>
           
           <p style={{ fontSize: '0.95rem', color: 'var(--text-soft)', lineHeight: '1.7', maxWidth: '500px', margin: '0 auto' }}>
-            Un encuentro práctico y honesto para desarmar los números de tu negocio y descubrir si estás cobrando lo justo o subsidiando tu propio esfuerzo.
+            {activeTalk.descripcion || 'Un encuentro práctico y honesto para desarmar los números de tu negocio y descubrir si estás cobrando lo justo.'}
           </p>
         </div>
 
@@ -113,16 +193,18 @@ export default function Charla() {
         }}>
           <div>
             <span style={{ color: 'var(--text-muted)', display: 'block', marginBottom: '0.2rem', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' }}>Cuándo</span>
-            <strong style={{ color: '#f1f5f9' }}>Viernes 29 · 20:00 hs</strong>
+            <strong style={{ color: '#f1f5f9' }}>{activeTalk.fecha_descripcion}</strong>
           </div>
           <div>
             <span style={{ color: 'var(--text-muted)', display: 'block', marginBottom: '0.2rem', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' }}>Dónde</span>
-            <strong style={{ color: '#f1f5f9' }}>Fundación Tendiendo Lazos</strong>
+            <strong style={{ color: '#f1f5f9' }}>{activeTalk.lugar}</strong>
           </div>
           <div>
             <span style={{ color: 'var(--text-muted)', display: 'block', marginBottom: '0.2rem', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' }}>Dirección</span>
-            <strong style={{ color: '#cbd5e1' }}>Pje. Ituzaingó 280</strong>
-            <span style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)' }}>Entre Bolivia y Warnes</span>
+            <strong style={{ color: '#cbd5e1' }}>{activeTalk.direccion}</strong>
+            {activeTalk.detalle_direccion && (
+              <span style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)' }}>{activeTalk.detalle_direccion}</span>
+            )}
           </div>
         </div>
 
@@ -197,10 +279,10 @@ export default function Charla() {
           </div>
 
           <button
-            type="submit"
-            disabled={isSubmitting}
-            className="btn-primary"
-            style={{ width: '100%', justifyContent: 'center', padding: '0.9rem', fontSize: '1rem', marginTop: '1rem' }}
+              type="submit"
+              disabled={isSubmitting}
+              className="btn-primary"
+              style={{ width: '100%', justifyContent: 'center', padding: '0.9rem', fontSize: '1rem', marginTop: '1rem' }}
           >
             {isSubmitting ? 'Reservando...' : 'Reservar mi lugar gratis →'}
           </button>

@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { supabase } from '../lib/supabase'
 
 const TOOLS = [
   {
@@ -42,42 +43,74 @@ const TOOLS = [
 
 export default function Home() {
   const [toolsOpen, setToolsOpen] = useState(false)
+  const [activeTalk, setActiveTalk] = useState(null)
+  const [loadingTalk, setLoadingTalk] = useState(true)
+
+  useEffect(() => {
+    async function fetchActiveTalk() {
+      if (!supabase) {
+        setLoadingTalk(false)
+        return
+      }
+      try {
+        const { data, error } = await supabase
+          .from('charlas')
+          .select('*')
+          .eq('activa', true)
+          .order('created_at', { ascending: false })
+          .limit(1)
+
+        if (error) {
+          console.error('Error fetching active talk:', error)
+        } else if (data && data.length > 0) {
+          setActiveTalk(data[0])
+        }
+      } catch (err) {
+        console.error('Error:', err)
+      } finally {
+        setLoadingTalk(false)
+      }
+    }
+    fetchActiveTalk()
+  }, [])
 
   return (
     <div className="container" style={{ padding: '3.5rem 1.5rem 6rem' }}>
 
       {/* ── Event Banner ── */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '1rem',
-        background: 'linear-gradient(135deg, rgba(99,102,241,0.15), rgba(139,92,246,0.1))',
-        border: '1px solid rgba(99,102,241,0.3)',
-        borderRadius: '16px',
-        padding: '1rem 1.5rem',
-        maxWidth: '720px',
-        margin: '0 auto 2.5rem auto',
-        textAlign: 'left',
-        flexWrap: 'wrap',
-        boxShadow: '0 10px 30px -10px rgba(99,102,241,0.2)'
-      }}>
-        <div style={{ fontSize: '1.75rem', animation: 'pulse-dot 2.5s infinite' }}>🎙️</div>
-        <div style={{ flex: '1', minWidth: '250px' }}>
-          <div style={{ fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1.5px', color: 'var(--accent-light)', marginBottom: '0.2rem' }}>
-            Charla Taller Presencial · Entrada Libre
+      {!loadingTalk && activeTalk && (
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '1rem',
+          background: 'linear-gradient(135deg, rgba(99,102,241,0.15), rgba(139,92,246,0.1))',
+          border: '1px solid rgba(99,102,241,0.3)',
+          borderRadius: '16px',
+          padding: '1rem 1.5rem',
+          maxWidth: '720px',
+          margin: '0 auto 2.5rem auto',
+          textAlign: 'left',
+          flexWrap: 'wrap',
+          boxShadow: '0 10px 30px -10px rgba(99,102,241,0.2)'
+        }}>
+          <div style={{ fontSize: '1.75rem', animation: 'pulse-dot 2.5s infinite' }}>🎙️</div>
+          <div style={{ flex: '1', minWidth: '250px' }}>
+            <div style={{ fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1.5px', color: 'var(--accent-light)', marginBottom: '0.2rem' }}>
+              Charla Taller Presencial · Entrada Libre
+            </div>
+            <strong style={{ fontSize: '0.98rem', color: '#f1f5f9', display: 'block', marginBottom: '0.15rem' }}>
+              {activeTalk.titulo}
+            </strong>
+            <span style={{ fontSize: '0.82rem', color: 'var(--text-soft)', display: 'block' }}>
+              {activeTalk.fecha_descripcion} · {activeTalk.lugar} ({activeTalk.direccion})
+            </span>
           </div>
-          <strong style={{ fontSize: '0.98rem', color: '#f1f5f9', display: 'block', marginBottom: '0.15rem' }}>
-            ¿Cuánto Vale Tu Hora?
-          </strong>
-          <span style={{ fontSize: '0.82rem', color: 'var(--text-soft)', display: 'block' }}>
-            Viernes 29 de Mayo a las 20hs · Fundación Tendiendo Lazos (Pje. Ituzaingó 280)
-          </span>
+          <Link to="/charla" className="btn-primary" style={{ padding: '0.55rem 1.25rem', fontSize: '0.85rem', textDecoration: 'none' }}>
+            Reservar Lugar gratis →
+          </Link>
         </div>
-        <Link to="/charla" className="btn-primary" style={{ padding: '0.55rem 1.25rem', fontSize: '0.85rem', textDecoration: 'none' }}>
-          Reservar Lugar gratis →
-        </Link>
-      </div>
+      )}
 
       {/* ── Hero ── */}
       <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
